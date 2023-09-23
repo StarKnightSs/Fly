@@ -193,6 +193,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A183A0A42ABEBA4F00515D98 /* Build configuration list for PBXNativeTarget "FlyUITests" */;
 			buildPhases = (
+				A1CFFEC12ABED8B5001C317D /* Swift Format */,
 				A183A0902ABEBA4F00515D98 /* Sources */,
 				A183A0912ABEBA4F00515D98 /* Frameworks */,
 				A183A0922ABEBA4F00515D98 /* Resources */,
@@ -333,6 +334,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTFORMAT\"\nelse\n  echo \"RUNNING SWIFTFORMAT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftformat --swiftversion 5.0 FlyTests --indent 2 --disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,redundantParens,hoistTry,redundantSelf,redundantReturn\nfi\n";
+		};
+		A1CFFEC12ABED8B5001C317D /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTFORMAT\"\nelse\n  echo \"RUNNING SWIFTFORMAT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftformat --swiftversion 5.0 FlyUITests --indent 2 --disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,redundantParens,hoistTry,redundantSelf,redundantReturn\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
