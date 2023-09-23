@@ -1,0 +1,49 @@
+disabled_rules:
+    - function_parameter_count
+    - large_tuple
+    - trailing_comma
+    - nesting
+    - void_function_in_ternary
+    - attributes
+
+opt_in_rules:
+    - force_unwrapping
+    - closure_body_length
+    - contains_over_filter_is_empty
+    - contains_over_range_nil_comparison
+    - contains_over_filter_count
+    - first_where
+    - private_outlet
+    - private_action
+
+included:
+    - FlyApp
+    - FlyKit
+
+excluded:
+    - FlyTests
+    - FlyUITests
+    - FlyKit/Tests
+
+line_length:
+  warning: 140
+  ignores_comments: true
+
+file_length: 800
+
+function_body_length:
+    warning: 60
+
+cyclomatic_complexity:
+    ignores_case_statements: true
+
+identifier_name:
+    excluded:
+      - id
+      - x
+      - y
+    min_length: 2
+
+closure_body_length: 40
+
+warning_threshold: 1

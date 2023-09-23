@@ -1,0 +1,24 @@
+
+# Created by https://www.gitignore.io/api/osx,macos,xcode,swift,objective-c
+
+### OSX ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+## Build generated ##
+.build/
+build/
+DerivedData/
+
+## User Settings ##
+*.xcuserstate
+xcuserdata/
+
+## Fly Kit ##
+FlyKit/.build
+FlyKit/.swiftpm
+
+### BUILD TOOLS ###	
+BuildTools/.build
+BuildTools/.swiftpm
