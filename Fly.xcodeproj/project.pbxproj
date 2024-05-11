@@ -15,6 +15,7 @@
 		A183A0992ABEBA4F00515D98 /* FlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A0982ABEBA4F00515D98 /* FlyUITests.swift */; };
 		A183A09B2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A09A2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift */; };
 		A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */ = {isa = PBXBuildFile; productRef = A183A0AB2ABEBB9700515D98 /* FlyKit */; };
+		A1D851B02BEF39DF00A6A71E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		A183A0A82ABEBB5200515D98 /* FlyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FlyKit; sourceTree = "<group>"; };
 		A183A0A92ABEBB8C00515D98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A183A0AE2ABEBD3A00515D98 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BuildTools; sourceTree = "<group>"; };
+		A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				A183A0A92ABEBB8C00515D98 /* Info.plist */,
+				A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */,
 				A183A07C2ABEBA4E00515D98 /* FlyApp.swift */,
 				A183A07E2ABEBA4E00515D98 /* ContentView.swift */,
 				A183A0802ABEBA4F00515D98 /* Assets.xcassets */,
@@ -361,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1D851B02BEF39DF00A6A71E /* AppDelegate.swift in Sources */,
 				A183A07F2ABEBA4E00515D98 /* ContentView.swift in Sources */,
 				A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */,
 			);
