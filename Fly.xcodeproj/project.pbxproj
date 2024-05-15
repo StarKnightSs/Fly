@@ -36,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A13EF7D32BF505FE00E05985 /* SwiftFormat.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftFormat.sh; sourceTree = "<group>"; };
+		A13EF7D42BF5060800E05985 /* SwiftLint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftLint.sh; sourceTree = "<group>"; };
 		A183A0792ABEBA4E00515D98 /* Fly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A183A07C2ABEBA4E00515D98 /* FlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyApp.swift; sourceTree = "<group>"; };
 		A183A07E2ABEBA4E00515D98 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,9 +81,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A13EF7D22BF505EE00E05985 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				A13EF7D32BF505FE00E05985 /* SwiftFormat.sh */,
+				A13EF7D42BF5060800E05985 /* SwiftLint.sh */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
 		A183A0702ABEBA4E00515D98 = {
 			isa = PBXGroup;
 			children = (
+				A13EF7D22BF505EE00E05985 /* Scripts */,
 				A183A0AE2ABEBD3A00515D98 /* BuildTools */,
 				A183A0A82ABEBB5200515D98 /* FlyKit */,
 				A183A07B2ABEBA4E00515D98 /* FlyApp */,
@@ -298,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTLINT\"\nelse\n  echo \"RUNNING SWIFTLINT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftlint\nfi\n";
+			shellScript = "./Scripts/SwiftLint.sh\n";
 		};
 		A183A0AF2ABEBFAC00515D98 /* Swift Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -317,7 +329,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTFORMAT\"\nelse\n  echo \"RUNNING SWIFTFORMAT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftformat --swiftversion 5.0 FlyApp FlyKit --indent 2 --disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,redundantParens,hoistTry,redundantSelf,redundantReturn\nfi\n";
+			shellScript = "./Scripts/SwiftFormat.sh\n";
 		};
 		A1CFFEC02ABED6F4001C317D /* Swift Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -336,7 +348,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTFORMAT\"\nelse\n  echo \"RUNNING SWIFTFORMAT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftformat --swiftversion 5.0 FlyTests --indent 2 --disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,redundantParens,hoistTry,redundantSelf,redundantReturn\nfi\n";
+			shellScript = "./Scripts/SwiftFormat.sh\n";
 		};
 		A1CFFEC12ABED8B5001C317D /* Swift Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -355,7 +367,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$DISABLE_RUN_SCRIPTS\" == \"TRUE\" ]; then\n  echo \"DISABLED SWIFTFORMAT\"\nelse\n  echo \"RUNNING SWIFTFORMAT\"\n  xcrun --sdk macosx swift run --package-path BuildTools swiftformat --swiftversion 5.0 FlyUITests --indent 2 --disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,redundantParens,hoistTry,redundantSelf,redundantReturn\nfi\n";
+			shellScript = "./Scripts/SwiftFormat.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
