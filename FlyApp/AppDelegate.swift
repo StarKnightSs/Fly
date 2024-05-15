@@ -5,14 +5,27 @@
 //  Created by Arpit Williams on 11/05/24.
 //
 
-import UIKit
+#if os(iOS)
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+  import UIKit
 
-  func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
-  ) -> Bool {
-    return true
+  class AppDelegate: NSObject, UIApplicationDelegate {
+
+    func application(
+      _ application: UIApplication,
+      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+      return true
+    }
   }
-}
+
+#elseif os(macOS)
+
+  import AppKit
+
+  class AppDelegate: NSObject, NSApplicationDelegate {
+
+    func applicationDidFinishLaunching(_ notification: Notification) {}
+  }
+
+#endif

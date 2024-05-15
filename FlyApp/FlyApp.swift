@@ -10,8 +10,13 @@ import SwiftUI
 @main
 struct FlyApp: App {
 
+  #if os(iOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  #elseif os(macOS)
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  #endif
+
   @Environment(\.scenePhase) private var scenePhase
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
   var body: some Scene {
     WindowGroup {
