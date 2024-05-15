@@ -50,6 +50,7 @@ extension Target {
 // MARK: - Test Target
 
 extension Target {
+
   static var flyKitTests: Target {
     .testTarget(name: Module.FlyKit.test, dependencies: [
       .flyKit

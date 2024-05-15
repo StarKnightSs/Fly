@@ -1,9 +1,7 @@
 //
-//  AppDelegate.swift
-//  Fly
-//
-//  Created by Arpit Williams on 11/05/24.
-//
+// AppDelegate.swift
+// Created by Arpit Williams on 15/05/24.
+// Copyright (c) 2024 StarKnights Technologies
 
 #if os(iOS)
 
@@ -12,10 +10,10 @@
   class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(
-      _ application: UIApplication,
-      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+      _: UIApplication,
+      didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-      return true
+      true
     }
   }
 
@@ -25,7 +23,7 @@
 
   class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func applicationDidFinishLaunching(_ notification: Notification) {}
+    func applicationDidFinishLaunching(_: Notification) {}
   }
 
 #endif

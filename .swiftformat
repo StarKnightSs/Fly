@@ -1,0 +1,15 @@
+# file options
+
+--exclude BuildTools
+
+# file header
+--header "\n{file}\nCreated by Arpit Williams on {created}.\nCopyright (c) {year} StarKnights Technologies"
+
+
+# format options
+
+--indent 2
+
+# rules
+
+--disable trailingCommas,redundantGet,redundantBackticks,unusedArguments,blankLinesAtStartOfScope,elseOnSameLine,redundanttype,wrapArguments,wrapAttributes,wrapMultilineStatementBraces,extensionAccessControl,enumNamespaces,hoistTry,redundantSelf,redundantReturn

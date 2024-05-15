@@ -23,7 +23,8 @@ included:
 excluded:
     - FlyTests
     - FlyUITests
-    - FlyKit/Tests
+    - BuildTools
+    - Scripts
 
 line_length:
   warning: 140

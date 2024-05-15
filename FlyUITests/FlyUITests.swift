@@ -1,9 +1,7 @@
 //
-//  FlyUITests.swift
-//  FlyUITests
-//
-//  Created by Arpit Williams on 23/09/23.
-//
+// FlyUITests.swift
+// Created by Arpit Williams on 23/09/23.
+// Copyright (c) 2024 StarKnights Technologies
 
 import XCTest
 

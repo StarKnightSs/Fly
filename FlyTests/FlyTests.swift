@@ -1,14 +1,11 @@
 //
-//  FlyTests.swift
-//  FlyTests
-//
-//  Created by Arpit Williams on 23/09/23.
-//
+// FlyTests.swift
+// Created by Arpit Williams on 23/09/23.
+// Copyright (c) 2024 StarKnights Technologies
 
 import XCTest
 
 final class FlyTests: XCTestCase {
-
   override func setUpWithError() throws {
     // Put setup code here. This method is called before the invocation of each test method in the class.
   }
