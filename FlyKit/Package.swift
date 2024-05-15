@@ -1,28 +1,96 @@
-// swift-tools-version: 5.8
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
-  name: "FlyKit",
-  products: [
-    // Products define the executables and libraries a package produces, and make them visible to other packages.
-    .library(
-      name: "FlyKit",
-      targets: ["FlyKit"]),
-  ],
+  name: "Fly",
+  platforms: [.macOS(.v13), .iOS(.v14)],
+  products: Module.allCases.map(Product.library),
   dependencies: [
-    // Dependencies declare other packages that this package depends on.
-    // .package(url: /* package url */, from: "1.0.0"),
+    .vapor,
   ],
   targets: [
-    // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-    // Targets can depend on other targets in this package, and on products in packages this package depends on.
-    .target(
-      name: "FlyKit",
-      dependencies: []),
-    .testTarget(
-      name: "FlyKitTests",
-      dependencies: ["FlyKit"]),
+    .flyKit,
+    .flyKitTests,
+    .fileServer
   ]
 )
+
+// MARK: - Modules
+
+enum Module: String, CaseIterable {
+  // swiftlint:disable identifier_name
+  case FlyKit
+  case FileServer
+  // swiftlint:enable identifier_name
+
+  var test: String {
+    "\(rawValue)Tests"
+  }
+}
+
+// MARK: - Target
+
+extension Target {
+
+  static var flyKit: Target {
+    .target(
+      name: Module.FlyKit.rawValue,
+      dependencies: [.fileServer]
+    )
+  }
+
+  static var fileServer: Target {
+    .target(
+      name: Module.FileServer.rawValue,
+      dependencies: [.vapor]
+    )
+  }
+}
+
+// MARK: - Test Target
+
+extension Target {
+  static var flyKitTests: Target {
+    .testTarget(name: Module.FlyKit.test, dependencies: [
+      .flyKit
+    ])
+  }
+}
+
+// MARK: - Target Dependency
+
+extension Target.Dependency {
+
+  init(_ module: Module) {
+    self.init(stringLiteral: module.rawValue)
+  }
+
+  static var flyKit: Target.Dependency {
+    .init(.FlyKit)
+  }
+
+  static var fileServer: Target.Dependency {
+    .init(.FileServer)
+  }
+
+  static var vapor: Target.Dependency {
+    product(name: "Vapor", package: "vapor")
+  }
+}
+
+// MARK: - Package Dependency
+
+extension Package.Dependency {
+
+  static var vapor: Package.Dependency {
+    package(url: "https://github.com/vapor/vapor.git", from: "4.92.5")
+  }
+}
+
+// MARK: - Product
+
+extension Product {
+  static func library(_ module: Module) -> Product {
+    Product.library(name: module.rawValue, targets: [module.rawValue])
+  }
+}
