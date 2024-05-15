@@ -7,4 +7,4 @@
 #
 
 echo "RUNNING SWIFTLINT"
-swift run --package-path BuildTools swiftlint
+xcrun --sdk macosx swift run --package-path BuildTools swiftlint
