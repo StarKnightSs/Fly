@@ -7,4 +7,8 @@
 #
 
 echo "RUNNING SWIFTLINT"
-xcrun --sdk macosx swift run --package-path BuildTools swiftlint
+
+# Lint only changes files
+(git diff --diff-filter=d --cached --name-only; git diff --diff-filter=d --name-only) | grep -e '\(.*\).swift$' | while read file; do
+  xcrun --sdk macosx swift run --package-path BuildTools swiftlint "${file}"
+done
