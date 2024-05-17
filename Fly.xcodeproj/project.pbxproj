@@ -15,6 +15,7 @@
 		A183A0992ABEBA4F00515D98 /* FlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A0982ABEBA4F00515D98 /* FlyUITests.swift */; };
 		A183A09B2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A09A2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift */; };
 		A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */ = {isa = PBXBuildFile; productRef = A183A0AB2ABEBB9700515D98 /* FlyKit */; };
+		A19B44A02BF763BD00A1D12E /* FileServer in Frameworks */ = {isa = PBXBuildFile; productRef = A19B449F2BF763BD00A1D12E /* FileServer */; };
 		A1D851B02BEF39DF00A6A71E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */,
+				A19B44A02BF763BD00A1D12E /* FileServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +182,7 @@
 			name = Fly;
 			packageProductDependencies = (
 				A183A0AB2ABEBB9700515D98 /* FlyKit */,
+				A19B449F2BF763BD00A1D12E /* FileServer */,
 			);
 			productName = Fly;
 			productReference = A183A0792ABEBA4E00515D98 /* Fly.app */;
@@ -749,6 +752,10 @@
 		A183A0AB2ABEBB9700515D98 /* FlyKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlyKit;
+		};
+		A19B449F2BF763BD00A1D12E /* FileServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FileServer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,6 +7,7 @@ let package = Package(
   products: Module.allCases.map(Product.library),
   dependencies: [
     .vapor,
+    .leaf
   ],
   targets: [
     .flyKit,
@@ -42,7 +43,8 @@ extension Target {
   static var fileServer: Target {
     .target(
       name: Module.FileServer.rawValue,
-      dependencies: [.vapor]
+      dependencies: [.vapor, .leaf],
+      resources: [.process("Resources")]
     )
   }
 }
@@ -77,6 +79,10 @@ extension Target.Dependency {
   static var vapor: Target.Dependency {
     product(name: "Vapor", package: "vapor")
   }
+
+  static var leaf: Target.Dependency {
+    product(name: "Leaf", package: "Leaf")
+  }
 }
 
 // MARK: - Package Dependency
@@ -85,6 +91,10 @@ extension Package.Dependency {
 
   static var vapor: Package.Dependency {
     package(url: "https://github.com/vapor/vapor.git", from: "4.92.5")
+  }
+
+  static var leaf: Package.Dependency {
+    package(url: "https://github.com/vapor/leaf.git", from: "4.3.0")
   }
 }
 
