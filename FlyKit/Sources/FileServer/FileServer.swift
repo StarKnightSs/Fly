@@ -11,24 +11,12 @@ public final class FileServer: ObservableObject {
 
   private let port: Int
   private var app: Application
-
   @Published public var fileURLs: [URL] = []
 
   public init(port: Int) throws {
     self.port = port
     app = try Application(.detect())
     configure(app)
-    NotificationCenter.default
-      .addObserver(
-        forName: .serverFilesChanged, object: nil, queue: .main
-      ) { [weak self] _ in
-        self?.loadFiles()
-      }
-  }
-
-  deinit {
-    NotificationCenter.default
-      .removeObserver(self, name: .serverFilesChanged, object: nil)
   }
 
   private func configure(_ app: Application) {
@@ -44,11 +32,18 @@ public final class FileServer: ObservableObject {
 
   public func start() {
     Task(priority: .background) {
-      try app.register(collection: FileController())
+      try app.register(
+        collection: FileController(
+          filesChanged: { Task { [weak self] in
+            await self?.loadFiles()
+          }}
+        )
+      )
       try await app.startup()
     }
   }
 
+  @MainActor
   public func loadFiles() {
     do {
       let documentsDirectory = try URL.documentsDirectory()
@@ -67,7 +62,9 @@ public final class FileServer: ObservableObject {
     for url in urls {
       try? FileManager.default.removeItem(at: url)
     }
-    loadFiles()
+    Task {
+      await loadFiles()
+    }
   }
 }
 
