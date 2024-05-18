@@ -1,6 +1,6 @@
 //
 // FileController.swift
-// Created by Arpit Williams on 17/05/24.
+// Created by Arpit Williams on 18/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import NIOCore
@@ -8,11 +8,17 @@ import Vapor
 
 struct FileController: RouteCollection {
 
+  private var filesChanged: (() -> Void)?
+
+  init(filesChanged: (() -> Void)? = nil) {
+    self.filesChanged = filesChanged
+  }
+
   func boot(routes: RoutesBuilder) throws {
     routes.get(use: filesViewHandler)
-    routes.get(":filename", use: downloadFileHandler)
-    routes.get("delete", ":filename", use: deleteFileHandler)
-    routes.on(.POST, ":filename", body: .stream, use: uploadFilePostHandler)
+    routes.get(":filename", use: download)
+    routes.get("delete", ":filename", use: delete)
+    routes.on(.POST, ":filename", body: .stream, use: upload)
   }
 
   func filesViewHandler(_ req: Request) async throws -> View {
@@ -23,7 +29,7 @@ struct FileController: RouteCollection {
     return try await req.view.render("files", context)
   }
 
-  func downloadFileHandler(_ req: Request) throws -> Response {
+  func download(_ req: Request) throws -> Response {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
@@ -31,70 +37,64 @@ struct FileController: RouteCollection {
     return req.fileio.streamFile(at: fileUrl.path)
   }
 
-  func deleteFileHandler(_ req: Request) throws -> Response {
+  func delete(_ req: Request) throws -> Response {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
     let fileURL = try URL.documentsDirectory().appendingPathComponent(filename)
     try FileManager.default.removeItem(at: fileURL)
-    notifyFileChange()
+    filesChanged?()
     return req.redirect(to: "/")
   }
 
-  func uploadFilePostHandler(_ req: Request) async throws -> Response {
+  func upload(_ req: Request) async throws -> Response {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
     let fileUrl = try URL.documentsDirectory().appendingPathComponent(filename)
     try? FileManager.default.removeItem(at: fileUrl)
 
-    return try await req.application.fileio.openFile(
+    let fileHandle = try await req.application.fileio.openFile(
       path: fileUrl.relativePath, mode: .write,
       flags: .allowFileCreation(), eventLoop: req.eventLoop
-    ).flatMap { fileHandle in
+    ).get()
+    defer { try? fileHandle.close() }
 
-      let start = Date()
-      let promise = req.eventLoop.makePromise(of: Void.self)
-      let sequential = Sequential(req.eventLoop.makeSucceededFuture(()))
+    let start = Date()
+    let stream = req.eventLoop.makePromise(of: Void.self)
+    let sequential = Sequential(future: req.eventLoop.makeSucceededFuture(()))
 
-      req.body.drain {
-        switch $0 {
-        case let .buffer(buffer):
-          sequential.future = sequential.future.flatMap {
-            req.application.fileio.write(fileHandle: fileHandle, buffer: buffer, eventLoop: req.eventLoop)
-          }
-
-        case let .error(error):
-          try? FileManager.default.removeItem(at: fileUrl)
-          promise.fail(error)
-
-        case .end:
-          promise.succeed(())
+    req.body.drain {
+      switch $0 {
+      case let .buffer(buffer):
+        sequential.future = sequential.future.flatMap {
+          req.application.fileio.write(
+            fileHandle: fileHandle,
+            buffer: buffer,
+            eventLoop: req.eventLoop
+          )
         }
-        return req.eventLoop.makeSucceededVoidFuture()
+
+      case let .error(error):
+        try? FileManager.default.removeItem(at: fileUrl)
+        stream.fail(error)
+
+      case .end:
+        stream.succeed(())
       }
-
-      return promise.futureResult
-        .flatMap { sequential.future }
-        .always { _ in
-          notifyFileChange()
-          try? fileHandle.close()
-        }
-        .flatMap { _ in
-          print(fileUrl.absoluteString)
-          let end = Date()
-          let consumedTime = end.timeIntervalSince(start)
-          print(consumedTime)
-          return req.eventLoop.makeSucceededFuture(req.redirect(to: "/"))
-        }
+      return req.eventLoop.makeSucceededVoidFuture()
     }
-    .get()
-  }
 
-  func notifyFileChange() {
-    DispatchQueue.main.async {
-      NotificationCenter.default.post(name: .serverFilesChanged, object: nil)
-    }
+    try await stream.futureResult.get()
+    try await sequential.future.get()
+    filesChanged?()
+
+    let end = Date()
+    let time = end.timeIntervalSince(start)
+    print("🕰️ Time \(time)")
+    print("Path \(fileUrl.absoluteString)")
+
+    return req.redirect(to: "/")
   }
 }
 
@@ -102,9 +102,9 @@ struct FileContext: Encodable {
   var filenames: [String]
 }
 
-class Sequential {
+final class Sequential {
   var future: EventLoopFuture<Void>
-  init(_ future: EventLoopFuture<Void>) {
+  init(future: EventLoopFuture<Void>) {
     self.future = future
   }
 }
