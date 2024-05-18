@@ -11,6 +11,13 @@ form.addEventListener('submit', handleSubmit);
 const progressBar = document.querySelector('progress');
 const statusMessage = document.getElementById('statusMessage');
 
+
+const lastTime = localStorage.getItem("lastTime");
+if (lastTime != undefined) {
+  updateStatusMessage("Last Upload completed in " + lastTime);
+}
+
+
 async function handleSubmit(event) {
   event.preventDefault();
   const file = document.getElementById("input").files[0];
@@ -51,8 +58,9 @@ async function handleSubmit(event) {
   var start = new Date()
   request.addEventListener('loadend', () => {
     var end = new Date();
-    const minutes = minutesDiff(start, end);
-    updateStatusMessage("Uploaded in " + minutes + " minutes");
+    const time = timeDiff(start, end);
+    localStorage.setItem("lastTime", time);
+    updateStatusMessage("Uploaded in " + time);
     window.location.reload();
   });
 
@@ -78,8 +86,12 @@ function formatBytes(bytes, decimals = 2) {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
-function minutesDiff(start, end) {
+function timeDiff(start, end) {
   var diff = (end.getTime() - start.getTime()) / 1000;
-  diff /= 60;
-  return diff.toFixed(2);
+  if (diff < 60) {
+    return diff + " seconds"
+  } else {
+    diff /= 60;
+    return diff.toFixed(2) + " minutes"
+  }
 }
