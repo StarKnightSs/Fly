@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launch" translatesAutoresizingMaskIntoConstraints="NO" id="a17-uA-lau">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="579"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
@@ -27,7 +27,7 @@
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="a17-uA-lau" secondAttribute="trailing" id="BlN-iO-R7D"/>
                             <constraint firstItem="a17-uA-lau" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="Vt3-TV-ILC"/>
                             <constraint firstItem="a17-uA-lau" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="dZk-TS-aqB"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="a17-uA-lau" secondAttribute="bottom" id="e54-CO-MwX"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="a17-uA-lau" secondAttribute="bottom" constant="180" id="e54-CO-MwX"/>
                         </constraints>
                     </view>
                 </viewController>
