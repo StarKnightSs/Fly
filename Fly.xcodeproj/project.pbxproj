@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A143FBAD2BF50F590072C5B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143FBAC2BF50F590072C5B1 /* ContentView.swift */; };
+		A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A176E9C62BFB38BC006DA27F /* Launch.storyboard */; };
 		A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A07C2ABEBA4E00515D98 /* FlyApp.swift */; };
 		A183A0812ABEBA4F00515D98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A183A0802ABEBA4F00515D98 /* Assets.xcassets */; };
 		A183A0852ABEBA4F00515D98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A183A0842ABEBA4F00515D98 /* Preview Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		A13EF7D32BF505FE00E05985 /* SwiftFormat.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftFormat.sh; sourceTree = "<group>"; };
 		A13EF7D42BF5060800E05985 /* SwiftLint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftLint.sh; sourceTree = "<group>"; };
 		A143FBAC2BF50F590072C5B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A176E9C62BFB38BC006DA27F /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		A183A0792ABEBA4E00515D98 /* Fly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A183A07C2ABEBA4E00515D98 /* FlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyApp.swift; sourceTree = "<group>"; };
 		A183A0802ABEBA4F00515D98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				A183A0802ABEBA4F00515D98 /* Assets.xcassets */,
 				A183A0822ABEBA4F00515D98 /* Fly.entitlements */,
 				A183A0832ABEBA4F00515D98 /* Preview Content */,
+				A176E9C62BFB38BC006DA27F /* Launch.storyboard */,
 			);
 			path = FlyApp;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */,
 				A183A0852ABEBA4F00515D98 /* Preview Assets.xcassets in Resources */,
 				A183A0812ABEBA4F00515D98 /* Assets.xcassets in Resources */,
 			);
@@ -552,6 +556,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
@@ -595,6 +600,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
