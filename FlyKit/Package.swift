@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "Fly",
-  platforms: [.macOS(.v13), .iOS(.v14)],
+  platforms: [.macOS(.v13), .iOS(.v15)],
   products: Module.allCases.map(Product.library),
   dependencies: [
     .vapor,
@@ -36,7 +36,8 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.fileServer]
+      dependencies: [.fileServer],
+      resources: [.process("Resources")]
     )
   }
 

@@ -4,12 +4,24 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import FlyKit
+import Foundation
 import SwiftUI
 
 struct ContentView: View {
 
+  @State var isBooting = true
+
   var body: some View {
-    FlyView()
+    if isBooting {
+      LaunchView()
+        .onAppear {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isBooting = false
+          }
+        }
+    } else {
+      FlyView()
+    }
   }
 }
 
