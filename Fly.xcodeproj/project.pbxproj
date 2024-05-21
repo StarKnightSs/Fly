@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A143FBAD2BF50F590072C5B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143FBAC2BF50F590072C5B1 /* ContentView.swift */; };
-		A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A176E9C62BFB38BC006DA27F /* Launch.storyboard */; };
+		A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A176E9C62BFB38BC006DA27F /* Launch.storyboard */; platformFilter = ios; };
 		A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A07C2ABEBA4E00515D98 /* FlyApp.swift */; };
 		A183A0812ABEBA4F00515D98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A183A0802ABEBA4F00515D98 /* Assets.xcassets */; };
 		A183A0852ABEBA4F00515D98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A183A0842ABEBA4F00515D98 /* Preview Assets.xcassets */; };

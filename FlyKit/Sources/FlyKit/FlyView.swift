@@ -18,7 +18,9 @@ public struct FlyView: View {
       List {
         ForEach(server.fileURLs, id: \.path) { file in
           NavigationLink {
+            #if os(iOS)
             FileView(url: file)
+            #endif
           } label: {
             Text(file.lastPathComponent)
           }

@@ -7,6 +7,7 @@ import Foundation
 import QuickLook
 import SwiftUI
 
+#if os(iOS)
 struct FileView: UIViewControllerRepresentable {
 
   let url: URL
@@ -45,3 +46,4 @@ struct FileView: UIViewControllerRepresentable {
     }
   }
 }
+#endif

@@ -9,6 +9,7 @@
 # format options
 
 --indent 2
+--ifdef no-indent
 
 # rules
 
