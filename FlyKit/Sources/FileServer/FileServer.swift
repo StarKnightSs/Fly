@@ -20,13 +20,13 @@ public final class FileServer: ObservableObject {
   private func configure(_ app: Application) {
     app.http.server.configuration.port = 80
     app.http.server.configuration.hostname = "0.0.0.0"
-    app.http.server.configuration.serverName = "Fly Server"
-    app.middleware.use(FileMiddleware(publicDirectory: Bundle.module.resourcePath ?? ""))
-
-    app.views.use(.leaf)
     app.routes.defaultMaxBodySize = "100GB"
-    app.leaf.cache.isEnabled = app.environment.isRelease
-    app.leaf.configuration.rootDirectory = Bundle.module.resourcePath ?? ""
+    app.views.use(.leaf)
+    app.leaf.cache.isEnabled = true
+
+    let resourcePath = Bundle.module.resourcePath ?? ""
+    app.leaf.configuration.rootDirectory = resourcePath
+    app.middleware.use(FileMiddleware(publicDirectory: resourcePath))
   }
 
   public func start() {
