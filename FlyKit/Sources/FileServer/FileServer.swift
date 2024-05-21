@@ -9,25 +9,24 @@ import Vapor
 
 public final class FileServer: ObservableObject {
 
-  private let port: Int
   private var app: Application
   @Published public var fileURLs: [URL] = []
 
-  public init(port: Int) throws {
-    self.port = port
-    app = try Application(.detect())
+  public init() {
+    app = Application(.production)
     configure(app)
   }
 
   private func configure(_ app: Application) {
+    app.http.server.configuration.port = 80
     app.http.server.configuration.hostname = "0.0.0.0"
-    app.http.server.configuration.port = port
+    app.http.server.configuration.serverName = "Fly Server"
     app.middleware.use(FileMiddleware(publicDirectory: Bundle.module.resourcePath ?? ""))
 
     app.views.use(.leaf)
+    app.routes.defaultMaxBodySize = "100GB"
     app.leaf.cache.isEnabled = app.environment.isRelease
     app.leaf.configuration.rootDirectory = Bundle.module.resourcePath ?? ""
-    app.routes.defaultMaxBodySize = "100GB"
   }
 
   public func start() {

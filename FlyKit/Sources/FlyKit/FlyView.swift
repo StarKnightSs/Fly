@@ -8,8 +8,7 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  // swiftlint:disable:next force_try
-  @StateObject var server = try! FileServer(port: 8080)
+  @StateObject var server = FileServer()
 
   public init() {}
 
@@ -29,7 +28,7 @@ public struct FlyView: View {
       }
       .toolbar {
         ToolbarItem(placement: .principal) {
-          Text(ProcessInfo().hostName + ":8080")
+          Text(ProcessInfo().hostName)
         }
       }
     }
