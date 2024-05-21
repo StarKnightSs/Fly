@@ -1,6 +1,6 @@
 //
 // FlyView.swift
-// Created by Arpit Williams on 23/09/23.
+// Created by Arpit Williams on 21/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FileServer
@@ -14,27 +14,29 @@ public struct FlyView: View {
 
   public var body: some View {
     NavigationView {
-      List {
-        ForEach(server.fileURLs, id: \.path) { file in
-          NavigationLink {
-            #if os(iOS)
-            FileView(url: file)
-            #endif
-          } label: {
-            Text(file.lastPathComponent)
+      VStack {
+        List {
+          ForEach(server.fileURLs, id: \.path) { file in
+            NavigationLink {
+              #if os(iOS)
+              FileView(url: file)
+              #endif
+            } label: {
+              Text(file.lastPathComponent)
+            }
           }
+          .onDelete { server.deleteFile(at: $0.map { $0 }) }
         }
-        .onDelete { server.deleteFile(at: $0.map { $0 }) }
+        .background(Color.white)
+        .padding(.top, 1)
       }
-      .toolbar {
-        ToolbarItem(placement: .principal) {
-          Text(ProcessInfo().hostName)
-        }
+      .toolbar { ToolBar() }
+      .background(Color(.banana))
+      .navigationBarTitleDisplayMode(.inline)
+      .onAppear {
+        server.start()
+        server.loadFiles()
       }
-    }
-    .onAppear {
-      server.start()
-      server.loadFiles()
     }
   }
 }
