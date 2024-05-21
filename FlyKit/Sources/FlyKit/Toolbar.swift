@@ -11,6 +11,7 @@ public struct ToolBar: ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
       Image(systemName: "person.fill")
+        .foregroundStyle(Color.black)
         .font(.title3)
         .padding(.top, 4)
     }
@@ -23,11 +24,13 @@ public struct ToolBar: ToolbarContent {
 
         Text("File Server")
           .font(.system(size: 16, weight: .heavy, design: .rounded))
+          .foregroundStyle(Color.black)
       }
     }
 
     ToolbarItem(placement: .topBarTrailing) {
       Image(systemName: "folder.fill.badge.plus")
+        .foregroundStyle(Color.black)
         .font(.headline)
     }
   }
