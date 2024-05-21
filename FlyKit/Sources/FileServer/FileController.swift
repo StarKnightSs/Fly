@@ -53,6 +53,7 @@ struct FileController: RouteCollection {
     }
     let fileUrl = try URL.documentsDirectory().appendingPathComponent(filename)
     try? FileManager.default.removeItem(at: fileUrl)
+    AudioManager.shared.play()
 
     let fileHandle = try await req.application.fileio.openFile(
       path: fileUrl.relativePath, mode: .write,
@@ -87,6 +88,7 @@ struct FileController: RouteCollection {
 
     try await stream.futureResult.get()
     try await sequential.future.get()
+    AudioManager.shared.stop()
     filesChanged?()
 
     let end = Date()
