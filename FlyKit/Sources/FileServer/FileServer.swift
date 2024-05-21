@@ -22,11 +22,11 @@ public final class FileServer: ObservableObject {
   private func configure(_ app: Application) {
     app.http.server.configuration.hostname = "0.0.0.0"
     app.http.server.configuration.port = port
-    app.middleware.use(FileMiddleware(publicDirectory: Bundle.module.bundlePath))
+    app.middleware.use(FileMiddleware(publicDirectory: Bundle.module.resourcePath ?? ""))
 
     app.views.use(.leaf)
     app.leaf.cache.isEnabled = app.environment.isRelease
-    app.leaf.configuration.rootDirectory = Bundle.module.bundlePath
+    app.leaf.configuration.rootDirectory = Bundle.module.resourcePath ?? ""
     app.routes.defaultMaxBodySize = "100GB"
   }
 
