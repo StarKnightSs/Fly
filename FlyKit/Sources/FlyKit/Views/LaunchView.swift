@@ -19,8 +19,8 @@ public struct LaunchView: View {
 
       Text("Fly Server")
         .foregroundColor(.black)
-        .font(.system(size: 40, weight: .semibold, design: .rounded))
-        .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 2)
+        .font(.system(.largeTitle, design: .rounded).weight(.semibold))
+        .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
 
       Text("Offline File Transfer")
         .foregroundColor(.black)

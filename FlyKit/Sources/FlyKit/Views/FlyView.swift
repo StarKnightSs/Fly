@@ -14,7 +14,7 @@ public struct FlyView: View {
 
   public var body: some View {
     NavigationView {
-      VStack {
+      VStack(spacing: 0) {
         List {
           ForEach(server.fileURLs, id: \.path) { file in
             NavigationLink {
@@ -27,12 +27,21 @@ public struct FlyView: View {
           }
           .onDelete { server.deleteFile(at: $0.map { $0 }) }
         }
-        .background(Color.white)
         .padding(.top, 1)
+
+        BottomBar(
+          download: { print("Download") },
+          upload: { print("Upload") }
+        )
       }
-      .toolbar { ToolBar() }
-      .background(Color(.banana))
+      .background(Color(.lemon))
       .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        TopBar(
+          gearTapped: { print("Gear") },
+          folderTapped: { print("Folder") }
+        )
+      }
       .onAppear {
         server.start()
         server.loadFiles()
