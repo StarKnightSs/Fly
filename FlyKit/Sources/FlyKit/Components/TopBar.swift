@@ -12,34 +12,36 @@ public struct TopBar: ToolbarContent {
 
   public var body: some ToolbarContent {
 
+    ToolbarItem(placement: .topBarLeading) {
+      Image(systemName: "gearshape.fill")
+        .foregroundStyle(Color.black)
+        .font(.headline)
+        .offset(y: 1.2)
+        .onTapGesture {
+          gearTapped?()
+        }
+    }
+
     ToolbarItem(placement: .principal) {
       HStack(spacing: 4) {
-
-        Image(systemName: "gearshape.fill")
-          .font(.headline)
-          .offset(y: 1.5)
-          .onTapGesture {
-            gearTapped?()
-          }
-
-        Spacer()
 
         Image("Monkey", bundle: .module)
           .resizable()
           .frame(width: 40, height: 40)
 
         Text("File Server")
+          .foregroundStyle(Color.black)
           .font(.system(.callout, design: .rounded).weight(.heavy))
-
-        Spacer()
-
-        Image(systemName: "folder.fill.badge.plus")
-          .font(.headline)
-          .onTapGesture {
-            folderTapped?()
-          }
       }
-      .foregroundStyle(Color.black)
+    }
+
+    ToolbarItem(placement: .topBarTrailing) {
+      Image(systemName: "folder.fill.badge.plus")
+        .foregroundStyle(Color.black)
+        .font(.headline)
+        .onTapGesture {
+          folderTapped?()
+        }
     }
   }
 }
