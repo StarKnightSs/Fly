@@ -1,29 +1,29 @@
 //
 // AppDelegate.swift
-// Created by Arpit Williams on 15/05/24.
+// Created by Arpit Williams on 21/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 #if os(iOS)
 
-  import UIKit
+import UIKit
 
-  class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate {
 
-    func application(
-      _: UIApplication,
-      didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
-    ) -> Bool {
-      true
-    }
+  func application(
+    _: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
+    true
   }
+}
 
 #elseif os(macOS)
 
-  import AppKit
+import AppKit
 
-  class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func applicationDidFinishLaunching(_: Notification) {}
-  }
+  func applicationDidFinishLaunching(_: Notification) {}
+}
 
 #endif

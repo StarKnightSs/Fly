@@ -19,7 +19,7 @@ public struct LaunchView: View {
 
       Text("Fly Server")
         .foregroundColor(.black)
-        .font(.system(.largeTitle, design: .rounded).weight(.semibold))
+        .font(.system(.largeTitle, design: .rounded).weight(.heavy))
         .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
 
       Text("Offline File Transfer")
@@ -27,7 +27,7 @@ public struct LaunchView: View {
         .font(.system(.title, design: .rounded).weight(.semibold))
 
       Text("Over Wifi & Hotspot Networks")
-        .foregroundColor(Color(hex: 0x942193))
+        .foregroundColor(Color(.maroon))
         .font(.system(.headline, design: .rounded).weight(.medium))
 
       Spacer()
@@ -50,7 +50,7 @@ public struct LaunchView: View {
 
       Spacer()
     }
-    .background(Color(hex: 0xF5EC00))
+    .background(Color(.lemon))
     .preferredColorScheme(.light)
   }
 }
