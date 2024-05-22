@@ -37,7 +37,7 @@ public struct FlyView: View {
         server.start()
         server.loadFiles()
       }
-    }
+    }.preferredColorScheme(.light)
   }
 }
 

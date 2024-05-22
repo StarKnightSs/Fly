@@ -51,6 +51,7 @@ public struct LaunchView: View {
       Spacer()
     }
     .background(Color(hex: 0xF5EC00))
+    .preferredColorScheme(.light)
   }
 }
 
