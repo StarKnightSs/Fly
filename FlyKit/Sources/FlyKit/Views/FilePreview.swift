@@ -1,5 +1,5 @@
 //
-// FileView.swift
+// FilePreview.swift
 // Created by Arpit Williams on 17/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
@@ -8,7 +8,7 @@ import QuickLook
 import SwiftUI
 
 #if os(iOS)
-struct FileView: UIViewControllerRepresentable {
+struct FilePreview: UIViewControllerRepresentable {
 
   let url: URL
   typealias UIViewControllerType = QLPreviewController
@@ -27,9 +27,9 @@ struct FileView: UIViewControllerRepresentable {
   }
 
   class Coordinator: NSObject, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
-    let parent: FileView
+    let parent: FilePreview
 
-    init(parent: FileView) {
+    init(parent: FilePreview) {
       self.parent = parent
     }
 
