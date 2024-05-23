@@ -6,16 +6,17 @@
 import FileServer
 import Foundation
 
-class FlyViewModel: ObservableObject {
+public class FlyViewModel: ObservableObject {
 
   let server: FileServer
   let filesManager: FilesManager
 
   @Published var files: [File] = []
 
-  init() {
-    self.server = FileServer()
-    self.filesManager = server.filesManager
+  public init(filesManager: FilesManager) {
+    self.filesManager = filesManager
+    self.server = FileServer(filesManager: filesManager)
+
     NotificationCenter.default.addObserver(
       forName: .filesUpdated, object: nil, queue: .main
     ) { [weak self] _ in

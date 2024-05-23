@@ -8,7 +8,7 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  @StateObject private var viewModel = FlyViewModel()
+  @EnvironmentObject private var viewModel: FlyViewModel
 
   public init() {}
 

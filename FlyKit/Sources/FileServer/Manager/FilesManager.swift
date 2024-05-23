@@ -7,7 +7,11 @@ import UIKit
 
 public final class FilesManager {
 
-  let fileManager = FileManager.default
+  let fileManager: FileManager
+
+  public init(fileManager: FileManager) {
+    self.fileManager = fileManager
+  }
 
   private let filesizeFormmater: ByteCountFormatter = {
     let formatter = ByteCountFormatter()

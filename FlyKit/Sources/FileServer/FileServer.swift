@@ -12,10 +12,10 @@ public final class FileServer {
   private let app: Application
   public let filesManager: FilesManager
 
-  public init() {
+  public init(filesManager: FilesManager) {
     // swiftlint:disable:next force_try
     app = try! Application(.detect())
-    filesManager = FilesManager()
+    self.filesManager = filesManager
     configure(app)
   }
 
