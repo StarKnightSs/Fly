@@ -54,6 +54,7 @@
 		A183A0A82ABEBB5200515D98 /* FlyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FlyKit; sourceTree = "<group>"; };
 		A183A0A92ABEBB8C00515D98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A183A0AE2ABEBD3A00515D98 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BuildTools; sourceTree = "<group>"; };
+		A1D4411F2BFE0C0200974CDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				A183A0A92ABEBB8C00515D98 /* Info.plist */,
+				A1D4411F2BFE0C0200974CDF /* PrivacyInfo.xcprivacy */,
 				A143FBAC2BF50F590072C5B1 /* ContentView.swift */,
 				A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */,
 				A183A07C2ABEBA4E00515D98 /* FlyApp.swift */,
