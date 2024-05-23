@@ -8,7 +8,13 @@ import SwiftUI
 public struct TopBar: ToolbarContent {
 
   var gearTapped: (() -> Void)?
-  var folderTapped: (() -> Void)?
+  var addFolder: ((String) -> Void)?
+  var addFiles: (() -> Void)?
+  var addPhotos: (() -> Void)?
+  var sortBy: ((String) -> Void)?
+
+  @State var folderName = ""
+  @State var showFolderAlert = false
 
   public var body: some ToolbarContent {
 
@@ -36,12 +42,48 @@ public struct TopBar: ToolbarContent {
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      Image(systemName: "folder.fill.badge.plus")
-        .foregroundStyle(Color.black)
-        .font(.headline)
-        .onTapGesture {
-          folderTapped?()
+      Menu {
+
+        Button { showFolderAlert = true } label: {
+          Label("New Folder", systemImage: "folder.fill")
         }
+
+        Button { addFiles?() } label: {
+          Label("Add Files", systemImage: "doc.fill")
+        }
+
+        Button { addPhotos?() } label: {
+          Label("Import Photos", systemImage: "photo.badge.plus.fill")
+        }
+
+        Menu("Sort By", systemImage: "square.grid.3x3") {
+
+          Button { sortBy?("Name") } label: {
+            Text("Name")
+          }
+
+          Button { sortBy?("Type") } label: {
+            Text("Type")
+          }
+
+          Button { sortBy?("Date") } label: {
+            Text("Date")
+          }
+
+          Button { sortBy?("Size") } label: {
+            Text("Size")
+          }
+        }
+      } label: {
+        Image(systemName: "folder.fill.badge.plus")
+          .foregroundStyle(Color.black)
+          .font(.headline)
+      }
+      .alert("Add Folder", isPresented: $showFolderAlert) {
+        TextField("Folder Name", text: $folderName)
+        Button("Cancel", role: .cancel, action: {})
+        Button("Ok", action: { addFolder?(folderName) })
+      }
     }
   }
 }

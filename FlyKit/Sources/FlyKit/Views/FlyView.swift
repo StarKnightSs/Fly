@@ -8,7 +8,7 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  @StateObject var server = FileServer()
+  @StateObject private var viewModel = FlyViewModel()
 
   public init() {}
 
@@ -16,7 +16,7 @@ public struct FlyView: View {
     NavigationView {
       VStack(spacing: 0) {
         List {
-          ForEach(server.fileURLs, id: \.path) { file in
+          ForEach(viewModel.files.map(\.url), id: \.path) { file in
             NavigationLink {
               #if os(iOS)
               FilePreview(url: file)
@@ -25,7 +25,7 @@ public struct FlyView: View {
               Text(file.lastPathComponent)
             }
           }
-          .onDelete { server.deleteFile(at: $0.map { $0 }) }
+          .onDelete { viewModel.deleteFile(at: $0.map { $0 }) }
         }
         .padding(.top, 1)
 
@@ -38,15 +38,19 @@ public struct FlyView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         TopBar(
-          gearTapped: { print("Gear") },
-          folderTapped: { print("Folder") }
+          gearTapped: {},
+          addFolder: { viewModel.addFolder($0) },
+          addFiles: {},
+          addPhotos: {},
+          sortBy: { _ in }
         )
       }
       .onAppear {
-        server.start()
-        server.loadFiles()
+        viewModel.server.start()
+        viewModel.loadFiles()
       }
-    }.preferredColorScheme(.light)
+      .preferredColorScheme(.light)
+    }
   }
 }
 
