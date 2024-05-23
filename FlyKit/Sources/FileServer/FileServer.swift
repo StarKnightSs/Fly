@@ -7,13 +7,15 @@ import Foundation
 import Leaf
 import Vapor
 
-public final class FileServer: ObservableObject {
+public final class FileServer {
 
-  private var app: Application
-  @Published public var fileURLs: [URL] = []
+  private let app: Application
+  public let filesManager: FilesManager
 
   public init() {
-    app = Application(.production)
+    // swiftlint:disable:next force_try
+    app = try! Application(.detect())
+    filesManager = FilesManager()
     configure(app)
   }
 
@@ -31,42 +33,10 @@ public final class FileServer: ObservableObject {
 
   public func start() {
     Task(priority: .background) {
-      try app.register(
-        collection: FileController(
-          filesChanged: { Task { [weak self] in
-            await self?.loadFiles()
-          }}
-        )
-      )
+      try app.register(collection: FileController(
+        filesManager: filesManager
+      ))
       try await app.startup()
     }
   }
-
-  @MainActor
-  public func loadFiles() {
-    do {
-      let documentsDirectory = try URL.documentsDirectory()
-      let fileUrls = try documentsDirectory.visibleContents()
-      self.fileURLs = fileUrls
-    } catch {
-      print(error)
-    }
-  }
-
-  public func deleteFile(at indexes: [Int]) {
-    let urls = indexes.map { fileURLs[$0] }
-    fileURLs = fileURLs.filter {
-      urls.contains($0) == false
-    }
-    for url in urls {
-      try? FileManager.default.removeItem(at: url)
-    }
-    Task {
-      await loadFiles()
-    }
-  }
-}
-
-extension Notification.Name {
-  static let serverFilesChanged = Notification.Name("serverFilesChanged")
 }

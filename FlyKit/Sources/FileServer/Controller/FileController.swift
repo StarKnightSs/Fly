@@ -8,10 +8,9 @@ import Vapor
 
 struct FileController: RouteCollection {
 
-  private var filesChanged: (() -> Void)?
-
-  init(filesChanged: (() -> Void)? = nil) {
-    self.filesChanged = filesChanged
+  let filesManager: FilesManager
+  init(filesManager: FilesManager) {
+    self.filesManager = filesManager
   }
 
   func boot(routes: RoutesBuilder) throws {
@@ -22,9 +21,9 @@ struct FileController: RouteCollection {
   }
 
   func filesViewHandler(_ req: Request) async throws -> View {
-    let documentsDirectory = try URL.documentsDirectory()
-    let fileUrls = try documentsDirectory.visibleContents()
-    let filenames = fileUrls.map(\.lastPathComponent)
+    let directory = try filesManager.documentsDirectory()
+    let files = try filesManager.files(at: directory)
+    let filenames = files.map(\.url.lastPathComponent)
     let context = FileContext(filenames: filenames)
     return try await req.view.render("files", context)
   }
@@ -33,7 +32,7 @@ struct FileController: RouteCollection {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
-    let fileUrl = try URL.documentsDirectory().appendingPathComponent(filename)
+    let fileUrl = try filesManager.filePath(for: filename)
     return req.fileio.streamFile(at: fileUrl.path)
   }
 
@@ -41,9 +40,9 @@ struct FileController: RouteCollection {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
-    let fileURL = try URL.documentsDirectory().appendingPathComponent(filename)
-    try FileManager.default.removeItem(at: fileURL)
-    filesChanged?()
+    let url = try filesManager.filePath(for: filename)
+    try filesManager.remove(at: url)
+    notifyFileUpdates()
     return req.redirect(to: "/")
   }
 
@@ -51,8 +50,8 @@ struct FileController: RouteCollection {
     guard let filename = req.parameters.get("filename") else {
       throw Abort(.badRequest)
     }
-    let fileUrl = try URL.documentsDirectory().appendingPathComponent(filename)
-    try? FileManager.default.removeItem(at: fileUrl)
+    let fileUrl = try filesManager.filePath(for: filename)
+    try? filesManager.remove(at: fileUrl)
     AudioManager.shared.play()
 
     let fileHandle = try await req.application.fileio.openFile(
@@ -89,7 +88,7 @@ struct FileController: RouteCollection {
     try await stream.futureResult.get()
     try await sequential.future.get()
     AudioManager.shared.stop()
-    filesChanged?()
+    notifyFileUpdates()
 
     let end = Date()
     let time = end.timeIntervalSince(start)
@@ -97,6 +96,10 @@ struct FileController: RouteCollection {
     print("Path \(fileUrl.absoluteString)")
 
     return req.redirect(to: "/")
+  }
+
+  private func notifyFileUpdates() {
+    NotificationCenter.default.post(name: .filesUpdated, object: nil)
   }
 }
 
@@ -109,4 +112,8 @@ final class Sequential {
   init(future: EventLoopFuture<Void>) {
     self.future = future
   }
+}
+
+public extension Notification.Name {
+  static let filesUpdated = Notification.Name("filesUpdated")
 }
