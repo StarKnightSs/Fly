@@ -7,7 +7,7 @@ import FileServer
 import QuickLookThumbnailing
 import UIKit
 
-// MARK: - QuickLookThumbnailing
+// MARK: - QuickLook Preview
 
 public extension File {
 
@@ -17,7 +17,7 @@ public extension File {
       fileAt: url,
       size: CGSize(width: 60, height: 60),
       scale: UIScreen.main.scale,
-      representationTypes: .icon
+      representationTypes: .all
     )
     let generator = QLThumbnailGenerator.shared
     return try await generator.generateBestRepresentation(for: request).uiImage

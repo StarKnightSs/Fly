@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  @State private var selectedFile: URL?
+  @State private var previewFile: URL?
   @EnvironmentObject private var viewModel: FlyViewModel
 
   public init() {}
@@ -20,17 +20,29 @@ public struct FlyView: View {
 
         if viewModel.files.isEmpty {
           BlankView()
+
         } else {
+
+          Spacer()
+            .frame(height: 1)
+
           List {
-            ForEach(viewModel.files.map(\.url), id: \.path) { file in
-              Text(file.lastPathComponent)
+            ForEach(viewModel.files) { file in
+              FileView(file: file)
+                .listRowInsets(.init())
+                .listRowSeparator(.hidden)
                 .onTapGesture {
-                  selectedFile = file
+                  if file.isDirectory == false {
+                    previewFile = file.url
+                  }
                 }
             }
-            .onDelete { viewModel.deleteFile(at: $0.map { $0 }) }
+            .onDelete {
+              viewModel.deleteFile(at: $0.map { $0 })
+            }
           }
-          .padding(.top, 1)
+          .listStyle(.plain)
+          .background(Color(.snowLicorice))
         }
 
         BottomBar(
@@ -38,9 +50,9 @@ public struct FlyView: View {
           upload: { print("Upload") }
         )
       }
-      .background(Color(.background))
+      .background(Color(.lemonLead))
       .navigationBarTitleDisplayMode(.inline)
-      .quickLookPreview($selectedFile)
+      .quickLookPreview($previewFile)
       .toolbar { Toolbar() }
       .onAppear {
         viewModel.server.start()
@@ -55,7 +67,8 @@ struct FlyView_Previews: PreviewProvider {
     FlyView()
       .environmentObject(
         FlyViewModel(
-          filesManager: FilesManager(fileManager: .default)
+          filesManager: FilesManager(fileManager: .default),
+          files: [.mockFile, .mockFolder]
         )
       )
   }

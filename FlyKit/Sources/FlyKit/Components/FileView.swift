@@ -4,8 +4,8 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import FileServer
-import SwiftUI
 import QuickLookThumbnailing
+import SwiftUI
 
 struct FileView: View {
 
@@ -26,25 +26,28 @@ struct FileView: View {
     .padding(.top, 16)
     .padding(.horizontal, 16)
     .onAppear {
-      loadFilePreview()
+      if fileIcon == nil {
+        loadFilePreview()
+      }
     }
   }
 
   var fileIconView: some View {
-    Group {
+    VStack {
       if let fileIcon {
         Image(uiImage: fileIcon)
           .resizable()
-          .aspectRatio(contentMode: .fill)
+          .scaledToFit()
+          .frame(width: 44, height: 44)
 
       } else {
         Image(systemName: file.isDirectory ? "folder.fill" : "doc.fill")
           .font(.title)
           .imageScale(.large)
+          .frame(width: 44, height: 44)
           .foregroundStyle(Color(.leadBanana))
       }
     }
-    .frame(width: 40)
   }
 
   var fileNameView: some View {

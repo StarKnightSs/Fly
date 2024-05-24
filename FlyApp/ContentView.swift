@@ -20,7 +20,7 @@ struct ContentView: View {
     if isBooting {
       LaunchView()
         .onAppear {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             isBooting = false
           }
         }

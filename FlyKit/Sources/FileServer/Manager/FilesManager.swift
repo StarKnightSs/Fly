@@ -57,7 +57,6 @@ public final class FilesManager {
     )
     .map {
       let value = try $0.resourceValues(forKeys: Set(FilesManager.resourceKeys))
-      let itemCount = String(describing: try fileManager.contentsOfDirectory(at: $0, includingPropertiesForKeys: nil).count)
       return File(
         id: UUID(),
         url: $0,
@@ -65,7 +64,7 @@ public final class FilesManager {
         size: filesizeFormmater.string(fromByteCount: Int64(value.fileSize ?? 0)),
         type: value.contentType?.preferredFilenameExtension ?? "",
         isDirectory: value.isDirectory ?? false,
-        itemCount: "\(itemCount) items",
+        itemCount: String(format: "%d items", (try? fileCount(for: $0)) ?? 0),
         createdAt: dateFormatter.string(from: value.creationDate ?? Date())
       )
     }
@@ -80,6 +79,13 @@ public final class FilesManager {
 
   public func remove(at url: URL) throws {
     try fileManager.removeItem(at: url)
+  }
+
+  public func fileCount(for url: URL) throws -> Int? {
+    guard url.isDirectory else { return nil }
+    return try fileManager.contentsOfDirectory(
+      at: url, includingPropertiesForKeys: nil
+    ).count
   }
 }
 
