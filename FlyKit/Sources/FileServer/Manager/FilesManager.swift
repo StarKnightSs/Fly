@@ -57,15 +57,16 @@ public final class FilesManager {
     )
     .map {
       let value = try $0.resourceValues(forKeys: Set(FilesManager.resourceKeys))
+      let itemCount = String(describing: try fileManager.contentsOfDirectory(at: $0, includingPropertiesForKeys: nil).count)
       return File(
+        id: UUID(),
         url: $0,
         name: value.name ?? "Unknown",
         size: filesizeFormmater.string(fromByteCount: Int64(value.fileSize ?? 0)),
         type: value.contentType?.preferredFilenameExtension ?? "",
         isDirectory: value.isDirectory ?? false,
-        createdAt: dateFormatter.string(from: value.creationDate ?? Date()),
-        modifiedAt: dateFormatter.string(from: value.contentModificationDate ?? Date()),
-        lastOpenedAt: dateFormatter.string(from: value.contentAccessDate ?? Date())
+        itemCount: "\(itemCount) items",
+        createdAt: dateFormatter.string(from: value.creationDate ?? Date())
       )
     }
   }
