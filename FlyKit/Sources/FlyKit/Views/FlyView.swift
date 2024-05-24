@@ -4,10 +4,12 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import FileServer
+import QuickLook
 import SwiftUI
 
 public struct FlyView: View {
 
+  @State private var selectedFile: URL?
   @EnvironmentObject private var viewModel: FlyViewModel
 
   public init() {}
@@ -21,13 +23,10 @@ public struct FlyView: View {
         } else {
           List {
             ForEach(viewModel.files.map(\.url), id: \.path) { file in
-              NavigationLink {
-                #if os(iOS)
-                FilePreview(url: file)
-                #endif
-              } label: {
-                Text(file.lastPathComponent)
-              }
+              Text(file.lastPathComponent)
+                .onTapGesture {
+                  selectedFile = file
+                }
             }
             .onDelete { viewModel.deleteFile(at: $0.map { $0 }) }
           }
@@ -41,6 +40,7 @@ public struct FlyView: View {
       }
       .background(Color(.background))
       .navigationBarTitleDisplayMode(.inline)
+      .quickLookPreview($selectedFile)
       .toolbar { Toolbar() }
       .onAppear {
         viewModel.server.start()
