@@ -37,7 +37,7 @@ public struct BlankView: View {
 
       Spacer()
     }
-    .background(Color(.background))
+    .background(Color(.lemonLicorice))
   }
 }
 

@@ -56,7 +56,7 @@ public struct FileMenu: View {
       },
       label: {
         Image(systemName: "folder.fill.badge.plus")
-          .foregroundStyle(Color(.text))
+          .foregroundStyle(Color(.leadLemon))
           .font(.headline)
       }
     )

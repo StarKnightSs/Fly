@@ -12,7 +12,7 @@ public struct Toolbar: ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
       Image(systemName: "gearshape.fill")
-        .foregroundStyle(Color(.text))
+        .foregroundStyle(Color(.leadLemon))
         .font(.headline)
         .offset(y: 1.2)
     }
@@ -25,7 +25,7 @@ public struct Toolbar: ToolbarContent {
           .frame(width: 40, height: 40)
 
         Text("File Server")
-          .foregroundStyle(Color(.text))
+          .foregroundStyle(Color(.leadLemon))
           .font(.system(.callout, design: .rounded).weight(.heavy))
       }
     }
