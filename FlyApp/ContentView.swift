@@ -12,8 +12,8 @@ struct ContentView: View {
 
   @State var isBooting = true
 
-  private let filesManager = FilesManager(
-    fileManager: FileManager.default
+  @StateObject private var flyViewModel = FlyViewModel(
+    filesManager: FilesManager(fileManager: FileManager.default)
   )
 
   var body: some View {
@@ -26,7 +26,7 @@ struct ContentView: View {
         }
     } else {
       FlyView()
-        .environmentObject(FlyViewModel(filesManager: filesManager))
+        .environmentObject(flyViewModel)
     }
   }
 }
