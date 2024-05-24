@@ -23,11 +23,10 @@ public struct BottomBar: View {
       .padding(.vertical, 16)
       .frame(maxWidth: .infinity)
       .textCase(.uppercase)
-      .foregroundStyle(Color.black)
       .font(.system(.headline, design: .rounded).weight(.semibold))
       .background(
         RoundedRectangle(cornerRadius: 20)
-          .fill(Color(.lemon))
+          .fill(Color(.background))
       )
       .overlay(
         RoundedRectangle(cornerRadius: 20)
@@ -38,6 +37,7 @@ public struct BottomBar: View {
     }
     .padding(.vertical, 16)
     .background(Color(.white))
+    .foregroundStyle(Color(.text))
   }
 
   var downloadIcon: String {

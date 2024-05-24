@@ -18,16 +18,14 @@ public struct LaunchView: View {
         .padding(20)
 
       Text("Fly Server")
-        .foregroundColor(.black)
         .font(.system(.largeTitle, design: .rounded).weight(.heavy))
         .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
 
       Text("Offline File Transfer")
-        .foregroundColor(.black)
         .font(.system(.title, design: .rounded).weight(.semibold))
 
       Text("Over Wifi & Hotspot Networks")
-        .foregroundColor(Color(.maroon))
+        .foregroundStyle(Color(.maroon))
         .font(.system(.headline, design: .rounded).weight(.medium))
 
       Spacer()
@@ -40,18 +38,16 @@ public struct LaunchView: View {
       Spacer()
 
       Text("Max Upload File Size: 100 GB")
-        .foregroundColor(.black)
         .font(.system(.headline, design: .rounded).weight(.semibold))
 
       Text("Supersized File Transfer At The Speed Of Now")
         .multilineTextAlignment(.center)
-        .foregroundColor(.black)
         .font(.system(.callout, design: .rounded))
 
       Spacer()
     }
     .background(Color(.lemon))
-    .preferredColorScheme(.light)
+    .foregroundStyle(Color(.black))
   }
 }
 

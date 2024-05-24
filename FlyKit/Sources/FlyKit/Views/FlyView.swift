@@ -15,41 +15,37 @@ public struct FlyView: View {
   public var body: some View {
     NavigationView {
       VStack(spacing: 0) {
-        List {
-          ForEach(viewModel.files.map(\.url), id: \.path) { file in
-            NavigationLink {
-              #if os(iOS)
-              FilePreview(url: file)
-              #endif
-            } label: {
-              Text(file.lastPathComponent)
+
+        if viewModel.files.isEmpty {
+          BlankView()
+        } else {
+          List {
+            ForEach(viewModel.files.map(\.url), id: \.path) { file in
+              NavigationLink {
+                #if os(iOS)
+                FilePreview(url: file)
+                #endif
+              } label: {
+                Text(file.lastPathComponent)
+              }
             }
+            .onDelete { viewModel.deleteFile(at: $0.map { $0 }) }
           }
-          .onDelete { viewModel.deleteFile(at: $0.map { $0 }) }
+          .padding(.top, 1)
         }
-        .padding(.top, 1)
 
         BottomBar(
           download: { print("Download") },
           upload: { print("Upload") }
         )
       }
-      .background(Color(.lemon))
+      .background(Color(.background))
       .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        TopBar(
-          gearTapped: {},
-          addFolder: { viewModel.addFolder($0) },
-          addFiles: {},
-          addPhotos: {},
-          sortBy: { _ in }
-        )
-      }
+      .toolbar { Toolbar() }
       .onAppear {
         viewModel.server.start()
         viewModel.loadFiles()
       }
-      .preferredColorScheme(.light)
     }
   }
 }
@@ -57,5 +53,10 @@ public struct FlyView: View {
 struct FlyView_Previews: PreviewProvider {
   static var previews: some View {
     FlyView()
+      .environmentObject(
+        FlyViewModel(
+          filesManager: FilesManager(fileManager: .default)
+        )
+      )
   }
 }

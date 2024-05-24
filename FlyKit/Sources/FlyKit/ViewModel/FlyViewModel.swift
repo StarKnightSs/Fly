@@ -10,12 +10,12 @@ public class FlyViewModel: ObservableObject {
 
   let server: FileServer
   let filesManager: FilesManager
+  @Published var files: [File]
 
-  @Published var files: [File] = []
-
-  public init(filesManager: FilesManager) {
+  public init(filesManager: FilesManager, files: [File] = []) {
     self.filesManager = filesManager
     self.server = FileServer(filesManager: filesManager)
+    self.files = files
 
     NotificationCenter.default.addObserver(
       forName: .filesUpdated, object: nil, queue: .main
@@ -29,8 +29,12 @@ public class FlyViewModel: ObservableObject {
   }
 
   func addFolder(_ name: String) {
-    try? filesManager.create(folder: name)
-    loadFiles()
+    do {
+      try filesManager.create(folder: name)
+      loadFiles()
+    } catch {
+      print(error)
+    }
   }
 
   public func loadFiles() {
@@ -47,5 +51,26 @@ public class FlyViewModel: ObservableObject {
       try? filesManager.remove(at: files[$0].url)
     }
     loadFiles()
+  }
+
+  func importFiles(result: Result<[URL], any Error>) {
+    switch result {
+    case let .success(urls):
+      for url in urls {
+        if url.startAccessingSecurityScopedResource() {
+          do {
+            let filePath = try filesManager.filePath(for: url.lastPathComponent)
+            try filesManager.copy(from: url, to: filePath)
+          } catch {
+            print(error)
+          }
+        }
+        url.stopAccessingSecurityScopedResource()
+      }
+      loadFiles()
+
+    case let .failure(error):
+      print(error.localizedDescription)
+    }
   }
 }
