@@ -38,7 +38,7 @@ public final class FilesManager {
   }
 
   public func create(folder: String) throws -> URL {
-    let folderPath = try documentsDirectory().appendingPathComponent(folder)
+    let folderPath = try documentsDirectory().appendingPathComponent(folder, isDirectory: true)
     guard folderPath.isDirectory == false else {
       throw FileError.folderAlreadyExists
     }
