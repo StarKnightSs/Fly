@@ -8,9 +8,15 @@ import Vapor
 
 struct FileController: RouteCollection {
 
-  let filesManager: FilesManager
-  init(filesManager: FilesManager) {
+  private let filesManager: FilesManager
+  private var updateHandler: ((URL, HTTPMethod) -> Void)?
+
+  init(
+    filesManager: FilesManager,
+    updateHandler: ((URL, HTTPMethod) -> Void)?
+  ) {
     self.filesManager = filesManager
+    self.updateHandler = updateHandler
   }
 
   func boot(routes: RoutesBuilder) throws {
@@ -42,7 +48,7 @@ struct FileController: RouteCollection {
     }
     let url = try filesManager.filePath(for: filename)
     try filesManager.remove(at: url)
-    notifyFileUpdates()
+    updateHandler?(url, .DELETE)
     return req.redirect(to: "/")
   }
 
@@ -88,7 +94,7 @@ struct FileController: RouteCollection {
     try await stream.futureResult.get()
     try await sequential.future.get()
     AudioManager.shared.stop()
-    notifyFileUpdates()
+    updateHandler?(fileUrl, .POST)
 
     let end = Date()
     let time = end.timeIntervalSince(start)
@@ -96,10 +102,6 @@ struct FileController: RouteCollection {
     print("Path \(fileUrl.absoluteString)")
 
     return req.redirect(to: "/")
-  }
-
-  private func notifyFileUpdates() {
-    NotificationCenter.default.post(name: .filesUpdated, object: nil)
   }
 }
 
@@ -112,8 +114,4 @@ final class Sequential {
   init(future: EventLoopFuture<Void>) {
     self.future = future
   }
-}
-
-public extension Notification.Name {
-  static let filesUpdated = Notification.Name("filesUpdated")
 }

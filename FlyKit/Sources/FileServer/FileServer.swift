@@ -11,6 +11,7 @@ public final class FileServer {
 
   private let app: Application
   public let filesManager: FilesManager
+  public var updateHandler: ((URL, HTTPMethod) -> Void)?
 
   public init(filesManager: FilesManager) {
     // swiftlint:disable:next force_try
@@ -34,7 +35,8 @@ public final class FileServer {
   public func start() {
     Task(priority: .background) {
       try app.register(collection: FileController(
-        filesManager: filesManager
+        filesManager: filesManager,
+        updateHandler: updateHandler
       ))
       try await app.startup()
     }

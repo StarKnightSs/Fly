@@ -37,36 +37,27 @@ public final class FilesManager {
     )
   }
 
-  public func create(folder: String) throws {
+  public func create(folder: String) throws -> URL {
     let folderPath = try documentsDirectory().appendingPathComponent(folder)
     guard folderPath.isDirectory == false else {
       throw FileError.folderAlreadyExists
     }
     try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: false)
+    return folderPath
   }
 
   public func filePath(for fileName: String) throws -> URL {
     try documentsDirectory().appendingPathComponent(fileName)
   }
 
-  public func files(at path: URL) throws -> [File] {
+  public func files(at directory: URL) throws -> [File] {
     try fileManager.contentsOfDirectory(
-      at: path,
+      at: directory,
       includingPropertiesForKeys: FilesManager.resourceKeys,
       options: .skipsHiddenFiles
     )
-    .map {
-      let value = try $0.resourceValues(forKeys: Set(FilesManager.resourceKeys))
-      return File(
-        id: UUID(),
-        url: $0,
-        name: value.name ?? "Unknown",
-        size: filesizeFormmater.string(fromByteCount: Int64(value.fileSize ?? 0)),
-        type: value.contentType?.preferredFilenameExtension ?? "",
-        isDirectory: value.isDirectory ?? false,
-        itemCount: String(format: "%d items", (try? fileCount(for: $0)) ?? 0),
-        createdAt: dateFormatter.string(from: value.creationDate ?? Date())
-      )
+    .compactMap {
+      file(for: $0)
     }
   }
 
@@ -86,6 +77,22 @@ public final class FilesManager {
     return try fileManager.contentsOfDirectory(
       at: url, includingPropertiesForKeys: nil
     ).count
+  }
+
+  public func file(for url: URL) -> File? {
+    guard let resource = try? url.resourceValues(forKeys: Set(FilesManager.resourceKeys)) else {
+      return nil
+    }
+    return File(
+      id: UUID(),
+      url: url,
+      name: resource.name ?? "Unknown",
+      size: filesizeFormmater.string(fromByteCount: Int64(resource.fileSize ?? 0)),
+      type: resource.contentType?.preferredFilenameExtension ?? "",
+      isDirectory: resource.isDirectory ?? false,
+      itemCount: String(format: "%d items", (try? fileCount(for: url)) ?? 0),
+      createdAt: dateFormatter.string(from: resource.creationDate ?? Date())
+    )
   }
 }
 
