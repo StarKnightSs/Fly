@@ -15,6 +15,7 @@ public struct FlyView: View {
   public init() {}
 
   public var body: some View {
+    // swiftlint:disable:next closure_body_length
     NavigationView {
       VStack(spacing: 0) {
 
@@ -57,6 +58,29 @@ public struct FlyView: View {
       .onAppear {
         viewModel.server.start()
         viewModel.loadFiles()
+      }
+      .alert("Add Folder", isPresented: $viewModel.showFolderAlert) {
+        alertView
+      }
+      .fileImporter(
+        isPresented: $viewModel.showFilesPicker,
+        allowedContentTypes: FilesManager.supportedTypes,
+        allowsMultipleSelection: true,
+        onCompletion: { viewModel.importFiles(result: $0) }
+      )
+    }
+  }
+
+  var alertView: some View {
+    VStack {
+      TextField("Folder Name", text: $viewModel.folderName)
+      Button("Create") {
+        viewModel.addFolder(viewModel.folderName)
+        viewModel.folderName = ""
+      }
+      Button("Cancel") {
+        viewModel.folderName = ""
+        viewModel.showFolderAlert = false
       }
     }
   }

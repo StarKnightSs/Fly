@@ -15,28 +15,24 @@ public struct BlankView: View {
       Image("Monkey", bundle: .module)
         .resizable()
         .aspectRatio(contentMode: .fit)
-        .frame(maxWidth: 300)
+        .frame(maxWidth: 240)
 
       Text("Your Space is Empty")
-        .frame(maxWidth: .infinity)
         .font(.system(.title, design: .rounded))
 
-      Text("Let's get started !")
-        .padding(.vertical, 2)
-        .font(.system(.title3, design: .rounded).weight(.medium))
-
       Text("Add your files & photos by clicking the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right.")
-        .padding(.vertical, 8)
+        .padding(.vertical, 2)
         .padding(.horizontal, 20)
         .multilineTextAlignment(.center)
         .font(.system(.headline, design: .rounded).weight(.medium))
 
-      Text("It's quick and easy 🐒")
-        .padding(.vertical, 8)
+      Text("It's quick and easy ✩")
+        .padding(.vertical, 4)
         .font(.system(.body, design: .rounded).weight(.semibold))
 
       Spacer()
     }
+    .frame(maxWidth: .infinity)
     .background(Color(.lemonLicorice))
   }
 }

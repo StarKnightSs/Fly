@@ -37,8 +37,9 @@ struct FileView: View {
       if let fileIcon {
         Image(uiImage: fileIcon)
           .resizable()
-          .scaledToFit()
+          .scaledToFill()
           .frame(width: 44, height: 44)
+          .clipShape(RoundedRectangle(cornerRadius: 2))
 
       } else {
         Image(systemName: file.isDirectory ? "folder.fill" : "doc.fill")

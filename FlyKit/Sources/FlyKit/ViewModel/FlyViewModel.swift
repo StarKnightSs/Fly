@@ -10,47 +10,75 @@ public class FlyViewModel: ObservableObject {
 
   let server: FileServer
   let filesManager: FilesManager
+
   @Published var files: [File]
+  @Published var folderName = ""
+  @Published var showFolderAlert = false
+  @Published var showFilesPicker = false
 
   public init(filesManager: FilesManager, files: [File] = []) {
+    self.files = files
     self.filesManager = filesManager
     self.server = FileServer(filesManager: filesManager)
-    self.files = files
 
-    NotificationCenter.default.addObserver(
-      forName: .filesUpdated, object: nil, queue: .main
-    ) { [weak self] _ in
-      self?.loadFiles()
+    self.server.updateHandler = { [weak self] url, type in
+      switch type {
+      case .POST:
+        self?.addFile(at: url)
+      case .DELETE:
+        self?.removeFile(at: url)
+      default:
+        break
+      }
     }
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self)
+    server.updateHandler = nil
+  }
+
+  func loadFiles() {
+    Task { @MainActor in
+      do {
+        let url = try filesManager.documentsDirectory()
+        files = try filesManager.files(at: url)
+      } catch {
+        print(error)
+      }
+    }
+  }
+
+  func addFile(at url: URL) {
+    Task { @MainActor in
+      if let file = filesManager.file(for: url) {
+        files.append(file)
+      }
+    }
   }
 
   func addFolder(_ name: String) {
     do {
-      try filesManager.create(folder: name)
-      loadFiles()
+      guard name.isEmpty == false else { return }
+      let folderPath = try filesManager.create(folder: name)
+      addFile(at: folderPath)
     } catch {
       print(error)
     }
   }
 
-  public func loadFiles() {
-    do {
-      let directory = try filesManager.documentsDirectory()
-      files = try filesManager.files(at: directory)
-    } catch {
-      print(error)
+  func removeFile(at url: URL) {
+    Task { @MainActor in
+      files.removeAll { $0.url == url }
     }
   }
 
-  public func deleteFile(at indexes: [Int]) {
+  func deleteFile(at indexes: [Int]) {
     indexes.forEach {
       try? filesManager.remove(at: files[$0].url)
     }
-    loadFiles()
+    files = files.enumerated()
+      .filter { indexes.contains($0.offset) == false }
+      .map(\.element)
   }
 
   func importFiles(result: Result<[URL], any Error>) {
@@ -61,13 +89,13 @@ public class FlyViewModel: ObservableObject {
           do {
             let filePath = try filesManager.filePath(for: url.lastPathComponent)
             try filesManager.copy(from: url, to: filePath)
+            addFile(at: filePath)
           } catch {
             print(error)
           }
         }
         url.stopAccessingSecurityScopedResource()
       }
-      loadFiles()
 
     case let .failure(error):
       print(error.localizedDescription)

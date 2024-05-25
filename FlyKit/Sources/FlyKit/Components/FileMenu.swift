@@ -8,22 +8,18 @@ import SwiftUI
 
 public struct FileMenu: View {
 
-  @State private var folderName = ""
-  @State private var showFolderAlert = false
-  @State private var showFilesPicker = false
-
   @EnvironmentObject private var viewModel: FlyViewModel
 
   public var body: some View {
     Menu(
       content: {
         Button(
-          action: { showFolderAlert = true },
+          action: { viewModel.showFolderAlert = true },
           label: { Label("New Folder", systemImage: "folder.fill") }
         )
 
         Button(
-          action: { showFilesPicker = true },
+          action: { viewModel.showFilesPicker = true },
           label: { Label("Add Files", systemImage: "doc.fill") }
         )
 
@@ -60,29 +56,6 @@ public struct FileMenu: View {
           .font(.headline)
       }
     )
-    .alert("Add Folder", isPresented: $showFolderAlert) {
-      alertView
-    }
-    .fileImporter(
-      isPresented: $showFilesPicker,
-      allowedContentTypes: FilesManager.supportedTypes,
-      allowsMultipleSelection: true,
-      onCompletion: { viewModel.importFiles(result: $0) }
-    )
-  }
-
-  var alertView: some View {
-    VStack {
-      TextField("Folder Name", text: $folderName)
-      Button("Create") {
-        viewModel.addFolder(folderName)
-        folderName = ""
-      }
-      Button("Cancel") {
-        folderName = ""
-        showFolderAlert = false
-      }
-    }
   }
 
   var photosIcon: String {
