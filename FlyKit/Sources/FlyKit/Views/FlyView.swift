@@ -1,6 +1,6 @@
 //
 // FlyView.swift
-// Created by Arpit Williams on 21/05/24.
+// Created by Arpit Williams on 24/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FileServer
@@ -15,74 +15,79 @@ public struct FlyView: View {
   public init() {}
 
   public var body: some View {
-    // swiftlint:disable:next closure_body_length
     NavigationView {
-      VStack(spacing: 0) {
-
-        if viewModel.files.isEmpty {
-          BlankView()
-
-        } else {
-
-          Spacer()
-            .frame(height: 1)
-
-          List {
-            ForEach(viewModel.files) { file in
-              FileView(file: file)
-                .listRowInsets(.init())
-                .listRowSeparator(.hidden)
-                .onTapGesture {
-                  if file.isDirectory == false {
-                    previewFile = file.url
-                  }
-                }
-            }
-            .onDelete {
-              viewModel.deleteFile(at: $0.map { $0 })
-            }
-          }
-          .listStyle(.plain)
-          .background(Color(.snowLicorice))
+      ZStack {
+        rootView
+        if viewModel.showFolderAlert {
+          folderAlert
         }
-
-        BottomBar(
-          download: { print("Download") },
-          upload: { print("Upload") }
-        )
       }
-      .background(Color(.lemonLead))
-      .navigationBarTitleDisplayMode(.inline)
-      .quickLookPreview($previewFile)
-      .toolbar { Toolbar() }
-      .onAppear {
-        viewModel.server.start()
-        viewModel.loadFiles()
-      }
-      .alert("Add Folder", isPresented: $viewModel.showFolderAlert) {
-        alertView
-      }
-      .fileImporter(
-        isPresented: $viewModel.showFilesPicker,
-        allowedContentTypes: FilesManager.supportedTypes,
-        allowsMultipleSelection: true,
-        onCompletion: { viewModel.importFiles(result: $0) }
-      )
     }
   }
 
-  var alertView: some View {
-    VStack {
-      TextField("Folder Name", text: $viewModel.folderName)
-      Button("Create") {
-        viewModel.addFolder(viewModel.folderName)
-        viewModel.folderName = ""
+  var rootView: some View {
+    VStack(spacing: 0) {
+      if viewModel.files.isEmpty {
+        BlankView()
+      } else {
+        Spacer()
+          .frame(height: 1)
+        List {
+          ForEach(viewModel.files) { file in
+            FileView(file: file)
+              .listRowInsets(.init())
+              .listRowSeparator(.hidden)
+              .onTapGesture {
+                if file.isDirectory == false {
+                  previewFile = file.url
+                }
+              }
+          }
+          .onDelete {
+            viewModel.deleteFile(at: $0.map { $0 })
+          }
+        }
+        .listStyle(.plain)
+        .background(Color(.snowLicorice))
       }
-      Button("Cancel") {
+      BottomBar(
+        download: { print("Download") },
+        upload: { print("Upload") }
+      )
+    }
+    .navigationBarTitleDisplayMode(.inline)
+    .background(Color(.lemonLead))
+    .toolbar { Toolbar() }
+    .onAppear {
+      viewModel.server.start()
+      viewModel.loadFiles()
+    }
+    .quickLookPreview($previewFile)
+    .fileImporter(
+      isPresented: $viewModel.showFilesPicker,
+      allowedContentTypes: FilesManager.supportedTypes,
+      allowsMultipleSelection: true,
+      onCompletion: { viewModel.importFiles(result: $0) }
+    )
+  }
+
+  var folderAlert: some View {
+    AlertView(
+      title: "Add Folder",
+      mainButtonTitle: "Add",
+      cancelButtonTitle: "Cancel",
+      textInputTitle: "Folder Name",
+      textInputValue: $viewModel.folderName,
+      done: {
+        viewModel.addFolder(viewModel.folderName)
+        viewModel.showFolderAlert = false
+        viewModel.folderName = ""
+      },
+      dismiss: {
         viewModel.folderName = ""
         viewModel.showFolderAlert = false
       }
-    }
+    )
   }
 }
 
