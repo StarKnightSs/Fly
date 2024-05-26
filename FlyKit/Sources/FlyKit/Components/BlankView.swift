@@ -17,17 +17,17 @@ public struct BlankView: View {
         .aspectRatio(contentMode: .fit)
         .frame(maxWidth: 240)
 
-      Text("Your Space is Empty")
+      Text("Space is Empty 🧑‍🚀")
         .font(.system(.title, design: .rounded))
 
-      Text("Add your files & photos by clicking the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right.")
+      Text("Tap the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right, to add your files & photos")
         .padding(.vertical, 2)
         .padding(.horizontal, 20)
         .multilineTextAlignment(.center)
         .font(.system(.headline, design: .rounded).weight(.medium))
 
-      Text("It's quick and easy ✩")
-        .padding(.vertical, 4)
+      Text("It's quick and easy")
+        .padding(.vertical, 8)
         .font(.system(.body, design: .rounded).weight(.semibold))
 
       Spacer()

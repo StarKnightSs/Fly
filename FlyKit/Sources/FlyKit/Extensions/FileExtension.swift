@@ -15,11 +15,20 @@ public extension File {
   func generatePreviewIcon() async throws -> UIImage {
     let request = QLThumbnailGenerator.Request(
       fileAt: url,
-      size: CGSize(width: 60, height: 60),
+      size: CGSize(width: 44, height: 44),
       scale: UIScreen.main.scale,
-      representationTypes: .all
+      representationTypes: .thumbnail
     )
     let generator = QLThumbnailGenerator.shared
     return try await generator.generateBestRepresentation(for: request).uiImage
+  }
+
+  var icon: String {
+    switch type {
+    case "zip", "xip", "iso", "dmg":
+      "doc.zipper"
+    default:
+      isDirectory ? "folder" : "doc"
+    }
   }
 }

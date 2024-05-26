@@ -25,7 +25,10 @@ public struct FileMenu: View {
 
         Button(
           action: {},
-          label: { Label("Import Photos", systemImage: photosIcon) }
+          label: { Label(
+            "Import Photos",
+            systemImage: iOS17 ? "photo.badge.plus.fill" : "photo.fill"
+          ) }
         )
 
         Menu("Sort By", systemImage: "square.grid.3x3") {
@@ -56,14 +59,6 @@ public struct FileMenu: View {
           .font(.headline)
       }
     )
-  }
-
-  var photosIcon: String {
-    if #available(iOS 17, *) {
-      "photo.badge.plus.fill"
-    } else {
-      "photo.fill"
-    }
   }
 }
 

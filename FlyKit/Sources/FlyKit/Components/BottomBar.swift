@@ -15,10 +15,16 @@ public struct BottomBar: View {
       Spacer()
       Spacer()
       Group {
-        Label("Download", systemImage: downloadIcon)
-          .onTapGesture { download?() }
-        Label("Upload", systemImage: uploadIcon)
-          .onTapGesture { upload?() }
+        Label(
+          "Download",
+          systemImage: iOS17 ? "arrowshape.down.fill" : "arrowtriangle.down.fill"
+        )
+        .onTapGesture { download?() }
+        Label(
+          "Upload",
+          systemImage: iOS17 ? "arrowshape.up.fill" : "arrowtriangle.up.fill"
+        )
+        .onTapGesture { upload?() }
       }
       .padding(.vertical, 16)
       .frame(maxWidth: .infinity)
@@ -38,22 +44,6 @@ public struct BottomBar: View {
     .padding(.vertical, 16)
     .background(Color(.white))
     .foregroundStyle(Color(.leadLemon))
-  }
-
-  var downloadIcon: String {
-    if #available(iOS 17, *) {
-      "arrowshape.down.fill"
-    } else {
-      "arrowtriangle.down.fill"
-    }
-  }
-
-  var uploadIcon: String {
-    if #available(iOS 17, *) {
-      "arrowshape.up.fill"
-    } else {
-      "arrowtriangle.up.fill"
-    }
   }
 }
 

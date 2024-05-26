@@ -9,9 +9,9 @@ import SwiftUI
 struct FlyApp: App {
 
   #if os(iOS)
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #elseif os(macOS)
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
 
   @Environment(\.scenePhase) private var scenePhase
