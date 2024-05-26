@@ -14,15 +14,18 @@ public struct FileMenu: View {
     Menu(
       content: {
         Button(
+          action: { viewModel.editMode = .active },
+          label: { Label("Select", systemImage: "checkmark.circle") }
+        )
+        Divider()
+        Button(
           action: { viewModel.showFolderAlert = true },
           label: { Label("New Folder", systemImage: "folder.fill") }
         )
-
         Button(
           action: { viewModel.showFilesPicker = true },
           label: { Label("Add Files", systemImage: "doc.fill") }
         )
-
         Button(
           action: {},
           label: { Label(

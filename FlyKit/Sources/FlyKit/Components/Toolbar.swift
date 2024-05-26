@@ -8,6 +8,8 @@ import SwiftUI
 
 public struct Toolbar: ToolbarContent {
 
+  @EnvironmentObject private var viewModel: FlyViewModel
+
   public var body: some ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
@@ -24,14 +26,30 @@ public struct Toolbar: ToolbarContent {
           .resizable()
           .frame(width: 40, height: 40)
 
-        Text("File Server")
+        Text(title)
           .foregroundStyle(Color(.leadLemon))
           .font(.system(.callout, design: .rounded).weight(.heavy))
       }
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      FileMenu()
+      if viewModel.editMode.isEditing {
+        EditMenu()
+      } else {
+        FileMenu()
+      }
+    }
+  }
+
+  var title: String {
+    if viewModel.editMode.isEditing {
+      if viewModel.selectedFiles.isEmpty {
+        "Select files"
+      } else {
+        "\(viewModel.selectedFiles.count) Files"
+      }
+    } else {
+      "Fly Server"
     }
   }
 }

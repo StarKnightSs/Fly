@@ -5,6 +5,7 @@
 
 import FileServer
 import Foundation
+import SwiftUI
 
 public class FlyViewModel: ObservableObject {
 
@@ -13,8 +14,11 @@ public class FlyViewModel: ObservableObject {
 
   @Published var files: [File]
   @Published var folderName = ""
+  @Published var previewFile: URL?
   @Published var showFolderAlert = false
   @Published var showFilesPicker = false
+  @Published var selectedFiles = Set<UUID>()
+  @Published var editMode = EditMode.inactive
 
   public init(filesManager: FilesManager, files: [File] = []) {
     self.files = files

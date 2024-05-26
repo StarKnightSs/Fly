@@ -32,20 +32,25 @@ public struct FlyView: View {
       } else {
         Spacer()
           .frame(height: 1)
-        List {
+        List(selection: $viewModel.selectedFiles) {
           ForEach(viewModel.files) { file in
             FileView(file: file)
-              .listRowInsets(.init())
+              .id(viewModel.editMode)
               .listRowSeparator(.hidden)
+              .listRowInsets(.init(.zero))
               .onTapGesture {
-                if file.isDirectory == false {
-                  previewFile = file.url
+                if file.isDirectory == false,
+                   viewModel.editMode.isEditing == false {
+                  viewModel.previewFile = file.url
                 }
               }
           }
           .onDelete {
-            viewModel.deleteFile(at: $0.map { $0 })
+            if viewModel.editMode.isEditing == false {
+              viewModel.deleteFile(at: $0.map { $0 })
+            }
           }
+          .deleteDisabled(viewModel.editMode.isEditing)
         }
         .listStyle(.plain)
         .background(Color(.snowLicorice))
@@ -55,20 +60,21 @@ public struct FlyView: View {
         upload: { print("Upload") }
       )
     }
-    .navigationBarTitleDisplayMode(.inline)
     .background(Color(.lemonLead))
-    .toolbar { Toolbar() }
-    .onAppear {
-      viewModel.server.start()
-      viewModel.loadFiles()
-    }
-    .quickLookPreview($previewFile)
+    .navigationBarTitleDisplayMode(.inline)
+    .environment(\.editMode, $viewModel.editMode)
+    .quickLookPreview($viewModel.previewFile)
     .fileImporter(
       isPresented: $viewModel.showFilesPicker,
       allowedContentTypes: FilesManager.supportedTypes,
       allowsMultipleSelection: true,
       onCompletion: { viewModel.importFiles(result: $0) }
     )
+    .toolbar { Toolbar() }
+    .onAppear {
+      viewModel.server.start()
+      viewModel.loadFiles()
+    }
   }
 
   var folderAlert: some View {
