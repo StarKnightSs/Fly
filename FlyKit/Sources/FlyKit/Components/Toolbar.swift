@@ -11,6 +11,8 @@ public struct Toolbar: ToolbarContent {
   var editMode: Binding<EditMode>
   var selectedFiles: Binding<Set<UUID>>
 
+  @State private var refresh = false
+
   public var body: some ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
@@ -22,7 +24,6 @@ public struct Toolbar: ToolbarContent {
 
     ToolbarItem(placement: .principal) {
       HStack(spacing: 4) {
-
         Image("Monkey", bundle: .module)
           .resizable()
           .frame(width: 40, height: 40)
@@ -30,6 +31,10 @@ public struct Toolbar: ToolbarContent {
         Text(title)
           .foregroundStyle(Color(.leadLemon))
           .font(.system(.callout, design: .rounded).weight(.heavy))
+      }
+      .id(refresh)
+      .onAppear {
+        refresh.toggle()
       }
     }
 
