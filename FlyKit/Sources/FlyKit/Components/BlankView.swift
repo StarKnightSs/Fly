@@ -20,17 +20,36 @@ public struct BlankView: View {
       Text("Space is Empty 🧑‍🚀")
         .font(.system(.title, design: .rounded))
 
-      Text("Tap the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right, to add your files & photos")
-        .padding(.vertical, 2)
-        .padding(.horizontal, 20)
+      Text("Tap the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right,\nto add your files & photos")
+        .padding(20)
         .multilineTextAlignment(.center)
         .font(.system(.headline, design: .rounded).weight(.medium))
 
-      Text("It's quick and easy")
-        .padding(.vertical, 8)
+      Text("Or tap below to drop files here,\nIt's quick and easy \(Image(systemName: downArrow))")
+        .padding(16)
+        .multilineTextAlignment(.center)
         .font(.system(.body, design: .rounded).weight(.semibold))
 
       Spacer()
+
+      Label("Drop Files", systemImage: downArrow)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 20)
+        .foregroundStyle(Color(.lemonLead))
+        .background(
+          RoundedRectangle(cornerRadius: 20)
+            .fill(Color(.leadLemon))
+        )
+        .overlay(
+          RoundedRectangle(cornerRadius: 20)
+            .stroke(.black, lineWidth: 2)
+        )
+        .font(
+          .system(.headline, design: .rounded)
+            .weight(.semibold)
+        )
+        .textCase(.uppercase)
+        .padding(.vertical, 20)
     }
     .frame(maxWidth: .infinity)
     .background(Color(.lemonLicorice))
