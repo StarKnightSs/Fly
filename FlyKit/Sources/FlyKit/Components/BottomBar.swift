@@ -15,16 +15,10 @@ public struct BottomBar: View {
       Spacer()
       Spacer()
       Group {
-        Label(
-          "Download",
-          systemImage: iOS17 ? "arrowshape.down.fill" : "arrowtriangle.down.fill"
-        )
-        .onTapGesture { download?() }
-        Label(
-          "Upload",
-          systemImage: iOS17 ? "arrowshape.up.fill" : "arrowtriangle.up.fill"
-        )
-        .onTapGesture { upload?() }
+        Label("Download", systemImage: downArrow)
+          .onTapGesture { download?() }
+        Label("Upload", systemImage: upArrow)
+          .onTapGesture { upload?() }
       }
       .padding(.vertical, 16)
       .frame(maxWidth: .infinity)

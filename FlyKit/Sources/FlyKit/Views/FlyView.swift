@@ -58,10 +58,6 @@ public struct FlyView: View {
           $0.id(viewModel.editMode)
         }
       }
-      BottomBar(
-        download: { print("Download") },
-        upload: { print("Upload") }
-      )
     }
     .background(Color(.lemonLead))
     .navigationBarTitleDisplayMode(.inline)

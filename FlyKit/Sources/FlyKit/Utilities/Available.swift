@@ -1,5 +1,5 @@
 //
-// Platform.swift
+// Available.swift
 // Created by Arpit Williams on 26/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 

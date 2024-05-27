@@ -34,11 +34,7 @@ public struct Toolbar: ToolbarContent {
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      if editMode.wrappedValue.isEditing {
-        EditMenu()
-      } else {
-        FileMenu()
-      }
+      FileMenu()
     }
   }
 
