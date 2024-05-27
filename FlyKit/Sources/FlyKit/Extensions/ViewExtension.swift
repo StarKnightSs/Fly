@@ -10,4 +10,12 @@ public extension View {
   func modify<Content>(@ViewBuilder _ transform: (Self) -> Content) -> Content {
     transform(self)
   }
+
+  @ViewBuilder func `if`(_ condition: Bool, transform: (Self) -> some View) -> some View {
+    if condition {
+      transform(self)
+    } else {
+      self
+    }
+  }
 }

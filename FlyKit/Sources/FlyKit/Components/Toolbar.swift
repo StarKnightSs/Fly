@@ -8,7 +8,8 @@ import SwiftUI
 
 public struct Toolbar: ToolbarContent {
 
-  @EnvironmentObject private var viewModel: FlyViewModel
+  var editMode: Binding<EditMode>
+  var selectedFiles: Binding<Set<UUID>>
 
   public var body: some ToolbarContent {
 
@@ -33,7 +34,7 @@ public struct Toolbar: ToolbarContent {
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      if viewModel.editMode.isEditing {
+      if editMode.wrappedValue.isEditing {
         EditMenu()
       } else {
         FileMenu()
@@ -42,11 +43,11 @@ public struct Toolbar: ToolbarContent {
   }
 
   var title: String {
-    if viewModel.editMode.isEditing {
-      if viewModel.selectedFiles.isEmpty {
+    if editMode.wrappedValue.isEditing {
+      if selectedFiles.wrappedValue.isEmpty {
         "Select files"
       } else {
-        "\(viewModel.selectedFiles.count) Files"
+        "\(selectedFiles.wrappedValue.count) Files"
       }
     } else {
       "Fly Server"
@@ -57,7 +58,10 @@ public struct Toolbar: ToolbarContent {
 #Preview(body: {
   NavigationView {
     VStack {}.toolbar {
-      Toolbar()
+      Toolbar(
+        editMode: .constant(EditMode.inactive),
+        selectedFiles: .constant(.init())
+      )
     }
   }
 })

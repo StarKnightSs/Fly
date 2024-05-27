@@ -9,7 +9,6 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  @State private var previewFile: URL?
   @EnvironmentObject private var viewModel: FlyViewModel
 
   public init() {}
@@ -35,7 +34,6 @@ public struct FlyView: View {
         List(selection: $viewModel.selectedFiles) {
           ForEach(viewModel.files) { file in
             FileView(file: file)
-              .id(viewModel.editMode)
               .listRowSeparator(.hidden)
               .listRowInsets(.init(.zero))
               .onTapGesture {
@@ -44,16 +42,21 @@ public struct FlyView: View {
                   viewModel.previewFile = file.url
                 }
               }
+              .deleteDisabled(
+                (iOS16 || iOS17) ?
+                  viewModel.editMode.isEditing :
+                  false
+              )
           }
           .onDelete {
-            if viewModel.editMode.isEditing == false {
-              viewModel.deleteFile(at: $0.map { $0 })
-            }
+            viewModel.deleteFile(at: $0.map { $0 })
           }
-          .deleteDisabled(viewModel.editMode.isEditing)
         }
         .listStyle(.plain)
         .background(Color(.snowLicorice))
+        .if(iOS16 || iOS17) {
+          $0.id(viewModel.editMode)
+        }
       }
       BottomBar(
         download: { print("Download") },
@@ -70,7 +73,12 @@ public struct FlyView: View {
       allowsMultipleSelection: true,
       onCompletion: { viewModel.importFiles(result: $0) }
     )
-    .toolbar { Toolbar() }
+    .toolbar {
+      Toolbar(
+        editMode: $viewModel.editMode,
+        selectedFiles: $viewModel.selectedFiles
+      )
+    }
     .onAppear {
       viewModel.server.start()
       viewModel.loadFiles()
