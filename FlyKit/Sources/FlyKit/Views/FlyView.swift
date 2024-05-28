@@ -29,34 +29,8 @@ public struct FlyView: View {
       if viewModel.files.isEmpty {
         BlankView()
       } else {
-        Spacer()
-          .frame(height: 1)
-        List(selection: $viewModel.selectedFiles) {
-          ForEach(viewModel.files) { file in
-            FileView(file: file)
-              .listRowSeparator(.hidden)
-              .listRowInsets(.init(.zero))
-              .onTapGesture {
-                if file.isDirectory == false,
-                   viewModel.editMode.isEditing == false {
-                  viewModel.previewFile = file.url
-                }
-              }
-              .deleteDisabled(
-                (iOS16 || iOS17) ?
-                  viewModel.editMode.isEditing :
-                  false
-              )
-          }
-          .onDelete {
-            viewModel.deleteFile(at: $0.map { $0 })
-          }
-        }
-        .listStyle(.plain)
-        .background(Color(.snowLicorice))
-        .if(iOS16 || iOS17) {
-          $0.id(viewModel.editMode)
-        }
+        FileListView()
+          .padding(.top, 1)
       }
     }
     .background(Color(.lemonLead))
@@ -101,14 +75,12 @@ public struct FlyView: View {
   }
 }
 
-struct FlyView_Previews: PreviewProvider {
-  static var previews: some View {
-    FlyView()
-      .environmentObject(
-        FlyViewModel(
-          filesManager: FilesManager(fileManager: .default),
-          files: [.mockFile, .mockFolder]
-        )
+#Preview {
+  FlyView()
+    .environmentObject(
+      FlyViewModel(
+        filesManager: FilesManager(fileManager: .default),
+        files: [.mockFile, .mockFolder]
       )
-  }
+    )
 }
