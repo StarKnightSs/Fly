@@ -80,7 +80,7 @@ public struct FileMenu: View {
 
       // Add Photos
       Button(
-        action: {},
+        action: { viewModel.showPhotosPicker = true },
         label: { Label(
           "Import Photos", systemImage: photo
         ) }

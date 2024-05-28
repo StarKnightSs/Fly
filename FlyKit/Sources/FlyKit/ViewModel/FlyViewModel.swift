@@ -17,6 +17,7 @@ public class FlyViewModel: ObservableObject {
   @Published var previewFile: URL?
   @Published var showFolderAlert = false
   @Published var showFilesPicker = false
+  @Published var showPhotosPicker = false
   @Published var selectedFiles = Set<UUID>()
   @Published var editMode = EditMode.inactive
 
@@ -39,6 +40,12 @@ public class FlyViewModel: ObservableObject {
 
   deinit {
     server.updateHandler = nil
+  }
+
+  var allFiles: [URL] {
+    files
+      .filter { $0.isDirectory == false }
+      .map(\.url)
   }
 
   func loadFiles() {
@@ -104,5 +111,9 @@ public class FlyViewModel: ObservableObject {
     case let .failure(error):
       print(error.localizedDescription)
     }
+  }
+
+  func importPhotos(from urls: [URL]) {
+    urls.forEach { addFile(at: $0) }
   }
 }

@@ -36,13 +36,6 @@ public struct FlyView: View {
     .background(Color(.lemonLead))
     .navigationBarTitleDisplayMode(.inline)
     .environment(\.editMode, $viewModel.editMode)
-    .quickLookPreview($viewModel.previewFile)
-    .fileImporter(
-      isPresented: $viewModel.showFilesPicker,
-      allowedContentTypes: FilesManager.supportedTypes,
-      allowsMultipleSelection: true,
-      onCompletion: { viewModel.importFiles(result: $0) }
-    )
     .toolbar {
       Toolbar(
         editMode: $viewModel.editMode,
@@ -52,6 +45,22 @@ public struct FlyView: View {
     .onAppear {
       viewModel.server.start()
       viewModel.loadFiles()
+    }
+    .quickLookPreview(
+      $viewModel.previewFile,
+      in: viewModel.allFiles
+    )
+    .fileImporter(
+      isPresented: $viewModel.showFilesPicker,
+      allowedContentTypes: FilesManager.supportedTypes,
+      allowsMultipleSelection: true,
+      onCompletion: { viewModel.importFiles(result: $0) }
+    )
+    .sheet(isPresented: $viewModel.showPhotosPicker) {
+      PhotosPicker(
+        filesManager: viewModel.filesManager,
+        onCompletion: { viewModel.importPhotos(from: $0) }
+      )
     }
   }
 
