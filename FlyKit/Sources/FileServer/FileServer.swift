@@ -34,11 +34,14 @@ public final class FileServer {
 
   public func start() {
     Task(priority: .background) {
-      try app.register(collection: FileController(
-        filesManager: filesManager,
-        updateHandler: updateHandler
-      ))
-      try await app.startup()
+      try app.register(
+        collection: FileController(
+          filesManager: filesManager,
+          updateHandler: updateHandler
+        )
+      )
+      await app.server.shutdown()
+      try await app.execute()
     }
   }
 }

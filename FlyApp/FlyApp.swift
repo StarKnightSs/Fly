@@ -14,21 +14,9 @@ struct FlyApp: App {
   @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
 
-  @Environment(\.scenePhase) private var scenePhase
-
   var body: some Scene {
     WindowGroup {
       ContentView()
-    }
-    .onChange(of: scenePhase) {
-      switch $0 {
-      case .background:
-        break
-      case .active:
-        break
-      default:
-        break
-      }
     }
   }
 }

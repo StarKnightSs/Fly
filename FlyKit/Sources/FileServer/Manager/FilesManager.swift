@@ -57,7 +57,7 @@ public final class FilesManager {
       options: .skipsHiddenFiles
     )
     .compactMap {
-      file(for: $0)
+      file(for: $0.standardizedFileURL)
     }
   }
 

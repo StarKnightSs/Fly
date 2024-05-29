@@ -25,8 +25,18 @@ public class FlyViewModel: ObservableObject {
     self.files = files
     self.filesManager = filesManager
     self.server = FileServer(filesManager: filesManager)
+    loadFiles()
+    loadServer()
+  }
 
-    self.server.updateHandler = { [weak self] url, type in
+  var allFiles: [URL] {
+    files
+      .filter { $0.isDirectory == false }
+      .map(\.url)
+  }
+
+  func loadServer() {
+    server.updateHandler = { [weak self] url, type in
       switch type {
       case .POST:
         self?.addFile(at: url)
@@ -36,16 +46,7 @@ public class FlyViewModel: ObservableObject {
         break
       }
     }
-  }
-
-  deinit {
-    server.updateHandler = nil
-  }
-
-  var allFiles: [URL] {
-    files
-      .filter { $0.isDirectory == false }
-      .map(\.url)
+    server.start()
   }
 
   func loadFiles() {
@@ -79,7 +80,10 @@ public class FlyViewModel: ObservableObject {
 
   func removeFile(at url: URL) {
     Task { @MainActor in
-      files.removeAll { $0.url == url }
+      if let index = files
+        .firstIndex(where: { $0.url == url }) {
+        files.remove(at: index)
+      }
     }
   }
 

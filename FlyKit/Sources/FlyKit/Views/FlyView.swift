@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct FlyView: View {
 
+  @Environment(\.scenePhase) private var scenePhase
   @EnvironmentObject private var viewModel: FlyViewModel
 
   public init() {}
@@ -42,9 +43,10 @@ public struct FlyView: View {
         selectedFiles: $viewModel.selectedFiles
       )
     }
-    .onAppear {
-      viewModel.server.start()
-      viewModel.loadFiles()
+    .onChange(of: scenePhase) {
+      if $0 == .active {
+        viewModel.loadServer()
+      }
     }
     .quickLookPreview(
       $viewModel.previewFile,
