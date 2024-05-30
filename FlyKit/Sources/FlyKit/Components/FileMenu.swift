@@ -17,10 +17,9 @@ public struct FileMenu: View {
   public var body: some View {
     Menu(
       content: {
-        if viewModel.files.isEmpty == false {
-          selectMenu
-        }
-        if isEditing == false {
+        if isEditing {
+          ediMenu
+        } else {
           fileMenu
         }
       },
@@ -32,33 +31,32 @@ public struct FileMenu: View {
     )
   }
 
-  var selectMenu: some View {
+  var ediMenu: some View {
     VStack {
 
-      // Select | Done
+      // Done
       Button(
-        action: {
-          viewModel.editMode = isEditing ? .inactive : .active
-        },
-        label: {
-          Label(
-            isEditing ? "Done" : "Select",
-            systemImage: isEditing ? checkmark : checkmarkCircle
-          )
-        }
+        action: { viewModel.editMode = .inactive },
+        label: { Label("Done", systemImage: checkmark) }
       )
 
-      // Send | Drop
+      // Select All
+      Button(
+        action: { viewModel.selectAllFiles() },
+        label: { Label("Select All", systemImage: checkmarkShield) }
+      )
+
+      // Send Files
       Button(
         action: {},
-        label: {
-          Label(
-            "\(isEditing ? "Send" : "Drop") Files",
-            systemImage: isEditing ? upArrow : downArrow
-          )
-        }
-      ).disabled(
-        isEditing ? viewModel.selectedFiles.isEmpty : false
+        label: { Label("Send Files", systemImage: upArrow) }
+      ).disabled(viewModel.selectedFiles.isEmpty)
+
+      // Delete
+      Button(
+        role: .destructive,
+        action: { viewModel.removeSelectedFiles() },
+        label: { Label("Delete", systemImage: trash) }
       )
     }
   }
@@ -66,10 +64,25 @@ public struct FileMenu: View {
   var fileMenu: some View {
     VStack {
 
+      if viewModel.files.isEmpty == false {
+
+        // Select
+        Button(
+          action: { viewModel.editMode = .active },
+          label: { Label("Select", systemImage: checkmarkCircle) }
+        )
+
+        // Recieve Files
+        Button(
+          action: {},
+          label: { Label("Recieve Files", systemImage: downArrow) }
+        )
+      }
+
       // Add Folder
       Button(
         action: { viewModel.showFolderAlert = true },
-        label: { Label("New Folder", systemImage: folderFill) }
+        label: { Label("Add Folder", systemImage: folderFill) }
       )
 
       // Add Files
@@ -81,9 +94,7 @@ public struct FileMenu: View {
       // Add Photos
       Button(
         action: { viewModel.showPhotosPicker = true },
-        label: { Label(
-          "Import Photos", systemImage: photo
-        ) }
+        label: { Label("Add Photos", systemImage: photo) }
       )
 
       // Sort Files
@@ -92,17 +103,14 @@ public struct FileMenu: View {
           action: {},
           label: { Text("Name") }
         )
-
         Button(
           action: {},
           label: { Text("Type") }
         )
-
         Button(
           action: {},
           label: { Text("Date") }
         )
-
         Button(
           action: {},
           label: { Text("Size") }
