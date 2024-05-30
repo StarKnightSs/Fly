@@ -39,10 +39,8 @@ public final class FilesManager {
 
   public func create(folder: String) throws -> URL {
     let folderPath = try documentsDirectory().appendingPathComponent(folder, isDirectory: true)
-    guard folderPath.isDirectory == false else {
-      throw FileError.folderAlreadyExists
-    }
     try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: false)
+    folderPath.excludeFromBackup()
     return folderPath
   }
 
@@ -66,6 +64,7 @@ public final class FilesManager {
       throw FileError.fileAlreadyExists
     }
     try fileManager.copyItem(at: source, to: target)
+    target.excludeFromBackup()
   }
 
   public func remove(at url: URL) throws {
