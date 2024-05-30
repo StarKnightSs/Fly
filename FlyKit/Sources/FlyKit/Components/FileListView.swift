@@ -1,10 +1,10 @@
 //
-// FileList.swift
+// FileListView.swift
 // Created by Arpit Williams on 28/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import SwiftUI
 import FileServer
+import SwiftUI
 
 struct FileListView: View {
 
@@ -33,7 +33,7 @@ struct FileListView: View {
           )
       }
       .onDelete {
-        viewModel.deleteFile(at: $0.map { $0 })
+        viewModel.removeFiles(at: $0.map { $0 })
       }
     }
     .listStyle(.plain)

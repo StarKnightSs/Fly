@@ -50,7 +50,7 @@ public struct FlyView: View {
     }
     .quickLookPreview(
       $viewModel.previewFile,
-      in: viewModel.allFiles
+      in: viewModel.allFilesURLs
     )
     .fileImporter(
       isPresented: $viewModel.showFilesPicker,

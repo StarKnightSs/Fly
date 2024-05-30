@@ -29,10 +29,15 @@ public class FlyViewModel: ObservableObject {
     loadServer()
   }
 
-  var allFiles: [URL] {
-    files
-      .filter { $0.isDirectory == false }
-      .map(\.url)
+  func loadFiles() {
+    Task { @MainActor in
+      do {
+        let url = try filesManager.documentsDirectory()
+        files = try filesManager.files(at: url)
+      } catch {
+        print(error)
+      }
+    }
   }
 
   func loadServer() {
@@ -49,16 +54,20 @@ public class FlyViewModel: ObservableObject {
     server.start()
   }
 
-  func loadFiles() {
-    Task { @MainActor in
-      do {
-        let url = try filesManager.documentsDirectory()
-        files = try filesManager.files(at: url)
-      } catch {
-        print(error)
-      }
-    }
+  var allFilesURLs: [URL] {
+    files
+      .filter { $0.isDirectory == false }
+      .map(\.url)
   }
+
+  func selectAllFiles() {
+    selectedFiles = selectedFiles.union(files.map(\.id))
+  }
+}
+
+// MARK: Add Files
+
+extension FlyViewModel {
 
   func addFile(at url: URL) {
     Task { @MainActor in
@@ -77,24 +86,40 @@ public class FlyViewModel: ObservableObject {
       print(error)
     }
   }
+}
+
+// MARK: Remove Files
+
+extension FlyViewModel {
 
   func removeFile(at url: URL) {
     Task { @MainActor in
-      if let index = files
-        .firstIndex(where: { $0.url == url }) {
-        files.remove(at: index)
-      }
+      guard let index = files.firstIndex(where: { $0.url == url })
+      else { return }
+      files.remove(at: index)
     }
   }
 
-  func deleteFile(at indexes: [Int]) {
+  func removeFiles(at indexes: [Int]) {
     indexes.forEach {
-      try? filesManager.remove(at: files[$0].url)
+      let url = files[$0].url
+      try? filesManager.remove(at: url)
+      removeFile(at: url)
     }
-    files = files.enumerated()
-      .filter { indexes.contains($0.offset) == false }
-      .map(\.element)
   }
+
+  func removeSelectedFiles() {
+    let indexes = files.enumerated()
+      .filter { selectedFiles.contains($0.element.id) }
+      .map(\.offset)
+    removeFiles(at: indexes)
+    selectedFiles.removeAll()
+  }
+}
+
+// MARK: Import Files
+
+extension FlyViewModel {
 
   func importFiles(result: Result<[URL], any Error>) {
     switch result {
