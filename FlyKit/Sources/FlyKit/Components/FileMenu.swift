@@ -25,7 +25,7 @@ public struct FileMenu: View {
         }
       },
       label: {
-        Image(systemName: isEditing ? "ellipsis.circle.fill" : "folder.fill.badge.plus")
+        Image(systemName: isEditing ? ellipsisCircleFill : folderFillBadgePlus)
           .foregroundStyle(Color(.leadLemon))
           .font(.headline)
       }
@@ -43,7 +43,7 @@ public struct FileMenu: View {
         label: {
           Label(
             isEditing ? "Done" : "Select",
-            systemImage: isEditing ? "checkmark" : "checkmark.circle"
+            systemImage: isEditing ? checkmark : checkmarkCircle
           )
         }
       )
@@ -69,13 +69,13 @@ public struct FileMenu: View {
       // Add Folder
       Button(
         action: { viewModel.showFolderAlert = true },
-        label: { Label("New Folder", systemImage: "folder.fill") }
+        label: { Label("New Folder", systemImage: folderFill) }
       )
 
       // Add Files
       Button(
         action: { viewModel.showFilesPicker = true },
-        label: { Label("Add Files", systemImage: "doc.fill") }
+        label: { Label("Add Files", systemImage: docFill) }
       )
 
       // Add Photos
@@ -87,7 +87,7 @@ public struct FileMenu: View {
       )
 
       // Sort Files
-      Menu("Sort By", systemImage: "square.grid.3x3") {
+      Menu("Sort By", systemImage: squareGrid3x3) {
         Button(
           action: {},
           label: { Text("Name") }
