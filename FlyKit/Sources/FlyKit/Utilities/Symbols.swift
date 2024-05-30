@@ -6,6 +6,8 @@
 let checkmark = "checkmark"
 let checkmarkCircle = "checkmark.circle"
 let checkmarkShield = "checkmark.shield"
+let chevronDown = "chevron.down"
+let chevronUp = "chevron.up"
 let docFill = "doc.fill"
 let downArrow = iOS17 ? "arrowshape.down.fill" : "arrowtriangle.down.fill"
 let ellipsisCircleFill = "ellipsis.circle.fill"

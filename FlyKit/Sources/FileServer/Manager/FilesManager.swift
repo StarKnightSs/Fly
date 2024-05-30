@@ -88,9 +88,11 @@ public final class FilesManager {
       name: resource.name ?? "Unknown",
       size: filesizeFormmater.string(fromByteCount: Int64(resource.fileSize ?? 0)),
       type: resource.contentType?.preferredFilenameExtension ?? "",
+      fileSize: resource.fileSize ?? 0,
       isDirectory: resource.isDirectory ?? false,
       itemCount: String(format: "%d items", (try? fileCount(for: url)) ?? 0),
-      createdAt: dateFormatter.string(from: resource.creationDate ?? Date())
+      createdAt: dateFormatter.string(from: resource.creationDate ?? Date()),
+      creationDate: resource.creationDate ?? .now
     )
   }
 }

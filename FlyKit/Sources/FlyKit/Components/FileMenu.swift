@@ -10,8 +10,15 @@ public struct FileMenu: View {
 
   @EnvironmentObject private var viewModel: FlyViewModel
 
-  var isEditing: Bool {
+  @State private var sortAscending = false
+  @State private var sortType: SortType = .date
+
+  private var isEditing: Bool {
     viewModel.editMode.isEditing
+  }
+
+  private var filesExist: Bool {
+    viewModel.files.isEmpty == false
   }
 
   public var body: some View {
@@ -64,7 +71,7 @@ public struct FileMenu: View {
   var fileMenu: some View {
     VStack {
 
-      if viewModel.files.isEmpty == false {
+      if filesExist {
 
         // Select
         Button(
@@ -79,12 +86,6 @@ public struct FileMenu: View {
         )
       }
 
-      // Add Folder
-      Button(
-        action: { viewModel.showFolderAlert = true },
-        label: { Label("Add Folder", systemImage: folderFill) }
-      )
-
       // Add Files
       Button(
         action: { viewModel.showFilesPicker = true },
@@ -97,26 +98,47 @@ public struct FileMenu: View {
         label: { Label("Add Photos", systemImage: photo) }
       )
 
-      // Sort Files
-      Menu("Sort By", systemImage: squareGrid3x3) {
-        Button(
-          action: {},
-          label: { Text("Name") }
-        )
-        Button(
-          action: {},
-          label: { Text("Type") }
-        )
-        Button(
-          action: {},
-          label: { Text("Date") }
-        )
-        Button(
-          action: {},
-          label: { Text("Size") }
-        )
+      // Add Folder
+      Button(
+        action: { viewModel.showFolderAlert = true },
+        label: { Label("Add Folder", systemImage: folderFill) }
+      )
+
+      // Sort Menu
+      if filesExist {
+        Divider()
+        sortMenu
       }
     }
+  }
+
+  var sortMenu: some View {
+    Picker(selection: $sortType.didSet(handleSort)) {
+      ForEach(SortType.allCases, id: \.self) { type in
+        if type == sortType {
+          Label(type.name, systemImage: sortAscending ? chevronUp : chevronDown)
+        } else {
+          Text(type.name)
+        }
+      }
+    } label: {
+      Label("Sort By", systemImage: squareGrid3x3)
+    }
+    .pickerStyle(.menu)
+  }
+
+  func handleSort(newSort: SortType, oldSort: SortType) {
+    if newSort == oldSort {
+      sortAscending.toggle()
+    } else {
+      switch newSort {
+      case .date, .size:
+        sortAscending = false
+      case .name, .type:
+        sortAscending = true
+      }
+    }
+    viewModel.sortFiles(by: newSort, isAscending: sortAscending)
   }
 }
 

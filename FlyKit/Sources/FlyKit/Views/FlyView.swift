@@ -37,16 +37,21 @@ public struct FlyView: View {
     .background(Color(.lemonLead))
     .navigationBarTitleDisplayMode(.inline)
     .environment(\.editMode, $viewModel.editMode)
-    .toolbar {
-      Toolbar(
-        editMode: $viewModel.editMode,
-        selectedFiles: $viewModel.selectedFiles
-      )
+    .onChange(of: viewModel.files) {
+      if $0.isEmpty {
+        viewModel.editMode = .inactive
+      }
     }
     .onChange(of: scenePhase) {
       if $0 == .active {
         viewModel.loadServer()
       }
+    }
+    .toolbar {
+      Toolbar(
+        editMode: $viewModel.editMode,
+        selectedFiles: $viewModel.selectedFiles
+      )
     }
     .quickLookPreview(
       $viewModel.previewFile,

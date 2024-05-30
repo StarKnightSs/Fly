@@ -34,6 +34,7 @@ public class FlyViewModel: ObservableObject {
       do {
         let url = try filesManager.documentsDirectory()
         files = try filesManager.files(at: url)
+        sortByDate(ascending: false)
       } catch {
         print(error)
       }
@@ -114,6 +115,56 @@ extension FlyViewModel {
       .map(\.offset)
     removeFiles(at: indexes)
     selectedFiles.removeAll()
+  }
+}
+
+// MARK: Sort Files
+
+extension FlyViewModel {
+
+  func sortFiles(by type: SortType, isAscending: Bool) {
+    switch type {
+    case .date:
+      sortByDate(ascending: isAscending)
+    case .name:
+      sortByName(ascending: isAscending)
+    case .size:
+      sortBySize(ascending: isAscending)
+    case .type:
+      sortByType(ascending: isAscending)
+    }
+  }
+
+  func sortByDate(ascending: Bool) {
+    files = files.sorted(by: {
+      ascending ?
+        $0.creationDate < $1.creationDate :
+        $0.creationDate > $1.creationDate
+    })
+  }
+
+  func sortByName(ascending: Bool) {
+    files = files.sorted(by: {
+      ascending ?
+        $0.name < $1.name :
+        $0.name > $1.name
+    })
+  }
+
+  func sortBySize(ascending: Bool) {
+    files = files.sorted(by: {
+      ascending ?
+        $0.fileSize < $1.fileSize :
+        $0.fileSize > $1.fileSize
+    })
+  }
+
+  func sortByType(ascending: Bool) {
+    files = files.sorted(by: {
+      ascending ?
+        $0.type < $1.type :
+        $0.type > $1.type
+    })
   }
 }
 
