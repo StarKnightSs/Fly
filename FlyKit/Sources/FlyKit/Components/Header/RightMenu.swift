@@ -44,14 +44,10 @@ public struct RightMenu: View {
       // Done
       Button(
         action: { viewModel.editMode = .inactive },
-        label: { Label("Done", systemImage: checkmark) }
+        label: { Text("Done") }
       )
 
-      // Select All
-      Button(
-        action: { viewModel.selectAllFiles() },
-        label: { Label("Select All", systemImage: checkmarkShield) }
-      )
+      Divider()
 
       // Send Files
       Button(
@@ -78,6 +74,8 @@ public struct RightMenu: View {
           action: { viewModel.editMode = .active },
           label: { Label("Select", systemImage: checkmarkCircle) }
         )
+
+        Divider()
 
         // Recieve Files
         Button(

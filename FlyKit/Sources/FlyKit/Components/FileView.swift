@@ -64,7 +64,7 @@ struct FileView: View {
   }
 
   var fileSelectView: some View {
-    Image(systemName: iOS16 ? "ellipsis.circle" : "ellipsis.circle.fill")
+    Image(systemName: ellipsisCircleFill)
   }
 
   func loadFilePreview() {

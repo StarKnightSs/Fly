@@ -60,9 +60,18 @@ public class FlyViewModel: ObservableObject {
       .filter { $0.isDirectory == false }
       .map(\.url)
   }
+}
+
+// MARK: Select Files
+
+extension FlyViewModel {
 
   func selectAllFiles() {
     selectedFiles = selectedFiles.union(files.map(\.id))
+  }
+
+  func deSelectAllFiles() {
+    selectedFiles.removeAll()
   }
 }
 

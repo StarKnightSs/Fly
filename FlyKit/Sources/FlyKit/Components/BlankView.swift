@@ -20,7 +20,7 @@ public struct BlankView: View {
       Text("Space is Empty 🧑‍🚀")
         .font(.system(.title, design: .rounded))
 
-      Text("Tap the \(Image(systemName: "folder.fill.badge.plus")) icon on the top right,\nto add your files & photos")
+      Text("Tap the \(Image(systemName: folderFillBadgePlus)) icon on the top right,\nto add your files & photos")
         .padding(20)
         .multilineTextAlignment(.center)
         .font(.system(.headline, design: .rounded).weight(.medium))

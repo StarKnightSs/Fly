@@ -16,30 +16,31 @@ public struct Toolbar: ToolbarContent {
   public var body: some ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
-      Image(systemName: "gearshape.fill")
-        .foregroundStyle(Color(.leadLemon))
-        .font(.headline)
-        .offset(y: 1.2)
+      LeftMenu()
     }
 
     ToolbarItem(placement: .principal) {
-      HStack(spacing: 4) {
-        Image("Monkey", bundle: .module)
-          .resizable()
-          .frame(width: 40, height: 40)
-
-        Text(title)
-          .foregroundStyle(Color(.leadLemon))
-          .font(.system(.callout, design: .rounded).weight(.heavy))
-      }
-      .id(refresh)
-      .onAppear {
-        refresh.toggle()
-      }
+      titleView
     }
 
     ToolbarItem(placement: .topBarTrailing) {
       RightMenu()
+    }
+  }
+
+  var titleView: some View {
+    HStack(spacing: 4) {
+      Image("Monkey", bundle: .module)
+        .resizable()
+        .frame(width: 40, height: 40)
+
+      Text(title)
+        .foregroundStyle(Color(.leadLemon))
+        .font(.system(.callout, design: .rounded).weight(.heavy))
+    }
+    .id(refresh)
+    .onAppear {
+      refresh.toggle()
     }
   }
 
