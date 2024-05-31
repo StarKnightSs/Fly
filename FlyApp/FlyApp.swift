@@ -30,6 +30,7 @@ struct FlyApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
+        .preferredColorScheme(colorScheme)
         .environment(\.colorScheme, colorScheme)
     }
   }

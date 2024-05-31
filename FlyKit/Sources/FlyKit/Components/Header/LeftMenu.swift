@@ -26,38 +26,38 @@ public struct LeftMenu: View {
   }
 
   var checkMark: some View {
-    Image(systemName: isSelected ?
-      checkmarkCircleFill :
-      checkmarkCircle
-    )
-    .onTapGesture {
-      isSelected ?
-        viewModel.deSelectAllFiles() :
-        viewModel.selectAllFiles()
-      isSelected.toggle()
-    }
-    .offset(x: 2)
-    .font(.headline)
-    .foregroundStyle(Color(.leadLemon))
+    Button(
+      action: {
+        isSelected ?
+          viewModel.deSelectAllFiles() :
+          viewModel.selectAllFiles()
+        isSelected.toggle()
+      },
+      label: {
+        Image(systemName: isSelected ?
+          checkmarkCircleFill :
+          checkmarkCircle
+        )
+        .offset(x: -0.4)
+        .font(.headline)
+        .foregroundStyle(Color(.leadLemon))
+        .onDisappear {
+          isSelected = false
+          viewModel.deSelectAllFiles()
+        }
+      })
   }
 
   var lightBulb: some View {
-    Image(systemName: colorMode == .dark ?
-      lightBulbOff :
-      lightBulbOn
-    )
-    .onTapGesture {
-      isDarkMode = colorMode == .dark
-    }
-    .font(.headline)
-    .foregroundStyle(Color(.leadLemon))
-  }
-
-  var gearShape: some View {
-    Image(systemName: gearshapeFill)
-      .offset(y: 1.2)
-      .font(.headline)
-      .foregroundStyle(Color(.leadLemon))
+    Button(
+      action: { isDarkMode = colorMode == .dark },
+      label: {
+        Image(systemName: colorMode == .dark ?
+          lightBulbOff : lightBulbOn
+        )
+        .font(.headline)
+        .foregroundStyle(Color(.leadLemon))
+      })
   }
 }
 
