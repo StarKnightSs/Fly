@@ -39,7 +39,7 @@ public struct Toolbar: ToolbarContent {
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      FileMenu()
+      RightMenu()
     }
   }
 

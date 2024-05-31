@@ -1,12 +1,12 @@
 //
-// FileMenu.swift
+// RightMenu.swift
 // Created by Arpit Williams on 26/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FileServer
 import SwiftUI
 
-public struct FileMenu: View {
+public struct RightMenu: View {
 
   @EnvironmentObject private var viewModel: FlyViewModel
 
@@ -143,5 +143,5 @@ public struct FileMenu: View {
 }
 
 #Preview(body: {
-  FileMenu()
+  RightMenu()
 })
