@@ -29,7 +29,7 @@ struct FileListView: View {
             }
           }
           .deleteDisabled(
-            iOS16 ? viewModel.editMode.isEditing : false
+            iOS16 ? viewModel.editMode.isEditing : true
           )
       }
       .onDelete {
@@ -38,9 +38,7 @@ struct FileListView: View {
     }
     .listStyle(.plain)
     .background(Color(.snowLicorice))
-    .if(iOS16) {
-      $0.id(viewModel.editMode)
-    }
+    .id(viewModel.editMode)
   }
 }
 
