@@ -38,7 +38,6 @@ public struct LeftMenu: View {
           checkmarkCircleFill :
           checkmarkCircle
         )
-        .offset(x: -0.4)
         .font(.headline)
         .foregroundStyle(Color(.leadLemon))
         .animateReplace()

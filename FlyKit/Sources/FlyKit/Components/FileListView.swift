@@ -31,6 +31,7 @@ struct FileListView: View {
           }
       }
     }
+    .padding(.top, 2)
     .listStyle(.plain)
     .background(Color(.snowLicorice))
     .id(viewModel.editMode)

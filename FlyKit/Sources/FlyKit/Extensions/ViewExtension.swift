@@ -22,15 +22,23 @@ public extension View {
 
   @ViewBuilder
   func animateReplace() -> some View {
-    modify { if #available(iOS 17, *) {
-      $0.contentTransition(.symbolEffect(.replace.byLayer.downUp))
-    }}
+    modify {
+      if #available(iOS 17, *) {
+        $0.contentTransition(.symbolEffect(.replace.byLayer.downUp))
+      } else {
+        $0
+      }
+    }
   }
 
   @ViewBuilder
   func animateBounce(_ value: Bool) -> some View {
-    modify { if #available(iOS 17, *) {
-      $0.symbolEffect(.bounce.byLayer.up, value: value)
-    }}
+    modify {
+      if #available(iOS 17, *) {
+        $0.symbolEffect(.bounce.byLayer.up, value: value)
+      } else {
+        $0
+      }
+    }
   }
 }

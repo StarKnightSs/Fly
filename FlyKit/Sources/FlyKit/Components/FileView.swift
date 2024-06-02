@@ -58,7 +58,8 @@ struct FileView: View {
   var fileNameView: some View {
     VStack(alignment: .leading, spacing: 2) {
       Text(file.name)
-        .font(.footnote)
+        .font(.callout)
+        .lineLimit(1)
       HStack(spacing: 2) {
         Text(file.createdAt)
         Text("-")
@@ -68,7 +69,7 @@ struct FileView: View {
   }
 
   var fileSelectView: some View {
-    Image(systemName: ellipsisCircleFill)
+    Image(systemName: ellipsis)
   }
 
   var deleteButton: some View {
