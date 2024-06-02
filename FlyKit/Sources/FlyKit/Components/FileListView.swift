@@ -22,18 +22,13 @@ struct FileListView: View {
         FileView(file: file)
           .listRowSeparator(.hidden)
           .listRowInsets(.init(.zero))
+          .deleteDisabled(true)
           .onTapGesture {
             if file.isDirectory == false,
                viewModel.editMode.isEditing == false {
               viewModel.previewFile = file.url
             }
           }
-          .deleteDisabled(
-            iOS16 ? viewModel.editMode.isEditing : true
-          )
-      }
-      .onDelete {
-        viewModel.removeFiles(at: $0.map { $0 })
       }
     }
     .listStyle(.plain)

@@ -12,6 +12,7 @@ struct FileView: View {
   let file: File
 
   @State private var fileIcon: UIImage?
+  @EnvironmentObject private var viewModel: FlyViewModel
 
   var body: some View {
     VStack(spacing: 8) {
@@ -29,6 +30,9 @@ struct FileView: View {
       if fileIcon == nil {
         loadFilePreview()
       }
+    }
+    .swipeActions {
+      deleteButton
     }
   }
 
@@ -65,6 +69,14 @@ struct FileView: View {
 
   var fileSelectView: some View {
     Image(systemName: ellipsisCircleFill)
+  }
+
+  var deleteButton: some View {
+    Button(role: .destructive) {
+      viewModel.removeFile(at: file.url)
+    } label: {
+      Label("Delete", systemImage: trashCircle)
+    }
   }
 
   func loadFilePreview() {

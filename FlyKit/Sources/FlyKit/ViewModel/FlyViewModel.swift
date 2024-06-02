@@ -107,22 +107,18 @@ extension FlyViewModel {
       guard let index = files.firstIndex(where: { $0.url == url })
       else { return }
       files.remove(at: index)
-    }
-  }
-
-  func removeFiles(at indexes: [Int]) {
-    indexes.forEach {
-      let url = files[$0].url
       try? filesManager.remove(at: url)
-      removeFile(at: url)
     }
   }
 
   func removeSelectedFiles() {
-    let indexes = files.enumerated()
+    files.enumerated()
       .filter { selectedFiles.contains($0.element.id) }
       .map(\.offset)
-    removeFiles(at: indexes)
+      .forEach {
+        let url = files[$0].url
+        removeFile(at: url)
+      }
     selectedFiles.removeAll()
   }
 }
