@@ -41,6 +41,7 @@ public struct LeftMenu: View {
         .offset(x: -0.4)
         .font(.headline)
         .foregroundStyle(Color(.leadLemon))
+        .animateReplace()
         .onDisappear {
           isSelected = false
           viewModel.deSelectAllFiles()
@@ -57,6 +58,7 @@ public struct LeftMenu: View {
         )
         .font(.headline)
         .foregroundStyle(Color(.leadLemon))
+        .animateReplace()
       })
   }
 }

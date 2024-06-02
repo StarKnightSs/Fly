@@ -34,6 +34,7 @@ public struct RightMenu: View {
         Image(systemName: isEditing ? ellipsisCircleFill : folderFillBadgePlus)
           .foregroundStyle(Color(.leadLemon))
           .font(.headline)
+          .animateBounce(isEditing)
       }
     )
   }
