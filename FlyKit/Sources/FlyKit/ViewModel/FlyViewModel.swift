@@ -240,8 +240,9 @@ extension FlyViewModel {
   func renameAlertDone() {
     if let file = selectedFile,
        fileRename.isEmpty == false {
-      let filename = fileRename + "." + file.type
-      renameFile(at: file.url, to: filename)
+      fileRename = fileRename.trimmingCharacters(in: .whitespacesAndNewlines)
+      fileRename = fileRename + "." + file.type
+      renameFile(at: file.url, to: fileRename)
     }
     renameAlertDismiss()
   }
