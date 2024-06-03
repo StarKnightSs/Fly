@@ -26,39 +26,37 @@ public struct LeftMenu: View {
   }
 
   var checkMark: some View {
-    Button(
-      action: {
-        isSelected ?
-          viewModel.deSelectAllFiles() :
-          viewModel.selectAllFiles()
-        isSelected.toggle()
-      },
-      label: {
-        Image(systemName: isSelected ?
-          checkmarkCircleFill :
-          checkmarkCircle
-        )
-        .font(.headline)
-        .foregroundStyle(Color(.leadLemon))
-        .animateReplace()
-        .onDisappear {
-          isSelected = false
-          viewModel.deSelectAllFiles()
-        }
-      })
+    Button {
+      isSelected ?
+        viewModel.deSelectAllFiles() :
+        viewModel.selectAllFiles()
+      isSelected.toggle()
+    } label: {
+      Image(systemName: isSelected ?
+        checkmarkCircleFill :
+        checkmarkCircle
+      )
+      .font(.headline)
+      .foregroundStyle(Color(.leadLemon))
+      .animateReplace()
+      .onDisappear {
+        isSelected = false
+        viewModel.deSelectAllFiles()
+      }
+    }
   }
 
   var lightBulb: some View {
-    Button(
-      action: { isDarkMode = colorMode == .dark },
-      label: {
-        Image(systemName: colorMode == .dark ?
-          lightBulbOff : lightBulbOn
-        )
-        .font(.headline)
-        .foregroundStyle(Color(.leadLemon))
-        .animateReplace()
-      })
+    Button {
+      isDarkMode = colorMode == .dark
+    } label: {
+      Image(systemName: colorMode == .dark ?
+        lightBulbOff : lightBulbOn
+      )
+      .font(.headline)
+      .foregroundStyle(Color(.leadLemon))
+      .animateReplace()
+    }
   }
 }
 

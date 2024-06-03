@@ -8,10 +8,9 @@ import SwiftUI
 
 public struct RightMenu: View {
 
-  @EnvironmentObject private var viewModel: FlyViewModel
-
   @State private var sortAscending = false
   @State private var sortType: SortType = .date
+  @EnvironmentObject private var viewModel: FlyViewModel
 
   private var isEditing: Bool {
     viewModel.editMode.isEditing
@@ -22,86 +21,92 @@ public struct RightMenu: View {
   }
 
   public var body: some View {
-    Menu(
-      content: {
-        if isEditing {
-          ediMenu
-        } else {
-          fileMenu
-        }
-      },
-      label: {
-        Image(systemName: isEditing ? ellipsisCircleFill : folderFillBadgePlus)
-          .foregroundStyle(Color(.leadLemon))
-          .font(.headline)
-          .animateBounce(isEditing)
+    Menu {
+      if isEditing {
+        ediMenu
+      } else {
+        fileMenu
       }
-    )
+    } label: {
+      Image(systemName: isEditing ?
+        ellipsisCircleFill : folderFillBadgePlus
+      )
+      .foregroundStyle(Color(.leadLemon))
+      .font(.headline)
+      .animateBounce(isEditing)
+    }
   }
 
   var ediMenu: some View {
-    VStack {
+    Group {
 
       // Done
-      Button(
-        action: { viewModel.editMode = .inactive },
-        label: { Text("Done") }
-      )
+      Button {
+        viewModel.editMode = .inactive
+      } label: {
+        Text("Done")
+      }
 
       Divider()
 
       // Send Files
-      Button(
-        action: {},
-        label: { Label("Send Files", systemImage: upArrow) }
-      ).disabled(viewModel.selectedFiles.isEmpty)
+      Button {
+        print("Send")
+      } label: {
+        Label("Send Files", systemImage: upArrow)
+      }.disabled(viewModel.selectedFiles.isEmpty)
 
       // Delete
-      Button(
-        role: .destructive,
-        action: { viewModel.removeSelectedFiles() },
-        label: { Label("Delete", systemImage: trash) }
-      )
+      Button(role: .destructive) {
+        viewModel.removeSelectedFiles()
+      } label: {
+        Label("Delete", systemImage: trash)
+      }
     }
   }
 
   var fileMenu: some View {
-    VStack {
+    Group {
 
       if filesExist {
 
         // Select
-        Button(
-          action: { viewModel.editMode = .active },
-          label: { Label("Select", systemImage: checkmarkCircle) }
-        )
+        Button {
+          viewModel.editMode = .active
+        } label: {
+          Label("Select", systemImage: checkmarkCircle)
+        }
 
         Divider()
 
         // Recieve Files
-        Button(
-          action: {},
-          label: { Label("Recieve Files", systemImage: downArrow) }
-        )
+        Button {
+          print("Receive")
+        } label: {
+          Label("Recieve Files", systemImage: downArrow)
+        }
       }
 
       // Add Files
-      Button(
-        action: { viewModel.showFilesPicker = true },
-        label: { Label("Add Files", systemImage: docFill) }
-      )
+      Button {
+        viewModel.showFilesPicker = true
+      } label: {
+        Label("Add Files", systemImage: docFill)
+      }
 
       // Add Photos
-      Button(
-        action: { viewModel.showPhotosPicker = true },
-        label: { Label("Add Photos", systemImage: photo) }
-      )
+      Button {
+        viewModel.showPhotosPicker = true
+      } label: {
+        Label("Add Photos", systemImage: photo)
+      }
 
       // Add Folder
-      Button(
-        action: { viewModel.showFolderAlert = true },
-        label: { Label("Add Folder", systemImage: folderFill) }
-      )
+      Button {
+        viewModel.showFolderAlert = true
+      } label: {
+        Label("Add Folder", systemImage: folderFill)
+      }
 
       // Sort Menu
       if filesExist {
@@ -115,7 +120,10 @@ public struct RightMenu: View {
     Picker(selection: $sortType.didSet(handleSort)) {
       ForEach(SortType.allCases, id: \.self) { type in
         if type == sortType {
-          Label(type.name, systemImage: sortAscending ? chevronUp : chevronDown)
+          Label(
+            type.name,
+            systemImage: sortAscending ? chevronUp : chevronDown
+          )
         } else {
           Text(type.name)
         }
