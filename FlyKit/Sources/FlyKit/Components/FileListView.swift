@@ -13,28 +13,20 @@ struct FileListView: View {
 
   var body: some View {
     List(selection: $viewModel.selectedFiles) {
-      ForEach(
-        viewModel.files.filter {
-          guard hideFiles else { return true }
-          return $0.isDirectory
-        }
-      ) { file in
-        FileView(file: file)
+      ForEach(viewModel.files.filter {
+        guard hideFiles else { return true }
+        return $0.isDirectory
+      }) {
+        FileView(file: $0)
+          .deleteDisabled(true)
           .listRowSeparator(.hidden)
           .listRowInsets(.init(.zero))
-          .deleteDisabled(true)
-          .onTapGesture {
-            if file.isDirectory == false,
-               viewModel.editMode.isEditing == false {
-              viewModel.previewFile = file.url
-            }
-          }
       }
     }
     .padding(.top, 2)
     .listStyle(.plain)
-    .background(Color(.snowLicorice))
     .id(viewModel.editMode)
+    .background(Color(.snowLicorice))
   }
 }
 

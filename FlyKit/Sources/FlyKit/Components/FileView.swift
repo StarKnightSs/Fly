@@ -14,25 +14,43 @@ struct FileView: View {
   @State private var fileIcon: UIImage?
   @EnvironmentObject private var viewModel: FlyViewModel
 
+  private var isEditing: Bool {
+    viewModel.editMode.isEditing
+  }
+
   var body: some View {
     VStack(spacing: 8) {
       HStack(spacing: 8) {
-        fileIconView
-        fileNameView
+        Group {
+          fileIconView
+          fileNameView
+        }.onTapGesture {
+          quickLookFile()
+        }
         Spacer()
-        fileSelectView
+        if isEditing == false {
+          fileMenuView
+        }
       }
       Divider()
     }
     .padding(.top, 8)
     .padding(.horizontal, 16)
+    .contextMenu { menuItems }
     .onAppear {
       if fileIcon == nil {
         loadFilePreview()
       }
     }
-    .swipeActions {
+    .swipeActions(allowsFullSwipe: false) {
       deleteButton
+    }
+    .modify {
+      if #available(iOS 17, *) {
+        $0.selectionDisabled(isEditing == false)
+      } else {
+        $0
+      }
     }
   }
 
@@ -68,8 +86,64 @@ struct FileView: View {
     }
   }
 
-  var fileSelectView: some View {
-    Image(systemName: ellipsis)
+  var fileMenuView: some View {
+    Menu {
+      menuItems
+    } label: {
+      Image(systemName: ellipsis)
+        .padding(.trailing, 4)
+        .frame(width: 20, height: 20)
+        .foregroundStyle(Color(.leadBanana))
+    }
+  }
+
+  var menuItems: some View {
+    Group {
+      sendButton
+      Divider()
+      AnyView(shareButton)
+      previewButton
+      renameButton
+      deleteButton
+    }
+  }
+
+  var sendButton: some View {
+    Button {
+      print("Send")
+    } label: {
+      Label("Send", systemImage: upArrow)
+    }
+  }
+
+  var shareButton: any View {
+    if #available(iOS 16.0, *) {
+      ShareLink(item: file.url) {
+        Label("Share", systemImage: squareAndArrowUp)
+      }
+    } else {
+      Button {
+        shareFile()
+      } label: {
+        Label("Share", systemImage: squareAndArrowUp)
+      }
+    }
+  }
+
+  var previewButton: some View {
+    Button {
+      quickLookFile()
+    } label: {
+      Label("Preview", systemImage: eye)
+    }
+  }
+
+  var renameButton: some View {
+    Button {
+      viewModel.showRenameAlert(for: file)
+    } label: {
+      Label("Rename", systemImage: pencil)
+    }
   }
 
   var deleteButton: some View {
@@ -84,6 +158,23 @@ struct FileView: View {
     Task {
       fileIcon = try? await file.generatePreviewIcon()
     }
+  }
+
+  func quickLookFile() {
+    guard file.isDirectory == false, isEditing == false else { return }
+    viewModel.previewFile = file.url
+  }
+
+  func shareFile() {
+    let activity = UIActivityViewController(
+      activityItems: [file.url],
+      applicationActivities: nil
+    )
+    let connectedScenes = UIApplication.shared.connectedScenes
+      .filter { $0.activationState == .foregroundActive }
+      .compactMap { $0 as? UIWindowScene }
+    let window = connectedScenes.first?.windows.first { $0.isKeyWindow }
+    window?.rootViewController?.present(activity, animated: true)
   }
 }
 

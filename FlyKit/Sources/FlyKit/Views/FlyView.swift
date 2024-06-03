@@ -20,6 +20,8 @@ public struct FlyView: View {
         rootView
         if viewModel.showFolderAlert {
           folderAlert
+        } else if viewModel.showRenameAlert {
+          renameAlert
         }
       }
     }
@@ -67,7 +69,7 @@ public struct FlyView: View {
       PhotosPicker(
         filesManager: viewModel.filesManager,
         onCompletion: { viewModel.importPhotos(from: $0) }
-      )
+      ).ignoresSafeArea(edges: .bottom)
     }
   }
 
@@ -78,15 +80,20 @@ public struct FlyView: View {
       cancelButtonTitle: "Cancel",
       textInputTitle: "Folder Name",
       textInputValue: $viewModel.folderName,
-      done: {
-        viewModel.addFolder(viewModel.folderName)
-        viewModel.showFolderAlert = false
-        viewModel.folderName = ""
-      },
-      dismiss: {
-        viewModel.folderName = ""
-        viewModel.showFolderAlert = false
-      }
+      done: { viewModel.folderAlertDone() },
+      dismiss: { viewModel.folderAlertDismiss() }
+    )
+  }
+
+  var renameAlert: some View {
+    AlertView(
+      title: "Rename File",
+      mainButtonTitle: "Rename",
+      cancelButtonTitle: "Cancel",
+      textInputTitle: "File Name",
+      textInputValue: $viewModel.fileRename,
+      done: { viewModel.renameAlertDone() },
+      dismiss: { viewModel.renameAlertDismiss() }
     )
   }
 }

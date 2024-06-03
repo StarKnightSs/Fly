@@ -67,6 +67,16 @@ public final class FilesManager {
     target.excludeFromBackup()
   }
 
+  public func rename(at source: URL, to filename: String) throws -> URL {
+    guard fileManager.fileExists(atPath: source.absoluteString) == false else {
+      throw FileError.fileDoesNotExists
+    }
+    let target = source.deletingLastPathComponent().appendingPathComponent(filename)
+    try fileManager.moveItem(at: source, to: target)
+    target.excludeFromBackup()
+    return target
+  }
+
   public func remove(at url: URL) throws {
     try fileManager.removeItem(at: url)
   }

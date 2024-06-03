@@ -14,12 +14,22 @@ public class FlyViewModel: ObservableObject {
 
   @Published var files: [File]
   @Published var folderName = ""
+  @Published var fileRename = ""
   @Published var previewFile: URL?
   @Published var showFolderAlert = false
+  @Published var showRenameAlert = false
   @Published var showFilesPicker = false
   @Published var showPhotosPicker = false
   @Published var selectedFiles = Set<UUID>()
   @Published var editMode = EditMode.inactive
+
+  var selectedFile: File?
+
+  var allFilesURLs: [URL] {
+    files
+      .filter { $0.isDirectory == false }
+      .map(\.url)
+  }
 
   public init(filesManager: FilesManager, files: [File] = []) {
     self.files = files
@@ -54,12 +64,6 @@ public class FlyViewModel: ObservableObject {
     }
     server.start()
   }
-
-  var allFilesURLs: [URL] {
-    files
-      .filter { $0.isDirectory == false }
-      .map(\.url)
-  }
 }
 
 // MARK: Select Files
@@ -67,7 +71,8 @@ public class FlyViewModel: ObservableObject {
 extension FlyViewModel {
 
   func selectAllFiles() {
-    selectedFiles = selectedFiles.union(files.map(\.id))
+    selectedFiles = selectedFiles
+      .union(files.map(\.id))
   }
 
   func deSelectAllFiles() {
@@ -98,7 +103,7 @@ extension FlyViewModel {
   }
 }
 
-// MARK: Remove Files
+// MARK: Remove / Rename Files
 
 extension FlyViewModel {
 
@@ -119,7 +124,17 @@ extension FlyViewModel {
         let url = files[$0].url
         removeFile(at: url)
       }
-    selectedFiles.removeAll()
+    deSelectAllFiles()
+  }
+
+  func renameFile(at url: URL, to filename: String) {
+    Task { @MainActor in
+      guard let index = files.firstIndex(where: { $0.url == url }),
+            let url = try? filesManager.rename(at: files[index].url, to: filename),
+            let file = filesManager.file(for: url)
+      else { return }
+      files[index] = file
+    }
   }
 }
 
@@ -200,5 +215,40 @@ extension FlyViewModel {
 
   func importPhotos(from urls: [URL]) {
     urls.forEach { addFile(at: $0) }
+  }
+}
+
+// MARK: Alert Handlers
+
+extension FlyViewModel {
+
+  func folderAlertDone() {
+    addFolder(folderName)
+    folderAlertDismiss()
+  }
+
+  func folderAlertDismiss() {
+    folderName = ""
+    showFolderAlert = false
+  }
+
+  func showRenameAlert(for file: File) {
+    selectedFile = file
+    showRenameAlert = true
+  }
+
+  func renameAlertDone() {
+    if let file = selectedFile,
+       fileRename.isEmpty == false {
+      let filename = fileRename + "." + file.type
+      renameFile(at: file.url, to: filename)
+    }
+    renameAlertDismiss()
+  }
+
+  func renameAlertDismiss() {
+    fileRename = ""
+    showRenameAlert = false
+    selectedFile = nil
   }
 }

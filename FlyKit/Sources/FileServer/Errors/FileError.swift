@@ -8,6 +8,7 @@ import Foundation
 public enum FileError: Error {
   case filePathInvalid
   case fileAlreadyExists
+  case fileDoesNotExists
   case folderAlreadyExists
   case fileLoadingError
   case fileTypeNotSupported
