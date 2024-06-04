@@ -251,6 +251,8 @@ extension FlyViewModel {
 
   func showRenameAlert(for file: File) {
     selectedFile = file
+    fileRename = file.isDirectory ? file.name :
+      file.url.deletingPathExtension().lastPathComponent
     showRenameAlert = true
   }
 
@@ -258,7 +260,9 @@ extension FlyViewModel {
     if let file = selectedFile,
        fileRename.isEmpty == false {
       fileRename = fileRename.trimmingCharacters(in: .whitespacesAndNewlines)
-      fileRename = fileRename + "." + file.type
+      if file.isDirectory == false {
+        fileRename = fileRename + "." + file.type
+      }
       renameFile(at: file.url, to: fileRename)
     }
     renameAlertDismiss()
