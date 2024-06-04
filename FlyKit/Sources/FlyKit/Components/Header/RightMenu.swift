@@ -8,8 +8,14 @@ import SwiftUI
 
 public struct RightMenu: View {
 
-  @State private var sortAscending = false
-  @State private var sortType: SortType = .date
+  @AppStorage("sortName")
+  var sortName = SortType.date.name
+
+  @AppStorage("sortAscending")
+  var sortAscending = false
+
+  @State var sortType: SortType = .date
+
   @EnvironmentObject private var viewModel: FlyViewModel
 
   private var isEditing: Bool {
@@ -34,6 +40,9 @@ public struct RightMenu: View {
       .foregroundStyle(Color(.leadLemon))
       .font(.headline)
       .animateBounce(isEditing)
+    }
+    .onAppear {
+      sortType = SortType.type(for: sortName)
     }
   }
 
@@ -145,6 +154,7 @@ public struct RightMenu: View {
         sortAscending = true
       }
     }
+    sortName = newSort.name
     viewModel.sortFiles(by: newSort, isAscending: sortAscending)
   }
 }

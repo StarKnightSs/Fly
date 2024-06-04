@@ -23,6 +23,16 @@ public class FlyViewModel: ObservableObject {
   @Published var selectedFiles = Set<UUID>()
   @Published var editMode = EditMode.inactive
 
+  @AppStorage("sortName")
+  var sortName = SortType.date.name
+
+  @AppStorage("sortAscending")
+  var sortAscending = false
+
+  var sortType: SortType {
+    SortType.type(for: sortName)
+  }
+
   var selectedFile: File?
 
   var allFilesURLs: [URL] {
@@ -44,7 +54,7 @@ public class FlyViewModel: ObservableObject {
       do {
         let url = try filesManager.documentsDirectory()
         files = try filesManager.files(at: url)
-        sortByDate(ascending: false)
+        sortFiles()
       } catch {
         print(error)
       }
@@ -88,6 +98,7 @@ extension FlyViewModel {
     Task { @MainActor in
       if let file = filesManager.file(for: url) {
         files.append(file)
+        sortFiles()
       }
     }
   }
@@ -97,6 +108,7 @@ extension FlyViewModel {
       guard name.isEmpty == false else { return }
       let folderPath = try filesManager.create(folder: name)
       addFile(at: folderPath)
+      sortFiles()
     } catch {
       print(error)
     }
@@ -134,6 +146,7 @@ extension FlyViewModel {
             let file = filesManager.file(for: url)
       else { return }
       files[index] = file
+      sortFiles()
     }
   }
 }
@@ -141,6 +154,10 @@ extension FlyViewModel {
 // MARK: Sort Files
 
 extension FlyViewModel {
+
+  func sortFiles() {
+    sortFiles(by: sortType, isAscending: sortAscending)
+  }
 
   func sortFiles(by type: SortType, isAscending: Bool) {
     switch type {
