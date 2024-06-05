@@ -7,6 +7,8 @@ import SwiftUI
 
 public struct BlankView: View {
 
+  @EnvironmentObject private var viewModel: FlyViewModel
+
   public var body: some View {
     VStack {
 
@@ -32,24 +34,21 @@ public struct BlankView: View {
 
       Spacer()
 
-      Label("Drop Files", systemImage: downArrow)
-        .padding(.vertical, 16)
-        .padding(.horizontal, 20)
-        .foregroundStyle(Color(.lemonLead))
-        .background(
-          RoundedRectangle(cornerRadius: 20)
-            .fill(Color(.leadLemon))
-        )
-        .overlay(
-          RoundedRectangle(cornerRadius: 20)
-            .stroke(.black, lineWidth: 2)
-        )
-        .font(
-          .system(.headline, design: .rounded)
-            .weight(.semibold)
-        )
-        .textCase(.uppercase)
-        .padding(.vertical, 20)
+      Button("Drop Files", systemImage: downArrow) {
+        viewModel.showUploadView = true
+      }
+      .textCase(.uppercase)
+      .padding(.vertical, 16)
+      .padding(.horizontal, 20)
+      .font(.system(.headline, design: .rounded).weight(.semibold))
+      .foregroundStyle(Color(.lemonLead))
+      .background(
+        RoundedRectangle(cornerRadius: 20)
+          .fill(Color(.leadLemon))
+      )
+
+      Spacer()
+        .frame(height: 20)
     }
     .frame(maxWidth: .infinity)
     .background(Color(.lemonLicorice))

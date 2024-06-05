@@ -8,8 +8,8 @@ import SwiftUI
 
 struct FileListView: View {
 
-  @EnvironmentObject private var viewModel: FlyViewModel
   var hideFiles = false
+  @EnvironmentObject private var viewModel: FlyViewModel
 
   var body: some View {
     List(selection: $viewModel.selectedFiles) {

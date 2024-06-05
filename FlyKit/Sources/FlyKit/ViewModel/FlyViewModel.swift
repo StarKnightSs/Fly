@@ -20,6 +20,7 @@ public class FlyViewModel: ObservableObject {
   @Published var showRenameAlert = false
   @Published var showFilesPicker = false
   @Published var showPhotosPicker = false
+  @Published var showUploadView = false
   @Published var selectedFiles = Set<UUID>()
   @Published var editMode = EditMode.inactive
 

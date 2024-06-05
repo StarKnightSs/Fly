@@ -71,6 +71,9 @@ public struct FlyView: View {
         onCompletion: { viewModel.importPhotos(from: $0) }
       ).ignoresSafeArea(edges: .bottom)
     }
+    .sheet(isPresented: $viewModel.showUploadView) {
+      UploadView()
+    }
   }
 
   var folderAlert: some View {
