@@ -8,38 +8,33 @@ import SwiftUI
 struct UploadView: View {
 
   @Environment(\.dismiss) var dismiss
-  @State private var sheetHeight: CGFloat = .zero
+  @State private var shareLink = false
 
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       close
       title
       qrCodeImage
-      spacer
       shareQrCodeInfo
+      AnyView(shareLinkView)
       shareLinkInfo
-      spacer
-      shareQRCode
-      spacer
-      shareLink
-      Spacer(minLength: 40)
+      Spacer(minLength: 20)
       note
-      spacer
     }
     .background(Color(.bananaLead))
     .foregroundStyle(Color(.leadSnow))
-    .modify { AnyView(updatePresentation(for: $0)) }
-  }
-
-  var spacer: some View {
-    Spacer()
-      .frame(height: 20)
+    .updatePresentationDetent()
+    .onDisappear {
+      if shareLink {
+        share([serverURL])
+      }
+    }
   }
 
   var close: some View {
     HStack {
       Spacer()
-      Image(systemName: "xmark.circle.fill")
+      Image(systemName: xmarkCircleFill)
         .font(.title3)
         .imageScale(.large)
         .padding(.top, 16)
@@ -49,65 +44,76 @@ struct UploadView: View {
   }
 
   var title: some View {
-    Text("QR CODE")
-      .font(.system(.title2, design: .rounded).weight(.bold))
-  }
-
-  var shareQrCodeInfo: some View {
-    Text("Scan this QR code to receive files")
-      .multilineTextAlignment(.center)
-      .font(.system(.body, design: .rounded).weight(.medium))
-  }
-
-  var shareLinkInfo: some View {
-    Text("OR share a direct link to the fly server 🐒")
-      .multilineTextAlignment(.center)
-      .font(.system(.callout, design: .rounded))
-  }
-
-  var note: some View {
-    Text("NOTE: Please make sure that devices are connected on the same wifi or hotspot network while sending or receving files.")
-      .padding(.horizontal, 20)
-      .foregroundStyle(Color.red)
-      .font(.system(.footnote, design: .default).weight(.medium))
+    Text("SCAN CODE")
+      .offset(y: -28)
+      .font(.system(.title3, design: .rounded)
+        .weight(.bold)
+      )
   }
 
   var qrCodeImage: some View {
     Image
-      .generateQRCode(from: "http://\(ProcessInfo().hostName)")
+      .generateQRCode(from: serverURL.absoluteString)
       .interpolation(.none)
       .resizable()
-      .scaledToFit()
-      .frame(maxWidth: 180, maxHeight: 180)
+      .aspectRatio(1, contentMode: .fit)
+      .frame(maxWidth: 180)
+      .offset(y: -16)
   }
 
-  var shareQRCode: some View {
-    Button("Share QR", systemImage: "qrcode") {}
-      .padding(.vertical, 12)
-      .padding(.horizontal, 16)
-      .background(Color(.leadLemon))
-      .foregroundStyle(Color(.lemonLead))
-      .font(.system(.headline, design: .rounded).weight(.semibold))
-      .cornerRadius(12)
+  var shareQrCodeInfo: some View {
+    Text("Scan QR Code to upload files")
+      .offset(y: -4)
+      .font(.system(.body, design: .rounded)
+        .weight(.medium)
+      )
   }
 
-  var shareLink: some View {
-    Button("Share Link", systemImage: "link") {}
-      .padding(.vertical, 12)
-      .padding(.horizontal, 16)
-      .background(Color(.leadLemon))
-      .foregroundStyle(Color(.lemonLead))
-      .font(.system(.headline, design: .rounded).weight(.semibold))
-      .cornerRadius(12)
-  }
-
-  func updatePresentation(for view: some View) -> any View {
-    guard #available(iOS 16, *) else { return view }
-    return view.presentationDetents([.fraction(0.74)])
-      .modify {
-        guard #available(iOS 16.4, *) else { return $0 }
-        return $0.presentationBackground(Color(.bananaLead))
+  var shareLinkView: any View {
+    if #available(iOS 16.0, *) {
+      ShareLink(item: serverURL) {
+        shareLinkLabel
       }
+    } else {
+      Button {
+        shareLink = true
+        dismiss()
+      } label: {
+        shareLinkLabel
+      }
+    }
+  }
+
+  var shareLinkLabel: some View {
+    Label("Share Link", systemImage: link)
+      .padding(.vertical, 10)
+      .padding(.horizontal, 14)
+      .background(Color(.leadLemon))
+      .foregroundStyle(Color(.lemonLead))
+      .font(.system(.callout, design: .rounded).weight(.semibold))
+      .cornerRadius(8)
+      .padding(.top, 20)
+  }
+
+  var shareLinkInfo: some View {
+    Text("Or share a direct link for the fly server🐒")
+      .padding(.top, 12)
+      .padding(.horizontal, 20)
+      .multilineTextAlignment(.center)
+      .font(.system(.subheadline, design: .rounded)
+        .weight(.medium)
+      )
+  }
+
+  var note: some View {
+    Text(
+      "NOTE: Please keep the app active & make sure that both devices " +
+        "are connected on the same wifi or hotspot network during file transfer."
+    )
+    .padding(.bottom, 8)
+    .padding(.horizontal, 20)
+    .foregroundStyle(Color.red)
+    .font(.system(.footnote, design: .default).weight(.medium))
   }
 }
 

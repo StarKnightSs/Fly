@@ -90,10 +90,12 @@ public struct RightMenu: View {
 
         // Recieve Files
         Button {
-          print("Receive")
+          viewModel.showUploadView = true
         } label: {
           Label("Recieve Files", systemImage: downArrow)
         }
+
+        Divider()
       }
 
       // Add Files
