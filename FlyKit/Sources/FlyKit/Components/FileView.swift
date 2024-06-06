@@ -123,7 +123,7 @@ struct FileView: View {
       }
     } else {
       Button {
-        shareFile()
+        share([file.url])
       } label: {
         Label("Share", systemImage: squareAndArrowUp)
       }
@@ -163,18 +163,6 @@ struct FileView: View {
   func quickLookFile() {
     guard file.isDirectory == false, isEditing == false else { return }
     viewModel.previewFile = file.url
-  }
-
-  func shareFile() {
-    let activity = UIActivityViewController(
-      activityItems: [file.url],
-      applicationActivities: nil
-    )
-    let connectedScenes = UIApplication.shared.connectedScenes
-      .filter { $0.activationState == .foregroundActive }
-      .compactMap { $0 as? UIWindowScene }
-    let window = connectedScenes.first?.windows.first { $0.isKeyWindow }
-    window?.rootViewController?.present(activity, animated: true)
   }
 }
 

@@ -41,4 +41,22 @@ public extension View {
       }
     }
   }
+
+  @ViewBuilder
+  func updatePresentationDetent() -> some View {
+    modify {
+      if #available(iOS 16, *) {
+        $0.presentationDetents([.medium])
+          .modify {
+            if #available(iOS 16.4, *) {
+              $0.presentationBackground(Color(.bananaLead))
+            } else {
+              $0
+            }
+          }
+      } else {
+        $0
+      }
+    }
+  }
 }
