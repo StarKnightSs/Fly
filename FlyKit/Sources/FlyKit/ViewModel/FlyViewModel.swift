@@ -74,6 +74,7 @@ public class FlyViewModel: ObservableObject {
       }
     }
     server.start()
+    trackFileProgress()
   }
 }
 
@@ -273,5 +274,20 @@ extension FlyViewModel {
     fileRename = ""
     showRenameAlert = false
     selectedFile = nil
+  }
+}
+
+// MARK: Track Progress
+
+extension FlyViewModel {
+
+  func trackFileProgress() {
+    Task { @MainActor in
+      ProgressManager.shared.trackProgress = {
+        print("Progress \($0)")
+        print("Speed \($1)")
+        print("Time \($2)\n")
+      }
+    }
   }
 }

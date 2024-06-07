@@ -28,7 +28,7 @@ async function handleSubmit(event) {
 
   const fileName = file.name;
   const fileSize = file.size;
-  const path = "/" + fileName;
+  const path = "/" + fileName + "/" + fileSize;
   var request = new XMLHttpRequest();
 
   var lastNow = new Date().getTime();

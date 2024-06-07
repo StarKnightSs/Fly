@@ -23,7 +23,7 @@ struct FileController: RouteCollection {
     routes.get(use: filesViewHandler)
     routes.get(":filename", use: download)
     routes.get("delete", ":filename", use: delete)
-    routes.on(.POST, ":filename", body: .stream, use: upload)
+    routes.on(.POST, ":filename", ":filesize", body: .stream, use: upload)
   }
 
   func filesViewHandler(_ req: Request) async throws -> View {
@@ -53,9 +53,12 @@ struct FileController: RouteCollection {
   }
 
   func upload(_ req: Request) async throws -> Response {
-    guard let filename = req.parameters.get("filename") else {
-      throw Abort(.badRequest)
-    }
+
+    // Get file name & size from request
+    guard let filename = req.parameters.get("filename"),
+          let filesize = req.parameters.get("filesize")
+    else { throw Abort(.badRequest) }
+
     let fileUrl = try filesManager.filePath(for: filename)
     try? filesManager.remove(at: fileUrl)
     AudioManager.shared.play()
@@ -66,9 +69,13 @@ struct FileController: RouteCollection {
     ).get()
     defer { try? fileHandle.close() }
 
-    let start = Date()
     let stream = req.eventLoop.makePromise(of: Void.self)
     let sequential = Sequential(future: req.eventLoop.makeSucceededFuture(()))
+
+    // Initiate progress tracking
+    if let totalSize = Int64(filesize) {
+      await ProgressManager.shared.initiate(with: totalSize)
+    }
 
     req.body.drain {
       switch $0 {
@@ -78,6 +85,13 @@ struct FileController: RouteCollection {
             fileHandle: fileHandle,
             buffer: buffer,
             eventLoop: req.eventLoop
+          )
+        }
+
+        // Update progress
+        Task(priority: .high) {
+          await ProgressManager.shared.updateProgress(
+            bytes: Int64(buffer.readableBytes)
           )
         }
 
@@ -96,9 +110,9 @@ struct FileController: RouteCollection {
     AudioManager.shared.stop()
     updateHandler?(fileUrl, .POST)
 
-    let end = Date()
-    let time = end.timeIntervalSince(start)
-    print("🕰️ Time \(time)")
+    // End progress
+    await ProgressManager.shared.endProgress()
+
     print("Path \(fileUrl.absoluteString)")
 
     return req.redirect(to: "/")
