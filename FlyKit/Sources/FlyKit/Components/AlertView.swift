@@ -16,7 +16,10 @@ public struct AlertView: View {
   var textInputValue: Binding<String>?
   var titleColor: Color = Color(.leadBanana)
   var messageColor: Color = Color(.licoriceLemon)
+
   var autoDismiss: Bool = false
+  var dismissDuration = 2
+  var spacing = 20.0
 
   var done: (() -> Void)?
   var dismiss: (() -> Void)?
@@ -44,7 +47,7 @@ public struct AlertView: View {
       .onAppear {
         if autoDismiss {
           DispatchQueue.main.asyncAfter(
-            deadline: .now() + .seconds(2)
+            deadline: .now() + .seconds(dismissDuration)
           ) {
             dismiss?()
           }
@@ -53,7 +56,7 @@ public struct AlertView: View {
   }
 
   var alertView: some View {
-    VStack(alignment: .center, spacing: 20) {
+    VStack(alignment: .center, spacing: spacing) {
       if let title {
         Text(title)
           .font(.headline)
@@ -68,6 +71,7 @@ public struct AlertView: View {
         image
           .resizable()
           .scaledToFit()
+          .frame(maxWidth: 140)
       }
       if let textInputValue {
         TextField(textInputTitle ?? "", text: textInputValue)
