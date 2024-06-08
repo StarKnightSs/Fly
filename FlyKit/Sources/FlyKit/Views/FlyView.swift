@@ -1,6 +1,6 @@
 //
 // FlyView.swift
-// Created by Arpit Williams on 24/05/24.
+// Created by Arpit Williams on 06/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FlyServer
@@ -22,6 +22,10 @@ public struct FlyView: View {
           folderAlert
         } else if viewModel.showRenameAlert {
           renameAlert
+        } else if viewModel.showTransferAlert {
+          transferAlert
+        } else if viewModel.showProgressView {
+          progressView
         }
       }
     }
@@ -98,6 +102,22 @@ public struct FlyView: View {
       done: { viewModel.renameAlertDone() },
       dismiss: { viewModel.renameAlertDismiss() }
     )
+  }
+
+  var transferAlert: some View {
+    AlertView(
+      title: "Transferred in \(format(viewModel.lastTransferTime))⌛️",
+      image: Image("Monkey", bundle: .module),
+      autoDismiss: true,
+      dismissDuration: 4,
+      spacing: 0,
+      dismiss: { viewModel.showTransferAlert = false }
+    )
+  }
+
+  var progressView: some View {
+    ProgressView(value: viewModel.progress.value, total: 100.0)
+      .progressViewStyle(FileProgressView())
   }
 }
 

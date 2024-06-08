@@ -1,6 +1,6 @@
 //
 // FlyViewModel.swift
-// Created by Arpit Williams on 23/05/24.
+// Created by Arpit Williams on 08/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FlyServer
@@ -16,13 +16,20 @@ public class FlyViewModel: ObservableObject {
   @Published var folderName = ""
   @Published var fileRename = ""
   @Published var previewFile: URL?
+
   @Published var showFolderAlert = false
   @Published var showRenameAlert = false
+  @Published var showTransferAlert = false
+
   @Published var showFilesPicker = false
   @Published var showPhotosPicker = false
   @Published var showUploadView = false
+  @Published var showProgressView = false
+
   @Published var selectedFiles = Set<UUID>()
   @Published var editMode = EditMode.inactive
+  @Published var lastTransferTime = 0.0
+  @Published var progress: FlyServer.Progress = .zero
 
   @AppStorage("sortName")
   var sortName = SortType.date.name
@@ -275,6 +282,11 @@ extension FlyViewModel {
     showRenameAlert = false
     selectedFile = nil
   }
+
+  func transferAlertDismiss() {
+    showTransferAlert = false
+    lastTransferTime = 0
+  }
 }
 
 // MARK: Track Progress
@@ -283,10 +295,12 @@ extension FlyViewModel {
 
   func trackFileProgress() {
     Task { @MainActor in
-      ProgressManager.shared.trackProgress = {
-        print("Progress \($0)")
-        print("Speed \($1)")
-        print("Time \($2)\n")
+      ProgressManager.shared.trackProgress = { [weak self] currentProgress, elapsedTime, isCancelled in
+        guard let self else { return }
+        showProgressView = isCancelled == false
+        progress = currentProgress
+        lastTransferTime = elapsedTime
+        showTransferAlert = isCancelled
       }
     }
   }
