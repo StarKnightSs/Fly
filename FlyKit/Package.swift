@@ -12,7 +12,7 @@ let package = Package(
   targets: [
     .flyKit,
     .flyKitTests,
-    .fileServer
+    .flyServer
   ]
 )
 
@@ -21,7 +21,7 @@ let package = Package(
 enum Module: String, CaseIterable {
   // swiftlint:disable identifier_name
   case FlyKit
-  case FileServer
+  case FlyServer
   // swiftlint:enable identifier_name
 
   var test: String {
@@ -36,14 +36,14 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.fileServer],
+      dependencies: [.flyServer],
       resources: [.process("Resources")]
     )
   }
 
-  static var fileServer: Target {
+  static var flyServer: Target {
     .target(
-      name: Module.FileServer.rawValue,
+      name: Module.FlyServer.rawValue,
       dependencies: [.vapor, .leaf],
       resources: [.process("Resources")]
     )
@@ -73,8 +73,8 @@ extension Target.Dependency {
     .init(.FlyKit)
   }
 
-  static var fileServer: Target.Dependency {
-    .init(.FileServer)
+  static var flyServer: Target.Dependency {
+    .init(.FlyServer)
   }
 
   static var vapor: Target.Dependency {
