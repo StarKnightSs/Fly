@@ -105,6 +105,10 @@ public final class FilesManager {
       creationDate: resource.creationDate ?? .now
     )
   }
+
+  public func fileExists(at url: URL) -> Bool {
+    fileManager.fileExists(atPath: url.relativePath)
+  }
 }
 
 extension FilesManager {

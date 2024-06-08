@@ -55,14 +55,22 @@ struct FileController: RouteCollection {
   func upload(_ req: Request) async throws -> Response {
 
     // Get file name & size from request
-    guard let filename = req.parameters.get("filename"),
+    guard var filename = req.parameters.get("filename"),
           let filesize = req.parameters.get("filesize")
     else { throw Abort(.badRequest) }
 
-    let fileUrl = try filesManager.filePath(for: filename)
-    try? filesManager.remove(at: fileUrl)
+    // Start audio playback for background processing
     AudioManager.shared.play()
 
+    // Update filename & fileUrl if file already exists
+    var tempFileUrl = try filesManager.filePath(for: filename)
+    if filesManager.fileExists(at: tempFileUrl) {
+      filename = "(Copy-\(Int.random(in: 1 ..< 50))) ".appending(filename)
+      tempFileUrl = try filesManager.filePath(for: filename)
+    }
+
+    // Setup handle for file url
+    let fileUrl = tempFileUrl
     let fileHandle = try await req.application.fileio.openFile(
       path: fileUrl.relativePath, mode: .write,
       flags: .allowFileCreation(), eventLoop: req.eventLoop
