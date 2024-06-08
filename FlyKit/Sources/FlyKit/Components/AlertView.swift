@@ -40,7 +40,7 @@ public struct AlertView: View {
   var transparentBackground: some View {
     VStack { Color.black }
       .opacity(0.4)
-      .edgesIgnoringSafeArea(.bottom)
+      .ignoresSafeArea()
       .onTapGesture {
         dismiss?()
       }
