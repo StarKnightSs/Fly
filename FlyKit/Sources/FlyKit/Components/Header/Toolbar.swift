@@ -3,7 +3,7 @@
 // Created by Arpit Williams on 23/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import FileServer
+import FlyServer
 import SwiftUI
 
 public struct Toolbar: ToolbarContent {

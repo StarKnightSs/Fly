@@ -3,7 +3,7 @@
 // Created by Arpit Williams on 31/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import FileServer
+import FlyServer
 import SwiftUI
 
 public struct LeftMenu: View {

@@ -3,14 +3,14 @@
 // Created by Arpit Williams on 28/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import FileServer
+import FlyServer
 import PhotosUI
 import SwiftUI
 
 struct PhotosPicker: UIViewControllerRepresentable {
 
   let filesManager: FilesManager
-  var onCompletion: (([URL]) -> Void)
+  var onCompletion: ([URL]) -> Void
 
   func makeUIViewController(context: Context) -> PHPickerViewController {
     var configuration = PHPickerConfiguration()
@@ -33,7 +33,7 @@ extension PhotosPicker {
   final class Coordinator: NSObject, PHPickerViewControllerDelegate {
 
     let filesManager: FilesManager
-    let onCompletion: (([URL]) -> Void)
+    let onCompletion: ([URL]) -> Void
 
     init(filesManager: FilesManager, onCompletion: @escaping ([URL]) -> Void) {
       self.filesManager = filesManager
