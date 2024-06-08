@@ -36,7 +36,7 @@ struct FileProgressView: ProgressViewStyle {
       .frame(maxWidth: .infinity)
       .background(Color(.lemonLicorice))
       .clipShape(RoundedRectangle(cornerRadius: 8))
-      .shadow(color: Color(.licoriceSnow), radius: 8)
+      .shadow(color: Color(.licoriceLemon), radius: 4)
       .padding(.horizontal, 20)
       .offset(y: -30)
     }

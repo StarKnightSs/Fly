@@ -19,10 +19,16 @@ func share(_ items: [Any]) {
 
 func format(_ seconds: Double) -> String {
   var suffix = ""
+  var seconds = seconds
   switch seconds {
-  case 0 ..< 60: suffix = "sec"
-  case 60 ..< 3600: suffix = "min"
-  default: suffix = "hrs"
+  case 0 ..< 60:
+    suffix = "sec"
+  case 60 ..< 3600:
+    suffix = "min"
+    seconds /= 60
+  default:
+    suffix = "hrs"
+    seconds /= 3600
   }
   let time = seconds.formatted(.number.precision(.fractionLength(2)))
   return String(format: "%@ %@", time, suffix)
