@@ -70,18 +70,18 @@ public class FlyViewModel: ObservableObject {
   }
 
   func loadServer() {
-    server.updateHandler = { [weak self] url, type in
-      switch type {
-      case .POST:
-        self?.addFile(at: url)
-      case .DELETE:
-        self?.removeFile(at: url)
-      default:
-        break
-      }
-    }
-    server.start()
-    trackFileProgress()
+//    FileServer.updateHandler = { [weak self] url, type in
+//      switch type {
+//      case .POST:
+//        self?.addFile(at: url)
+//      case .DELETE:
+//        self?.removeFile(at: url)
+//      default:
+//        break
+//      }
+//    }
+    //server.start()
+    //trackFileProgress()
   }
 }
 

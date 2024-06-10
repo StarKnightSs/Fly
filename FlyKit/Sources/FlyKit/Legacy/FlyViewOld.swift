@@ -1,13 +1,13 @@
 //
 // FlyView.swift
-// Created by Arpit Williams on 06/06/24.
+// Created by Arpit Williams on 08/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FlyServer
 import QuickLook
 import SwiftUI
 
-public struct FlyView: View {
+public struct FlyViewOld: View {
 
   @Environment(\.scenePhase) private var scenePhase
   @EnvironmentObject private var viewModel: FlyViewModel
@@ -18,15 +18,15 @@ public struct FlyView: View {
     NavigationView {
       ZStack {
         rootView
-        if viewModel.showFolderAlert {
-          folderAlert
-        } else if viewModel.showRenameAlert {
-          renameAlert
-        } else if viewModel.showTransferAlert {
-          transferAlert
-        } else if viewModel.showProgressView {
-          progressView
-        }
+//        if viewModel.showFolderAlert {
+//          folderAlert
+//        } else if viewModel.showRenameAlert {
+//          renameAlert
+//        } else if viewModel.showTransferAlert {
+//          transferAlert
+//        } else if viewModel.showProgressView {
+//          progressView
+//        }
       }
     }
   }
@@ -36,7 +36,7 @@ public struct FlyView: View {
       if viewModel.files.isEmpty {
         BlankView()
       } else {
-        FileListView()
+        FilesView(store: FilesStore.mockStore())
           .padding(.top, 1)
       }
     }
@@ -80,40 +80,40 @@ public struct FlyView: View {
     }
   }
 
-  var folderAlert: some View {
-    AlertView(
-      title: "Add Folder",
-      mainButtonTitle: "Add",
-      cancelButtonTitle: "Cancel",
-      textInputTitle: "Folder Name",
-      textInputValue: $viewModel.folderName,
-      done: { viewModel.folderAlertDone() },
-      dismiss: { viewModel.folderAlertDismiss() }
-    )
-  }
-
-  var renameAlert: some View {
-    AlertView(
-      title: "Rename File",
-      mainButtonTitle: "Rename",
-      cancelButtonTitle: "Cancel",
-      textInputTitle: "File Name",
-      textInputValue: $viewModel.fileRename,
-      done: { viewModel.renameAlertDone() },
-      dismiss: { viewModel.renameAlertDismiss() }
-    )
-  }
-
-  var transferAlert: some View {
-    AlertView(
-      title: "Transferred in \(format(viewModel.lastTransferTime))⌛️",
-      image: Image("Monkey", bundle: .module),
-      autoDismiss: true,
-      dismissDuration: 4,
-      spacing: 0,
-      dismiss: { viewModel.showTransferAlert = false }
-    )
-  }
+//  var folderAlert: some View {
+//    AlertView(
+//      title: "Add Folder",
+//      mainButtonTitle: "Add",
+//      cancelButtonTitle: "Cancel",
+//      textInputTitle: "Folder Name",
+//      textInputValue: $viewModel.folderName,
+//      done: { viewModel.folderAlertDone() },
+//      dismiss: { viewModel.folderAlertDismiss() }
+//    )
+//  }
+//
+//  var renameAlert: some View {
+//    AlertView(
+//      title: "Rename File",
+//      mainButtonTitle: "Rename",
+//      cancelButtonTitle: "Cancel",
+//      textInputTitle: "File Name",
+//      textInputValue: $viewModel.fileRename,
+//      done: { viewModel.renameAlertDone() },
+//      dismiss: { viewModel.renameAlertDismiss() }
+//    )
+//  }
+//
+//  var transferAlert: some View {
+//    AlertView(
+//      title: "Transferred in \(format(viewModel.lastTransferTime))⌛️",
+//      image: Image("Monkey", bundle: .module),
+//      autoDismiss: true,
+//      dismissDuration: 4,
+//      spacing: 0,
+//      dismiss: { viewModel.showTransferAlert = false }
+//    )
+//  }
 
   var progressView: some View {
     ProgressView(value: viewModel.progress.value, total: 100.0)
@@ -122,7 +122,7 @@ public struct FlyView: View {
 }
 
 #Preview {
-  FlyView()
+  FlyViewOld()
     .environmentObject(
       FlyViewModel(
         filesManager: FilesManager(fileManager: .default),

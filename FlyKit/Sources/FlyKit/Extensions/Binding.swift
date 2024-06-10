@@ -1,5 +1,5 @@
 //
-// BindingExtension.swift
+// Binding.swift
 // Created by Arpit Williams on 30/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
