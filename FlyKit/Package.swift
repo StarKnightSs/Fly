@@ -8,7 +8,8 @@ let package = Package(
   dependencies: [
     .vapor,
     .leaf,
-    .composableArchitecture
+    .composableArchitecture,
+    .resolver
   ],
   targets: [
     .flyKit,
@@ -37,7 +38,7 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.flyServer, .composableArchitecture],
+      dependencies: [.flyServer, .composableArchitecture, .resolver],
       resources: [.process("Resources")]
     )
   }
@@ -45,7 +46,7 @@ extension Target {
   static var flyServer: Target {
     .target(
       name: Module.FlyServer.rawValue,
-      dependencies: [.vapor, .leaf],
+      dependencies: [.vapor, .leaf, .resolver],
       resources: [.process("Resources")]
     )
   }
@@ -89,6 +90,10 @@ extension Target.Dependency {
   static var composableArchitecture: Target.Dependency {
     product(name: "ComposableArchitecture", package: "swift-composable-architecture")
   }
+
+  static var resolver: Target.Dependency {
+    product(name: "Resolver", package: "Resolver")
+  }
 }
 
 // MARK: - Package Dependency
@@ -105,6 +110,10 @@ extension Package.Dependency {
 
   static var composableArchitecture: Package.Dependency {
     package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.11.0")
+  }
+
+  static var resolver: Package.Dependency {
+    package(url: "https://github.com/hmlongco/Resolver", .upToNextMajor(from: "1.5.1"))
   }
 }
 
