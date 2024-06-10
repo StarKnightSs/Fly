@@ -7,7 +7,8 @@ let package = Package(
   products: Module.allCases.map(Product.library),
   dependencies: [
     .vapor,
-    .leaf
+    .leaf,
+    .composableArchitecture
   ],
   targets: [
     .flyKit,
@@ -36,7 +37,7 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.flyServer],
+      dependencies: [.flyServer, .composableArchitecture],
       resources: [.process("Resources")]
     )
   }
@@ -84,6 +85,10 @@ extension Target.Dependency {
   static var leaf: Target.Dependency {
     product(name: "Leaf", package: "Leaf")
   }
+
+  static var composableArchitecture: Target.Dependency {
+    product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+  }
 }
 
 // MARK: - Package Dependency
@@ -96,6 +101,10 @@ extension Package.Dependency {
 
   static var leaf: Package.Dependency {
     package(url: "https://github.com/vapor/leaf.git", from: "4.3.0")
+  }
+
+  static var composableArchitecture: Package.Dependency {
+    package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.11.0")
   }
 }
 
