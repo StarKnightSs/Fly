@@ -6,7 +6,7 @@
 import Foundation
 import UniformTypeIdentifiers
 
-public final class FilesManager {
+public final class FilesManager: FilesManagerProtocol {
 
   let fileManager: FileManager
 

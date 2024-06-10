@@ -7,7 +7,7 @@ import Foundation
 import Leaf
 import Vapor
 
-public final class FileServer {
+public final class FileServer: FileServerProtocol {
 
   private let app: Application
   public let filesManager: FilesManager
