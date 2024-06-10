@@ -5,6 +5,7 @@
 
 public extension FileServer {
   struct Mock: FileServerProtocol {
+    public init() {}
     public func start() {}
   }
 }

@@ -9,7 +9,7 @@ public extension FilesManager {
   struct Mock: FilesManagerProtocol {
     // swiftlint:disable:next force_unwrapping
     let url = URL(string: "www.test.com")!
-    public init(fileManager: FileManager) {}
+    public init(fileManager: FileManager = FileManager()) {}
     public func remove(at url: URL) throws {}
     public func create(folder: String) throws -> URL { url }
     public func copy(from source: URL, to target: URL) throws {}

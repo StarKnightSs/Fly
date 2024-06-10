@@ -1,0 +1,45 @@
+//
+// Dependencies.swift
+// Created by Arpit Williams on 10/06/24.
+// Copyright (c) 2024 StarKnights Technologies
+
+import Foundation
+import Dependencies
+import FlyServer
+import Resolver
+
+public protocol DependenciesProtocol {
+  var server: FileServerProtocol { get }
+  var filesManager: FilesManagerProtocol { get }
+  var mainQueue: AnySchedulerOf<DispatchQueue> { get }
+}
+
+struct Dependencies: DependenciesProtocol {
+  var server: any FileServerProtocol
+  var filesManager: any FilesManagerProtocol
+  var mainQueue: AnySchedulerOf<DispatchQueue> = .main
+}
+
+extension Dependencies: DependencyKey {
+  static let liveValue: DependenciesProtocol = Resolver.resolve()
+  static let testValue: DependenciesProtocol = Dependencies.mock()
+  static let previewValue: DependenciesProtocol = Dependencies.mock()
+}
+
+extension DependencyValues {
+  var dependencies: DependenciesProtocol {
+    get { self[Dependencies.self] }
+    set { self[Dependencies.self] = newValue }
+  }
+}
+
+// MARK: - Mock
+extension Dependencies {
+  static func mock() -> Self {
+    .init(
+      server: FileServer.Mock(),
+      filesManager: FilesManager.Mock()
+    )
+  }
+
+}

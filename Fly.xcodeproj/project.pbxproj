@@ -16,6 +16,7 @@
 		A183A0992ABEBA4F00515D98 /* FlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A0982ABEBA4F00515D98 /* FlyUITests.swift */; };
 		A183A09B2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A09A2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift */; };
 		A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */ = {isa = PBXBuildFile; productRef = A183A0AB2ABEBB9700515D98 /* FlyKit */; };
+		A1868A602C16FB2800BD1D88 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1868A5F2C16FB2800BD1D88 /* Register.swift */; };
 		A1D851B02BEF39DF00A6A71E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		A183A0A82ABEBB5200515D98 /* FlyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FlyKit; sourceTree = "<group>"; };
 		A183A0A92ABEBB8C00515D98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A183A0AE2ABEBD3A00515D98 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BuildTools; sourceTree = "<group>"; };
+		A1868A5F2C16FB2800BD1D88 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		A1D4411F2BFE0C0200974CDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 				A1D4411F2BFE0C0200974CDF /* PrivacyInfo.xcprivacy */,
 				A143FBAC2BF50F590072C5B1 /* ContentView.swift */,
 				A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */,
+				A1868A5F2C16FB2800BD1D88 /* Register.swift */,
 				A183A07C2ABEBA4E00515D98 /* FlyApp.swift */,
 				A183A0802ABEBA4F00515D98 /* Assets.xcassets */,
 				A183A0822ABEBA4F00515D98 /* Fly.entitlements */,
@@ -383,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1D851B02BEF39DF00A6A71E /* AppDelegate.swift in Sources */,
+				A1868A602C16FB2800BD1D88 /* Register.swift in Sources */,
 				A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */,
 				A143FBAD2BF50F590072C5B1 /* ContentView.swift in Sources */,
 			);
