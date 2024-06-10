@@ -10,6 +10,7 @@ public extension FilesManager {
     // swiftlint:disable:next force_unwrapping
     let url = URL(string: "www.test.com")!
     public init(fileManager: FileManager = FileManager()) {}
+    public func documentsDirectory() throws -> URL { url }
     public func remove(at url: URL) throws {}
     public func create(folder: String) throws -> URL { url }
     public func copy(from source: URL, to target: URL) throws {}

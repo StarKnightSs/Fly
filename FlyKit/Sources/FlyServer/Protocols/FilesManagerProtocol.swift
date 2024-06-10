@@ -7,6 +7,7 @@ import Foundation
 
 public protocol FilesManagerProtocol {
   init(fileManager: FileManager)
+  func documentsDirectory() throws -> URL
   func remove(at url: URL) throws
   func create(folder: String) throws -> URL
   func copy(from source: URL, to target: URL) throws

@@ -120,7 +120,9 @@ struct FileController: RouteCollection {
       try await sequential.future.get()
 
       // Call update handler
-      updateHandler?(fileUrl, .POST)
+      if let updateHandler {
+        updateHandler(fileUrl, .POST)
+      }
 
       // End progress
       AudioManager.shared.stop()
