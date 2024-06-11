@@ -6,5 +6,5 @@
 public enum AlertType: Equatable {
   case createFolder
   case renameFile
-  case transferFile
+  case fileTransferTime
 }
