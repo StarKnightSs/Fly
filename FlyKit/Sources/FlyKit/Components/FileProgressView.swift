@@ -3,23 +3,24 @@
 // Created by Arpit Williams on 08/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import FlyServer
 import SwiftUI
 
 struct FileProgressView: ProgressViewStyle {
 
-  @EnvironmentObject private var viewModel: FlyViewModel
+  let store: StoreOf<FlyStore>
 
   var speed: String {
     String(
       format: "%@ Mbps",
-      viewModel.progress.speed
+      store.progress.speed
         .formatted(.number.precision(.fractionLength(2)))
     )
   }
 
   var time: String {
-    let seconds = viewModel.progress.time
+    let seconds = store.progress.time
     return format(seconds)
   }
 
@@ -100,11 +101,8 @@ struct FileProgressView: ProgressViewStyle {
 #Preview(body: {
   ProgressView(value: 80, total: 100)
     .progressViewStyle(
-      FileProgressView()
-    )
-    .environmentObject(
-      FlyViewModel(
-        filesManager: .init(fileManager: .default)
+      FileProgressView(
+        store: FlyStore.mockStore()
       )
     )
 })

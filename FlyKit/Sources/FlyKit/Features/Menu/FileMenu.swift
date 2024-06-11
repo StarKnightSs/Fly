@@ -1,29 +1,22 @@
 //
-// RightMenu.swift
+// FileMenu.swift
 // Created by Arpit Williams on 26/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import FlyServer
 import SwiftUI
 
-public struct RightMenu: View {
+public struct FileMenu: View {
 
-  @AppStorage("sortName")
-  var sortName = SortType.date.name
+  @Perception.Bindable
+  var store: StoreOf<FlyStore>
 
-  @AppStorage("sortAscending")
-  var sortAscending = false
-
+  @State var sortAscending = false
   @State var sortType: SortType = .date
 
-  @EnvironmentObject private var viewModel: FlyViewModel
-
   private var isEditing: Bool {
-    viewModel.editMode.isEditing
-  }
-
-  private var filesExist: Bool {
-    viewModel.files.isEmpty == false
+    store.editMode.isEditing
   }
 
   public var body: some View {
@@ -42,7 +35,10 @@ public struct RightMenu: View {
       .animateBounce(isEditing)
     }
     .onAppear {
-      sortType = SortType.type(for: sortName)
+      if let type = store.filesView?.sortType {
+        sortType = type
+      }
+      sortAscending = store.filesView?.sortAscending == true
     }
   }
 
@@ -51,7 +47,7 @@ public struct RightMenu: View {
 
       // Done
       Button {
-        viewModel.editMode = .inactive
+        store.editMode = .inactive
       } label: {
         Text("Done")
       }
@@ -63,11 +59,13 @@ public struct RightMenu: View {
         print("Send")
       } label: {
         Label("Send Files", systemImage: upArrow)
-      }.disabled(viewModel.selectedFiles.isEmpty)
+      }
+      .disabled(store.filesView?.selectedFiles.isEmpty == true)
 
       // Delete
       Button(role: .destructive) {
-        viewModel.removeSelectedFiles()
+        store.send(.filesView(.presented(.removeSelectedFiles)))
+        store.editMode = .inactive
       } label: {
         Label("Delete", systemImage: trash)
       }
@@ -75,13 +73,13 @@ public struct RightMenu: View {
   }
 
   var fileMenu: some View {
-    Group {
+    VStack {
 
-      if filesExist {
+      if store.hasFiles {
 
         // Select
         Button {
-          viewModel.editMode = .active
+          store.editMode = .active
         } label: {
           Label("Select", systemImage: checkmarkCircle)
         }
@@ -90,7 +88,7 @@ public struct RightMenu: View {
 
         // Recieve Files
         Button {
-          viewModel.showUploadView = true
+          store.filesView?.showUploadView = true
         } label: {
           Label("Recieve Files", systemImage: downArrow)
         }
@@ -100,27 +98,27 @@ public struct RightMenu: View {
 
       // Add Files
       Button {
-        viewModel.showFilesPicker = true
+        store.filesView?.showFilesPicker = true
       } label: {
         Label("Add Files", systemImage: docFill)
       }
 
       // Add Photos
       Button {
-        viewModel.showPhotosPicker = true
+        store.filesView?.showPhotosPicker = true
       } label: {
         Label("Add Photos", systemImage: photo)
       }
 
       // Add Folder
       Button {
-        viewModel.showFolderAlert = true
+        store.send(.filesView(.presented(.showCreateFolderAlert)))
       } label: {
         Label("Add Folder", systemImage: folderFill)
       }
 
       // Sort Menu
-      if filesExist {
+      if store.hasFiles {
         Divider()
         sortMenu
       }
@@ -156,11 +154,16 @@ public struct RightMenu: View {
         sortAscending = true
       }
     }
-    sortName = newSort.name
-    viewModel.sortFiles(by: newSort, isAscending: sortAscending)
+
+    // Update sort name & sort ascending in file store
+    store.filesView?.sortName = newSort.name
+    store.filesView?.sortAscending = sortAscending
+
+    // Trigger sort
+    store.send(.filesView(.presented(.sortFiles)))
   }
 }
 
 #Preview(body: {
-  RightMenu()
+  FileMenu(store: FlyStore.mockStore())
 })

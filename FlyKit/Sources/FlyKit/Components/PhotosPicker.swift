@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PhotosPicker: UIViewControllerRepresentable {
 
-  let filesManager: FilesManager
+  let filesManager: FilesManagerProtocol
   var onCompletion: ([URL]) -> Void
 
   func makeUIViewController(context: Context) -> PHPickerViewController {
@@ -32,10 +32,10 @@ extension PhotosPicker {
 
   final class Coordinator: NSObject, PHPickerViewControllerDelegate {
 
-    let filesManager: FilesManager
+    let filesManager: FilesManagerProtocol
     let onCompletion: ([URL]) -> Void
 
-    init(filesManager: FilesManager, onCompletion: @escaping ([URL]) -> Void) {
+    init(filesManager: FilesManagerProtocol, onCompletion: @escaping ([URL]) -> Void) {
       self.filesManager = filesManager
       self.onCompletion = onCompletion
     }

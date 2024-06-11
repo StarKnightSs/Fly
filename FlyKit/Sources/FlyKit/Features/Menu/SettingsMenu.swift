@@ -1,20 +1,26 @@
 //
-// LeftMenu.swift
+// SettingsMenu.swift
 // Created by Arpit Williams on 31/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import FlyServer
 import SwiftUI
 
-public struct LeftMenu: View {
+public struct SettingsMenu: View {
+
+  let store: StoreOf<FlyStore>
 
   @State private var isSelected = false
-  @Environment(\.colorScheme) var colorMode
-  @EnvironmentObject private var viewModel: FlyViewModel
-  @AppStorage("isDarkMode") private var isDarkMode: Bool?
+
+  @Environment(\.colorScheme)
+  var colorMode
+
+  @AppStorage("isDarkMode")
+  private var isDarkMode: Bool?
 
   private var isEditing: Bool {
-    viewModel.editMode.isEditing
+    store.editMode.isEditing
   }
 
   public var body: some View {
@@ -27,9 +33,11 @@ public struct LeftMenu: View {
 
   var checkMark: some View {
     Button {
-      isSelected ?
-        viewModel.deSelectAllFiles() :
-        viewModel.selectAllFiles()
+      if isSelected {
+        store.send(.filesView(.presented(.deSelectAllFiles)))
+      } else {
+        store.send(.filesView(.presented(.selectAllFiles)))
+      }
       isSelected.toggle()
     } label: {
       Image(systemName: isSelected ?
@@ -41,7 +49,7 @@ public struct LeftMenu: View {
       .animateReplace()
       .onDisappear {
         isSelected = false
-        viewModel.deSelectAllFiles()
+        store.send(.filesView(.presented(.deSelectAllFiles)))
       }
     }
   }
@@ -61,5 +69,5 @@ public struct LeftMenu: View {
 }
 
 #Preview(body: {
-  LeftMenu()
+  SettingsMenu(store: FlyStore.mockStore())
 })

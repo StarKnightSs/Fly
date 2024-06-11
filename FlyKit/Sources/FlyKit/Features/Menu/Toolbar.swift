@@ -3,20 +3,20 @@
 // Created by Arpit Williams on 23/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import FlyServer
 import SwiftUI
 
 public struct Toolbar: ToolbarContent {
 
-  var editMode: Binding<EditMode>
-  var selectedFiles: Binding<Set<UUID>>
+  let store: StoreOf<FlyStore>
 
   @State private var refresh = false
 
   public var body: some ToolbarContent {
 
     ToolbarItem(placement: .topBarLeading) {
-      LeftMenu()
+      SettingsMenu(store: store)
     }
 
     ToolbarItem(placement: .principal) {
@@ -24,7 +24,7 @@ public struct Toolbar: ToolbarContent {
     }
 
     ToolbarItem(placement: .topBarTrailing) {
-      RightMenu()
+      FileMenu(store: store)
     }
   }
 
@@ -45,11 +45,12 @@ public struct Toolbar: ToolbarContent {
   }
 
   var title: String {
-    if editMode.wrappedValue.isEditing {
-      if selectedFiles.wrappedValue.isEmpty {
+    if let selectedFiles = store.filesView?.selectedFiles,
+       store.editMode.isEditing {
+      if selectedFiles.isEmpty {
         "Select files"
       } else {
-        "\(selectedFiles.wrappedValue.count) Files"
+        "\(selectedFiles.count) Files"
       }
     } else {
       "Fly Server"
@@ -59,11 +60,9 @@ public struct Toolbar: ToolbarContent {
 
 #Preview(body: {
   NavigationView {
-    VStack {}.toolbar {
-      Toolbar(
-        editMode: .constant(EditMode.inactive),
-        selectedFiles: .constant(.init())
-      )
-    }
+    VStack {}
+      .toolbar {
+        Toolbar(store: FlyStore.mockStore())
+      }
   }
 })
