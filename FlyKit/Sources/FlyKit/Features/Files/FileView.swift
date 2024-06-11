@@ -3,6 +3,7 @@
 // Created by Arpit Williams on 24/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import FlyServer
 import QuickLookThumbnailing
 import SwiftUI
@@ -10,12 +11,12 @@ import SwiftUI
 struct FileView: View {
 
   let file: File
+  let store: StoreOf<FilesStore>
 
   @State private var fileIcon: UIImage?
-  @EnvironmentObject private var viewModel: FlyViewModel
 
   private var isEditing: Bool {
-    viewModel.editMode.isEditing
+    store.editMode.isEditing
   }
 
   var body: some View {
@@ -140,7 +141,7 @@ struct FileView: View {
 
   var renameButton: some View {
     Button {
-      viewModel.showRenameAlert(for: file)
+      store.send(.showFileRenameAlert(file))
     } label: {
       Label("Rename", systemImage: pencil)
     }
@@ -148,7 +149,7 @@ struct FileView: View {
 
   var deleteButton: some View {
     Button(role: .destructive) {
-      viewModel.removeFile(at: file.url)
+      store.send(.removeFile(file.url))
     } label: {
       Label("Delete", systemImage: trashCircle)
     }
@@ -162,16 +163,20 @@ struct FileView: View {
 
   func quickLookFile() {
     guard file.isDirectory == false, isEditing == false else { return }
-    viewModel.previewFile = file.url
+    store.previewFile = file.url
   }
 }
 
 #Preview {
-  FileView(file: .mockFile)
-    .previewLayout(.sizeThatFits)
+  FileView(
+    file: .mockFile,
+    store: FilesStore.mockStore()
+  ).previewLayout(.sizeThatFits)
 }
 
 #Preview {
-  FileView(file: .mockFolder)
-    .previewLayout(.sizeThatFits)
+  FileView(
+    file: .mockFolder,
+    store: FilesStore.mockStore()
+  ).previewLayout(.sizeThatFits)
 }

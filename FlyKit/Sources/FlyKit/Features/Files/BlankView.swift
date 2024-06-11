@@ -3,11 +3,12 @@
 // Created by Arpit Williams on 24/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import SwiftUI
 
 public struct BlankView: View {
 
-  @EnvironmentObject private var viewModel: FlyViewModel
+  let store: StoreOf<FilesStore>
 
   public var body: some View {
     VStack {
@@ -35,7 +36,7 @@ public struct BlankView: View {
       Spacer()
 
       Button("Drop Files", systemImage: downArrow) {
-        viewModel.showUploadView = true
+        store.showUploadView = true
       }
       .textCase(.uppercase)
       .padding(.vertical, 16)
@@ -56,5 +57,7 @@ public struct BlankView: View {
 }
 
 #Preview(body: {
-  BlankView()
+  BlankView(
+    store: FilesStore.mockStore()
+  )
 })
