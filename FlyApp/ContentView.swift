@@ -1,6 +1,6 @@
 //
 // ContentView.swift
-// Created by Arpit Williams on 15/05/24.
+// Created by Arpit Williams on 11/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import FlyKit
@@ -11,11 +11,6 @@ import SwiftUI
 struct ContentView: View {
 
   @State var isBooting = true
-
-  @StateObject private var flyViewModel = FlyViewModel(
-    filesManager: FilesManager(fileManager: FileManager.default)
-  )
-
   var body: some View {
     if isBooting {
       LaunchView()
@@ -25,8 +20,9 @@ struct ContentView: View {
           }
         }
     } else {
-      FlyView()
-        .environmentObject(flyViewModel)
+      FlyView(
+        store: FlyStore.loadStore()
+      )
     }
   }
 }
