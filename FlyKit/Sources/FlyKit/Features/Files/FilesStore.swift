@@ -26,10 +26,10 @@ public struct FilesStore {
     var showPhotosPicker = false
     @Presents var alertView: AlertStore.State?
 
-    @Shared(.inMemory("sortName"))
+    @Shared(.appStorage("sortName"))
     var sortName = SortType.date.name
 
-    @Shared(.inMemory("sortAscending"))
+    @Shared(.appStorage("sortAscending"))
     var sortAscending = false
 
     var sortType: SortType {
