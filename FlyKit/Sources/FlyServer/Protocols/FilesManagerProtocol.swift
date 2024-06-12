@@ -17,6 +17,7 @@ public protocol FilesManagerProtocol {
   func fileExists(at url: URL) -> Bool
   func file(for url: URL) -> File?
   func fileCount(for url: URL) throws -> Int?
-  func files(at directory: URL) throws -> [File]
   func filePath(for fileName: String) throws -> URL
+  func setCurrentDirectory(to url: URL)
+  func filesAtCurrentDirectory() throws -> [File]
 }

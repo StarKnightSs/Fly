@@ -8,10 +8,12 @@ import UniformTypeIdentifiers
 
 public final class FilesManager: FilesManagerProtocol {
 
-  let fileManager: FileManager
+  private let fileManager: FileManager
+  private var currentDirectory: URL?
 
   public init(fileManager: FileManager) {
     self.fileManager = fileManager
+    currentDirectory = try? documentsDirectory()
   }
 
   private let filesizeFormmater: ByteCountFormatter = {
@@ -38,25 +40,16 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func create(folder: String) throws -> URL {
-    let folderPath = try documentsDirectory().appendingPathComponent(folder, isDirectory: true)
+    guard let currentDirectory else { throw FileError.currentDirectoryNil }
+    let folderPath = currentDirectory.appendingPathComponent(folder, isDirectory: true)
     try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: false)
     folderPath.excludeFromBackup()
     return folderPath
   }
 
   public func filePath(for fileName: String) throws -> URL {
-    try documentsDirectory().appendingPathComponent(fileName)
-  }
-
-  public func files(at directory: URL) throws -> [File] {
-    try fileManager.contentsOfDirectory(
-      at: directory,
-      includingPropertiesForKeys: resourceKeys,
-      options: .skipsHiddenFiles
-    )
-    .compactMap {
-      file(for: $0.standardizedFileURL)
-    }
+    guard let currentDirectory else { throw FileError.currentDirectoryNil }
+    return currentDirectory.appendingPathComponent(fileName)
   }
 
   public func copy(from source: URL, to target: URL) throws {
@@ -108,6 +101,22 @@ public final class FilesManager: FilesManagerProtocol {
 
   public func fileExists(at url: URL) -> Bool {
     fileManager.fileExists(atPath: url.relativePath)
+  }
+
+  public func setCurrentDirectory(to url: URL) {
+    currentDirectory = url
+  }
+
+  public func filesAtCurrentDirectory() throws -> [File] {
+    guard let currentDirectory else { throw FileError.currentDirectoryNil }
+    return try fileManager.contentsOfDirectory(
+      at: currentDirectory,
+      includingPropertiesForKeys: resourceKeys,
+      options: .skipsHiddenFiles
+    )
+    .compactMap {
+      file(for: $0.standardizedFileURL)
+    }
   }
 
   public var supportedTypes: [UTType] = [

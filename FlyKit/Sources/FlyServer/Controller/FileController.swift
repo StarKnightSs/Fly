@@ -27,8 +27,7 @@ struct FileController: RouteCollection {
   }
 
   func filesViewHandler(_ req: Request) async throws -> View {
-    let directory = try filesManager.documentsDirectory()
-    let files = try filesManager.files(at: directory)
+    let files = try filesManager.filesAtCurrentDirectory()
     let filenames = files.map(\.url.lastPathComponent)
     let context = FileContext(filenames: filenames)
     return try await req.view.render("files", context)

@@ -12,4 +12,5 @@ public enum FileError: Error {
   case folderAlreadyExists
   case fileLoadingError
   case fileTypeNotSupported
+  case currentDirectoryNil
 }

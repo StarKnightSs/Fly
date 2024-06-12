@@ -20,7 +20,8 @@ public extension FilesManager {
     public func fileExists(at url: URL) -> Bool { false }
     public func file(for url: URL) -> File? { nil }
     public func fileCount(for url: URL) throws -> Int? { 0 }
-    public func files(at directory: URL) throws -> [File] { [] }
     public func filePath(for fileName: String) throws -> URL { url }
+    public func setCurrentDirectory(to url: URL) {}
+    public func filesAtCurrentDirectory() throws -> [File] { [] }
   }
 }
