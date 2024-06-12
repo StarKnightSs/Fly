@@ -18,34 +18,19 @@ public struct FlyStore {
   public struct State: Equatable {
     var lastTransferTime = 0.0
     var showProgressView = false
-    var editMode = EditMode.inactive
     var progress: FlyServer.Progress = .zero
-
-    @Presents
-    var alertView: AlertStore.State?
-
-    @Presents
-    var filesView: FilesStore.State?
-
-    var hasFiles: Bool {
-      filesView?.files.isEmpty == false
-    }
+    @Presents var alertView: AlertStore.State?
+    @Presents var filesView: FilesStore.State?
   }
 
   public enum Action: BindableAction {
     case loadFiles
     case loadServer
-    case showFileTransferAlert
     case trackFileProgress
+    case showFileTransferAlert
     case binding(BindingAction<State>)
     case alertView(PresentationAction<AlertStore.Action>)
     case filesView(PresentationAction<FilesStore.Action>)
-  }
-
-  @Reducer
-  public enum Destination {
-    case alert(AlertStore)
-    case fileView(FilesStore)
   }
 
   public var body: some Reducer<State, Action> {
@@ -99,21 +84,10 @@ public struct FlyStore {
           spacing: 0
         )
 
-      case let .alertView(action):
-        if case let .presented(action) = action,
-           case .dismiss = action {
-          state.lastTransferTime = 0
-        }
+      case .alertView(.presented(.dismiss)):
+        state.lastTransferTime = 0
 
-      case .binding(\.editMode):
-        // Update edit mode in files store
-        let editMode = state.editMode
-        state.filesView?.editMode = editMode
-
-      case .binding:
-        break
-
-      case .filesView:
+      case .binding, .alertView, .filesView:
         break
       }
       return .none

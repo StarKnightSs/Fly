@@ -10,7 +10,7 @@ import SwiftUI
 public struct FileMenu: View {
 
   @Perception.Bindable
-  var store: StoreOf<FlyStore>
+  var store: StoreOf<FilesStore>
 
   @State var sortAscending = false
   @State var sortType: SortType = .date
@@ -20,25 +20,25 @@ public struct FileMenu: View {
   }
 
   public var body: some View {
-    Menu {
-      if isEditing {
-        ediMenu
-      } else {
-        fileMenu
+    WithPerceptionTracking {
+      Menu {
+        if isEditing {
+          ediMenu
+        } else {
+          fileMenu
+        }
+      } label: {
+        Image(systemName: isEditing ?
+          ellipsisCircleFill : folderFillBadgePlus
+        )
+        .foregroundStyle(Color(.leadLemon))
+        .font(.headline)
+        .animateBounce(isEditing)
       }
-    } label: {
-      Image(systemName: isEditing ?
-        ellipsisCircleFill : folderFillBadgePlus
-      )
-      .foregroundStyle(Color(.leadLemon))
-      .font(.headline)
-      .animateBounce(isEditing)
-    }
-    .onAppear {
-      if let type = store.filesView?.sortType {
-        sortType = type
+      .onAppear {
+        sortType = store.sortType
+        sortAscending = store.sortAscending
       }
-      sortAscending = store.filesView?.sortAscending == true
     }
   }
 
@@ -60,12 +60,12 @@ public struct FileMenu: View {
       } label: {
         Label("Send Files", systemImage: upArrow)
       }
-      .disabled(store.filesView?.selectedFiles.isEmpty == true)
+      .disabled(store.selectedFiles.isEmpty == true)
 
       // Delete
       Button(role: .destructive) {
-        store.send(.filesView(.presented(.removeSelectedFiles)))
         store.editMode = .inactive
+        store.send(.removeSelectedFiles)
       } label: {
         Label("Delete", systemImage: trash)
       }
@@ -75,7 +75,7 @@ public struct FileMenu: View {
   var fileMenu: some View {
     VStack {
 
-      if store.hasFiles {
+      if store.files.isEmpty == false {
 
         // Select
         Button {
@@ -88,7 +88,7 @@ public struct FileMenu: View {
 
         // Recieve Files
         Button {
-          store.filesView?.showUploadView = true
+          store.showUploadView = true
         } label: {
           Label("Recieve Files", systemImage: downArrow)
         }
@@ -98,27 +98,27 @@ public struct FileMenu: View {
 
       // Add Files
       Button {
-        store.filesView?.showFilesPicker = true
+        store.showFilesPicker = true
       } label: {
         Label("Add Files", systemImage: docFill)
       }
 
       // Add Photos
       Button {
-        store.filesView?.showPhotosPicker = true
+        store.showPhotosPicker = true
       } label: {
         Label("Add Photos", systemImage: photo)
       }
 
       // Add Folder
       Button {
-        store.send(.filesView(.presented(.showCreateFolderAlert)))
+        store.send(.showCreateFolderAlert)
       } label: {
         Label("Add Folder", systemImage: folderFill)
       }
 
       // Sort Menu
-      if store.hasFiles {
+      if store.files.isEmpty == false {
         Divider()
         sortMenu
       }
@@ -155,15 +155,17 @@ public struct FileMenu: View {
       }
     }
 
-    // Update sort name & sort ascending in file store
-    store.filesView?.sortName = newSort.name
-    store.filesView?.sortAscending = sortAscending
+    // Update sort name & sort ascending in files store
+    store.sortName = newSort.name
+    store.sortAscending = sortAscending
 
     // Trigger sort
-    store.send(.filesView(.presented(.sortFiles)))
+    store.send(.sortFiles)
   }
 }
 
 #Preview(body: {
-  FileMenu(store: FlyStore.mockStore())
+  FileMenu(
+    store: FilesStore.mockStore()
+  )
 })

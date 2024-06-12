@@ -1,5 +1,5 @@
 //
-// FileProgressView.swift
+// ProgressStyle.swift
 // Created by Arpit Williams on 08/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
@@ -7,7 +7,7 @@ import ComposableArchitecture
 import FlyServer
 import SwiftUI
 
-struct FileProgressView: ProgressViewStyle {
+struct ProgressStyle: ProgressViewStyle {
 
   let store: StoreOf<FlyStore>
 
@@ -25,21 +25,23 @@ struct FileProgressView: ProgressViewStyle {
   }
 
   func makeBody(configuration: Configuration) -> some View {
-    ZStack {
-      transparentBackground
-      VStack(spacing: 0) {
-        title
-        progressView(configuration.fractionCompleted ?? 0)
-        subTitle
-        footNote
+    WithPerceptionTracking {
+      ZStack {
+        transparentBackground
+        VStack(spacing: 0) {
+          title
+          progressView(configuration.fractionCompleted ?? 0)
+          subTitle
+          footNote
+        }
+        .padding(.vertical, 20)
+        .frame(maxWidth: .infinity)
+        .background(Color(.lemonLicorice))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: Color(.licoriceLemon), radius: 8)
+        .padding(.horizontal, 20)
+        .offset(y: -30)
       }
-      .padding(.vertical, 20)
-      .frame(maxWidth: .infinity)
-      .background(Color(.lemonLicorice))
-      .clipShape(RoundedRectangle(cornerRadius: 8))
-      .shadow(color: Color(.licoriceLemon), radius: 4)
-      .padding(.horizontal, 20)
-      .offset(y: -30)
     }
   }
 
@@ -101,7 +103,7 @@ struct FileProgressView: ProgressViewStyle {
 #Preview(body: {
   ProgressView(value: 80, total: 100)
     .progressViewStyle(
-      FileProgressView(
+      ProgressStyle(
         store: FlyStore.mockStore()
       )
     )

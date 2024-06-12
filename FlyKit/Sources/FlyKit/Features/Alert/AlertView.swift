@@ -11,8 +11,8 @@ public struct AlertView: View {
   @Perception.Bindable
   var store: StoreOf<AlertStore>
 
-  @FocusState
-  private var textfieldActive: Bool
+  @State private var textInput = ""
+  @FocusState private var textfieldActive: Bool
 
   public var body: some View {
     WithPerceptionTracking {
@@ -36,10 +36,9 @@ public struct AlertView: View {
       }
       .onAppear {
         if store.autoDismiss {
-          DispatchQueue.main
-            .asyncAfter(deadline: .now() + .seconds(store.dismissDuration)) {
-              store.send(.dismiss(store.type))
-            }
+          DispatchQueue.main.asyncAfter(
+            deadline: .now() + .seconds(store.dismissDuration)
+          ) { store.send(.dismiss(store.type)) }
         }
       }
   }
@@ -63,11 +62,17 @@ public struct AlertView: View {
           .frame(maxWidth: 140)
       }
       if store.showTextInput {
-        TextField(store.textInputTitle ?? "", text: $store.textInputValue)
-          .focused($textfieldActive)
+        TextField(store.textInputTitle ?? "", text: $textInput)
           .textFieldStyle(.roundedBorder)
           .foregroundStyle(Color(.licoriceLemon))
-          .onAppear { textfieldActive = true }
+          .focused($textfieldActive)
+          .onAppear {
+            textfieldActive = true
+            textInput = store.textInputValue
+          }
+          .onChange(of: textInput) { _ in
+            store.send(.set(\.textInputValue, textInput))
+          }
       }
       buttonView
     }

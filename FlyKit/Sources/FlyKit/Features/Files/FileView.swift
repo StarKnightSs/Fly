@@ -20,37 +20,43 @@ struct FileView: View {
   }
 
   var body: some View {
-    VStack(spacing: 8) {
-      HStack(spacing: 8) {
-        Group {
-          fileIconView
-          fileNameView
-        }.onTapGesture {
-          quickLookFile()
+    WithPerceptionTracking {
+      VStack(spacing: 8) {
+        HStack(spacing: 8) {
+          Group {
+            fileIconView
+            fileNameView
+          }.onTapGesture {
+            quickLookFile()
+          }
+          Spacer()
+          if isEditing == false {
+            fileMenuView
+          }
         }
-        Spacer()
-        if isEditing == false {
-          fileMenuView
+        Divider()
+      }
+      .padding(.top, 8)
+      .padding(.horizontal, 16)
+      .contextMenu { menuItems }
+      .onAppear {
+        if fileIcon == nil {
+          loadFilePreview()
         }
       }
-      Divider()
-    }
-    .padding(.top, 8)
-    .padding(.horizontal, 16)
-    .contextMenu { menuItems }
-    .onAppear {
-      if fileIcon == nil {
-        loadFilePreview()
+      .swipeActions(allowsFullSwipe: false) {
+        if #available(iOS 16, *) {
+          deleteButton
+        } else {
+          EmptyView()
+        }
       }
-    }
-    .swipeActions(allowsFullSwipe: false) {
-      deleteButton
-    }
-    .modify {
-      if #available(iOS 17, *) {
-        $0.selectionDisabled(isEditing == false)
-      } else {
-        $0
+      .modify {
+        if #available(iOS 17, *) {
+          $0.selectionDisabled(isEditing == false)
+        } else {
+          $0
+        }
       }
     }
   }

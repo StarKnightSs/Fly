@@ -24,9 +24,7 @@ public struct FilesStore {
     var showUploadView = false
     var showFilesPicker = false
     var showPhotosPicker = false
-
-    @Presents
-    var alert: AlertStore.State?
+    @Presents var alertView: AlertStore.State?
 
     @Shared(.inMemory("sortName"))
     var sortName = SortType.date.name
@@ -60,7 +58,7 @@ public struct FilesStore {
     case showCreateFolderAlert
     case showFileRenameAlert(File)
     case binding(BindingAction<State>)
-    case alert(PresentationAction<AlertStore.Action>)
+    case alertView(PresentationAction<AlertStore.Action>)
   }
 
   public var body: some Reducer<State, Action> {
@@ -84,15 +82,12 @@ public struct FilesStore {
         }
 
       case let .addFolder(name):
-        do {
-          guard name.isEmpty == false else { return .none }
-          let folderPath = try dependencies.filesManager.create(folder: name)
+        if name.isEmpty == false,
+           let folderPath = try? dependencies.filesManager.create(folder: name) {
           return .concatenate(
             .send(.addFile(folderPath)),
             .send(.sortFiles)
           )
-        } catch {
-          print(error)
         }
 
       case let .removeFile(url):
@@ -103,14 +98,14 @@ public struct FilesStore {
 
       case .removeSelectedFiles:
         return .concatenate(
-          .merge(state.files
-            .enumerated()
-            .filter { state.selectedFiles.contains($0.element.id) }
-            .map(\.offset)
-            .map {
-              let url = state.files[$0].url
-              return Effect.send(Action.removeFile(url))
-            }
+          .merge(
+            state.files.enumerated()
+              .filter { state.selectedFiles.contains($0.element.id) }
+              .map(\.offset)
+              .map {
+                let url = state.files[$0].url
+                return Effect.send(Action.removeFile(url))
+              }
           ),
           .send(.deSelectAllFiles)
         )
@@ -142,9 +137,8 @@ public struct FilesStore {
         })
 
       case let .importFiles(result):
-        switch result {
-        case let .success(urls):
-          let effects = urls.map { url in
+        if case let .success(urls) = result {
+          return .merge(urls.map { url in
             var effect = Effect<Action>.none
             if url.startAccessingSecurityScopedResource() {
               do {
@@ -157,15 +151,11 @@ public struct FilesStore {
             }
             url.stopAccessingSecurityScopedResource()
             return effect
-          }
-          return .merge(effects)
-
-        case let .failure(error):
-          print(error.localizedDescription)
+          })
         }
 
       case .showCreateFolderAlert:
-        state.alert = .init(
+        state.alertView = .init(
           type: .createFolder,
           title: "Add Folder",
           mainButtonTitle: "Add",
@@ -178,7 +168,7 @@ public struct FilesStore {
         state.selectedFile = file
         let filename = file.isDirectory ? file.name :
           file.url.deletingPathExtension().lastPathComponent
-        state.alert = .init(
+        state.alertView = .init(
           type: .renameFile,
           title: "Rename File",
           mainButtonTitle: "Rename",
@@ -188,44 +178,38 @@ public struct FilesStore {
           textInputValue: filename
         )
 
-      case let .alert(.presented(.done(type))):
+      case let .alertView(.presented(.done(type))):
         switch type {
         case .createFolder:
-          return .concatenate(
-            .send(.addFolder(state.alert?.textInputValue ?? "")),
-            .send(.alert(.presented(.dismiss(type))))
-          )
+          return .send(.addFolder(state.alertView?.textInputValue ?? ""))
 
         case .renameFile:
-          var rename = Effect<Action>.none
           if let file = state.selectedFile,
-             var filename = state.alert?.textInputValue, filename.isEmpty == false {
+             var filename = state.alertView?.textInputValue, filename.isEmpty == false {
             filename = filename.trimmingCharacters(in: .whitespacesAndNewlines)
             filename = file.isDirectory ? filename : (filename + "." + file.type)
-            rename = .send(.renameFile(file.url, filename))
+            state.selectedFile = nil
+            return .send(.renameFile(file.url, filename))
           }
-          let dismiss = Effect<Action>.send(.alert(.presented(.dismiss(type))))
-          return .concatenate(rename, dismiss)
 
         default:
           break
         }
 
-      case .alert(.presented(.dismiss)):
-        state.selectedFile = nil
-
-      case .alert:
-        break
-
-      case .binding:
+      case .binding, .alertView:
         break
       }
       return .none
     }
-    .ifLet(\.$alert, action: \.alert) {
+    .ifLet(\.$alertView, action: \.alertView) {
       AlertStore()
     }
   }
+}
+
+// MARK: Sort Helpers
+
+extension FilesStore {
 
   func sortFiles(_ files: [File], by type: SortType, isAscending: Bool) -> [File] {
     switch type {

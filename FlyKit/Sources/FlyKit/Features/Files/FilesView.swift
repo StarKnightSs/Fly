@@ -4,8 +4,8 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import ComposableArchitecture
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct FilesView: View {
 
@@ -18,18 +18,20 @@ struct FilesView: View {
   var body: some View {
     WithPerceptionTracking {
       ZStack {
-        rootView
+        mainView
         alertView
       }
     }
   }
 
-  var rootView: some View {
+  var mainView: some View {
     VStack {
       if store.files.isEmpty == false {
         listView
       } else {
-        BlankView(store: store)
+        BlankView(
+          showUploadView: $store.showUploadView
+        )
       }
     }
     .sheet(isPresented: $store.showUploadView) {
@@ -66,17 +68,15 @@ struct FilesView: View {
     .listStyle(.plain)
     .id(store.editMode)
     .background(Color(.snowLicorice))
+    .environment(\.editMode, $store.editMode)
   }
 
   var alertView: AlertView? {
-    if let alertStore = store.scope(
-      state: \.alert,
-      action: \.alert.presented
-    ) {
-      AlertView(store: alertStore)
-    } else {
-      nil
-    }
+    guard let alertStore = store.scope(
+      state: \.alertView,
+      action: \.alertView.presented
+    ) else { return nil }
+    return AlertView(store: alertStore)
   }
 }
 

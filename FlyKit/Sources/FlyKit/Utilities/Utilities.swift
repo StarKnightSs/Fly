@@ -22,13 +22,13 @@ func format(_ seconds: Double) -> String {
   var seconds = seconds
   switch seconds {
   case 0 ..< 60:
-    suffix = "sec"
+    suffix = seconds > 1 ? "secs" : "sec"
   case 60 ..< 3600:
-    suffix = "min"
     seconds /= 60
+    suffix = seconds > 1 ? "mins" : "min"
   default:
-    suffix = "hrs"
     seconds /= 3600
+    suffix = seconds > 1 ? "hrs" : "hr"
   }
   let time = seconds.formatted(.number.precision(.fractionLength(2)))
   return String(format: "%@ %@", time, suffix)

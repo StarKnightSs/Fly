@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct SettingsMenu: View {
 
-  let store: StoreOf<FlyStore>
+  let store: StoreOf<FilesStore>
 
   @State private var isSelected = false
 
@@ -24,19 +24,21 @@ public struct SettingsMenu: View {
   }
 
   public var body: some View {
-    if isEditing {
-      checkMark
-    } else {
-      lightBulb
+    WithPerceptionTracking {
+      if isEditing {
+        checkMark
+      } else {
+        lightBulb
+      }
     }
   }
 
   var checkMark: some View {
     Button {
       if isSelected {
-        store.send(.filesView(.presented(.deSelectAllFiles)))
+        store.send(.deSelectAllFiles)
       } else {
-        store.send(.filesView(.presented(.selectAllFiles)))
+        store.send(.selectAllFiles)
       }
       isSelected.toggle()
     } label: {
@@ -49,7 +51,7 @@ public struct SettingsMenu: View {
       .animateReplace()
       .onDisappear {
         isSelected = false
-        store.send(.filesView(.presented(.deSelectAllFiles)))
+        store.send(.deSelectAllFiles)
       }
     }
   }
@@ -69,5 +71,7 @@ public struct SettingsMenu: View {
 }
 
 #Preview(body: {
-  SettingsMenu(store: FlyStore.mockStore())
+  SettingsMenu(
+    store: FilesStore.mockStore()
+  )
 })

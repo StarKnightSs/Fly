@@ -33,53 +33,54 @@ public struct FlyView: View {
   }
 
   var rootView: some View {
-    VStack(spacing: 0) {
-      filesView
-    }
-    .padding(.top, 1)
-    .background(Color(.lemonLead))
-    .navigationBarTitleDisplayMode(.inline)
-    .environment(\.editMode, $store.editMode)
-    .onChange(of: scenePhase) {
-      if $0 == .active {
+    VStack { filesView }
+      .padding(.top, 1)
+      .background(Color(.lemonLead))
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        Toolbar(
+          store: filesStore ??
+            FilesStore.mockStore()
+        )
+      }
+      .onChange(of: scenePhase) {
+        if $0 == .active {
+          store.send(.loadServer)
+        }
+      }
+      .onAppear {
+        store.send(.loadFiles)
         store.send(.loadServer)
       }
-    }
-    .onAppear {
-      store.send(.loadFiles)
-      store.send(.loadServer)
-    }
-    .toolbar {
-      Toolbar(store: store)
-    }
+  }
+
+  var filesStore: StoreOf<FilesStore>? {
+    store.scope(
+      state: \.filesView,
+      action: \.filesView.presented
+    )
   }
 
   var filesView: FilesView? {
-    if let filesStore = store.scope(
+    guard let filesStore = store.scope(
       state: \.filesView,
       action: \.filesView.presented
-    ) {
-      FilesView(store: filesStore)
-    } else {
-      nil
-    }
+    ) else { return nil }
+    return FilesView(store: filesStore)
   }
 
   var alertView: AlertView? {
-    if let alertStore = store.scope(
+    guard let alertStore = store.scope(
       state: \.alertView,
       action: \.alertView.presented
-    ) {
-      AlertView(store: alertStore)
-    } else {
-      nil
-    }
+    ) else { return nil }
+    return AlertView(store: alertStore)
   }
 
   var progressView: some View {
     ProgressView(value: store.progress.value, total: 100.0)
       .progressViewStyle(
-        FileProgressView(store: store)
+        ProgressStyle(store: store)
       )
   }
 }

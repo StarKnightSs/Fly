@@ -9,22 +9,24 @@ import SwiftUI
 
 public struct Toolbar: ToolbarContent {
 
-  let store: StoreOf<FlyStore>
-
+  let store: StoreOf<FilesStore>
   @State private var refresh = false
 
   public var body: some ToolbarContent {
+    WithPerceptionTracking {
+      ToolbarItem(placement: .topBarLeading) {
+        SettingsMenu(store: store)
+      }
 
-    ToolbarItem(placement: .topBarLeading) {
-      SettingsMenu(store: store)
-    }
+      ToolbarItem(placement: .principal) {
+        WithPerceptionTracking {
+          titleView
+        }
+      }
 
-    ToolbarItem(placement: .principal) {
-      titleView
-    }
-
-    ToolbarItem(placement: .topBarTrailing) {
-      FileMenu(store: store)
+      ToolbarItem(placement: .topBarTrailing) {
+        FileMenu(store: store)
+      }
     }
   }
 
@@ -45,13 +47,10 @@ public struct Toolbar: ToolbarContent {
   }
 
   var title: String {
-    if let selectedFiles = store.filesView?.selectedFiles,
-       store.editMode.isEditing {
-      if selectedFiles.isEmpty {
-        "Select files"
-      } else {
-        "\(selectedFiles.count) Files"
-      }
+    if store.editMode.isEditing {
+      store.selectedFiles.isEmpty ?
+        "Select files" :
+        "\(store.selectedFiles.count) Files"
     } else {
       "Fly Server"
     }
@@ -62,7 +61,9 @@ public struct Toolbar: ToolbarContent {
   NavigationView {
     VStack {}
       .toolbar {
-        Toolbar(store: FlyStore.mockStore())
+        Toolbar(
+          store: FilesStore.mockStore()
+        )
       }
   }
 })
