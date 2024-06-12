@@ -67,6 +67,7 @@ public struct FlyStore {
         return .run { send in
           Task { @MainActor in
             ProgressManager.shared.trackProgress = { currentProgress, elapsedTime, isCancelled in
+              send(.filesView(.presented(.set(\.showUploadView, false))))
               send(.set(\.showProgressView, isCancelled == false))
               send(.set(\.progress, currentProgress))
               send(.set(\.lastTransferTime, elapsedTime))
