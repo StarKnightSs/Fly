@@ -16,49 +16,27 @@ public struct FlyView: View {
 
   public init(store: StoreOf<FlyStore>) {
     self.store = store
+    store.filesView = .init()
   }
 
   public var body: some View {
     WithPerceptionTracking {
-      NavigationView {
-        ZStack {
-          rootView
-          alertView
-          if store.showProgressView {
-            progressView
-          }
+      ZStack {
+        filesView
+        alertView
+        if store.showProgressView {
+          progressView
         }
       }
-    }
-  }
-
-  var rootView: some View {
-    VStack { filesView }
-      .padding(.top, 1)
-      .background(Color(.lemonLead))
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        Toolbar(
-          store: filesStore ??
-            FilesStore.mockStore()
-        )
+      .onAppear {
+        store.send(.loadServer)
       }
       .onChange(of: scenePhase) {
         if $0 == .active {
           store.send(.loadServer)
         }
       }
-      .onAppear {
-        store.send(.loadFiles)
-        store.send(.loadServer)
-      }
-  }
-
-  var filesStore: StoreOf<FilesStore>? {
-    store.scope(
-      state: \.filesView,
-      action: \.filesView.presented
-    )
+    }
   }
 
   var filesView: FilesView? {

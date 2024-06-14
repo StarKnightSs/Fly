@@ -18,20 +18,31 @@ struct FilesView: View {
   var body: some View {
     WithPerceptionTracking {
       ZStack {
-        mainView
+        rootView
         alertView
       }
     }
   }
 
-  var mainView: some View {
-    VStack {
-      if store.files.isEmpty == false {
-        listView
-      } else {
-        BlankView(
-          showUploadView: $store.showUploadView
-        )
+  var rootView: some View {
+    NavigationView {
+      VStack {
+        if store.files.isEmpty == false {
+          listView
+        } else {
+          BlankView(
+            showUploadView: $store.showUploadView
+          )
+        }
+      }
+      .padding(.top, 1)
+      .background(Color(.lemonLead))
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        Toolbar(store: store)
+      }
+      .onAppear {
+        store.send(.loadFiles)
       }
     }
     .sheet(isPresented: $store.showUploadView) {

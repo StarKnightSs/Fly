@@ -20,6 +20,7 @@ public struct FilesStore {
     var previewFile: URL?
     var selectedFile: File?
     var selectedFiles = Set<UUID>()
+    var selectedFolders = [URL]()
     var editMode = EditMode.inactive
     var showUploadView = false
     var showFilesPicker = false
@@ -45,6 +46,8 @@ public struct FilesStore {
 
   public enum Action: BindableAction {
     case loadFiles
+    case loadFolder
+    case loadPrevious
     case addFile(URL)
     case addFolder(String)
     case removeFile(URL)
@@ -69,11 +72,25 @@ public struct FilesStore {
       switch action {
 
       case .loadFiles:
-        if let url = try? dependencies.filesManager.documentsDirectory(),
-           let files = try? dependencies.filesManager.files(at: url) {
+        if let files = try? dependencies.filesManager.filesAtCurrentDirectory() {
           state.files = files
           return .send(.sortFiles)
         }
+
+      case .loadFolder:
+        if let folder = state.selectedFolders.last {
+          dependencies.filesManager.setCurrentDirectory(to: folder)
+          return .send(.loadFiles)
+        }
+
+      case .loadPrevious:
+        state.selectedFolders.removeLast()
+        if let selectedFolder = state.selectedFolders.last {
+          dependencies.filesManager.setCurrentDirectory(to: selectedFolder)
+        } else if let documentsDirectory = try? dependencies.filesManager.documentsDirectory() {
+          dependencies.filesManager.setCurrentDirectory(to: documentsDirectory)
+        }
+        return .send(.loadFiles)
 
       case let .addFile(url):
         if let file = dependencies.filesManager.file(for: url) {

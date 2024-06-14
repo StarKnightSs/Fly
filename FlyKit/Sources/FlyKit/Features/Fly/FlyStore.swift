@@ -24,7 +24,6 @@ public struct FlyStore {
   }
 
   public enum Action: BindableAction {
-    case loadFiles
     case loadServer
     case trackFileProgress
     case showFileTransferAlert
@@ -39,10 +38,6 @@ public struct FlyStore {
     // swiftlint:disable:next closure_body_length
     Reduce { state, action in
       switch action {
-
-      case .loadFiles:
-        state.filesView = .init()
-        return .send(.filesView(.presented(.loadFiles)))
 
       case .loadServer:
         return .run { send in
