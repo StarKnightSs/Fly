@@ -60,6 +60,23 @@ public final class FilesManager: FilesManagerProtocol {
     target.excludeFromBackup()
   }
 
+  public func copyFile(from source: URL, shouldMove: Bool) throws {
+    guard source != currentDirectory else {
+      throw FileError.currentDirectoryOverwrite
+    }
+    let fileName = source.lastPathComponent
+    guard let filePath = try? filePath(for: fileName) else {
+      throw FileError.filePathInvalid
+    }
+    guard fileManager.fileExists(atPath: filePath.relativePath) == false else {
+      throw FileError.fileAlreadyExists
+    }
+    shouldMove ?
+      try fileManager.moveItem(at: source, to: filePath) :
+      try fileManager.copyItem(at: source, to: filePath)
+    filePath.excludeFromBackup()
+  }
+
   public func rename(at source: URL, to filename: String) throws -> URL {
     guard fileManager.fileExists(atPath: source.absoluteString) == false else {
       throw FileError.fileDoesNotExists

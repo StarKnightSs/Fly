@@ -1,6 +1,6 @@
 //
 // FilesManagerMock.swift
-// Created by Arpit Williams on 10/06/24.
+// Created by Arpit Williams on 14/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import Foundation
@@ -16,6 +16,7 @@ public extension FilesManager {
     public func remove(at url: URL) throws {}
     public func create(folder: String) throws -> URL { url }
     public func copy(from source: URL, to target: URL) throws {}
+    public func copyFile(from source: URL, shouldMove: Bool) throws {}
     public func rename(at source: URL, to filename: String) throws -> URL { url }
     public func fileExists(at url: URL) -> Bool { false }
     public func file(for url: URL) -> File? { nil }

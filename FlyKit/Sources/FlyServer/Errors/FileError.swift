@@ -13,4 +13,5 @@ public enum FileError: Error {
   case fileLoadingError
   case fileTypeNotSupported
   case currentDirectoryNil
+  case currentDirectoryOverwrite
 }

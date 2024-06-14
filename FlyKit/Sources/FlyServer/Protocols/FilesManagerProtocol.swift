@@ -1,6 +1,6 @@
 //
 // FilesManagerProtocol.swift
-// Created by Arpit Williams on 10/06/24.
+// Created by Arpit Williams on 14/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import Foundation
@@ -13,6 +13,7 @@ public protocol FilesManagerProtocol {
   func remove(at url: URL) throws
   func create(folder: String) throws -> URL
   func copy(from source: URL, to target: URL) throws
+  func copyFile(from source: URL, shouldMove: Bool) throws
   func rename(at source: URL, to filename: String) throws -> URL
   func fileExists(at url: URL) -> Bool
   func file(for url: URL) -> File?
