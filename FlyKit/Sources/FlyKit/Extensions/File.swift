@@ -25,10 +25,8 @@ public extension File {
 
   var icon: String {
     switch type {
-    case "zip", "xip", "iso", "dmg":
-      "doc.zipper"
-    default:
-      isDirectory ? "folder" : "doc"
+    case "zip", "xip", "iso", "dmg": docZipped
+    default: isDirectory ? folderFill : doc
     }
   }
 }
