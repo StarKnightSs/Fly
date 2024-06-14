@@ -80,6 +80,7 @@ struct FilesView: View {
     .id(store.editMode)
     .background(Color(.snowLicorice))
     .environment(\.editMode, $store.editMode)
+    .animation(.easeInOut, value: store.selectedFolders.count)
   }
 
   var alertView: AlertView? {
