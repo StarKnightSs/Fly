@@ -21,6 +21,29 @@ public extension View {
   }
 
   @ViewBuilder
+  func updatePresentationDetent() -> some View {
+    modify {
+      if #available(iOS 16, *) {
+        $0.presentationDetents([.medium])
+          .modify {
+            if #available(iOS 16.4, *) {
+              $0.presentationBackground(Color(.bananaLead))
+            } else {
+              $0
+            }
+          }
+      } else {
+        $0
+      }
+    }
+  }
+}
+
+// MARK: Symbol Animations
+
+extension View {
+
+  @ViewBuilder
   func animateReplace() -> some View {
     modify {
       if #available(iOS 17, *) {
@@ -36,24 +59,6 @@ public extension View {
     modify {
       if #available(iOS 17, *) {
         $0.symbolEffect(.bounce.byLayer.up, value: value)
-      } else {
-        $0
-      }
-    }
-  }
-
-  @ViewBuilder
-  func updatePresentationDetent() -> some View {
-    modify {
-      if #available(iOS 16, *) {
-        $0.presentationDetents([.medium])
-          .modify {
-            if #available(iOS 16.4, *) {
-              $0.presentationBackground(Color(.bananaLead))
-            } else {
-              $0
-            }
-          }
       } else {
         $0
       }
