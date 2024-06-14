@@ -1,6 +1,6 @@
 //
 // FileMenu.swift
-// Created by Arpit Williams on 26/05/24.
+// Created by Arpit Williams on 12/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import ComposableArchitecture
@@ -19,109 +19,183 @@ public struct FileMenu: View {
     store.editMode.isEditing
   }
 
+  private var isMoving: Bool {
+    store.isMovingFile
+  }
+
+  private var isCopying: Bool {
+    store.isCopyingFile
+  }
+
+  private var isNotSelected: Bool {
+    store.selectedFiles.isEmpty
+  }
+
   public var body: some View {
     WithPerceptionTracking {
-      Menu {
-        if isEditing {
-          ediMenu
-        } else {
-          fileMenu
-        }
-      } label: {
-        Image(systemName: isEditing ?
-          ellipsisCircleFill : folderFillBadgePlus
-        )
-        .foregroundStyle(Color(.leadLemon))
-        .font(.headline)
-        .animateBounce(isEditing)
-      }
-      .onAppear {
-        sortType = store.sortType
-        sortAscending = store.sortAscending
+      if isCopying || isMoving {
+        pasteView
+      } else {
+        menuView
       }
     }
   }
+
+  var menuView: some View {
+    Menu {
+      if isEditing {
+        ediMenu
+      } else {
+        fileMenu
+      }
+    } label: {
+      Image(systemName: isEditing ?
+        ellipsisCircleFill : folderFillBadgePlus
+      )
+      .foregroundStyle(Color(.leadLemon))
+      .font(.headline)
+      .animateBounce(isEditing)
+    }
+    .onAppear {
+      sortType = store.sortType
+      sortAscending = store.sortAscending
+    }
+  }
+
+  var pasteView: some View {
+    Button {
+      store.send(
+        store.pasteAllFiles ? .pasteAll : .paste
+      )
+    } label: {
+      Image(systemName: docOnClipboard)
+        .foregroundStyle(Color(.leadLemon))
+        .font(.headline)
+        .animateBounce(isCopying || isMoving)
+    }
+  }
+}
+
+// MARK: Edit Menu
+
+extension FileMenu {
 
   var ediMenu: some View {
     Group {
-
-      // Done
-      Button {
-        store.editMode = .inactive
-      } label: {
-        Text("Done")
-      }
-
+      done
       Divider()
-
-      // Send Files
-      Button {
-        print("Send")
-      } label: {
-        Label("Send Files", systemImage: upArrow)
-      }
-      .disabled(store.selectedFiles.isEmpty == true)
-
-      // Delete
-      Button(role: .destructive) {
-        store.editMode = .inactive
-        store.send(.removeSelectedFiles)
-      } label: {
-        Label("Delete", systemImage: trash)
-      }
+      send
+      Divider()
+      copy
+      move
+      delete
     }
   }
 
+  var done: some View {
+    Button {
+      store.editMode = .inactive
+      store.send(.deSelectAllFiles)
+    } label: {
+      Text("Done")
+    }
+  }
+
+  var send: some View {
+    Button {
+      print("Send")
+    } label: {
+      Label("Send Files", systemImage: upArrow)
+    }.disabled(isNotSelected)
+  }
+
+  var copy: some View {
+    Button {
+      store.editMode = .inactive
+      store.send(.copyAll)
+    } label: {
+      Label("Copy", systemImage: docOnDoc)
+    }
+  }
+
+  var move: some View {
+    Button {
+      store.editMode = .inactive
+      store.send(.moveAll)
+    } label: {
+      Label("Move", systemImage: folder)
+    }
+  }
+
+  var delete: some View {
+    Button(role: .destructive) {
+      store.editMode = .inactive
+      store.send(.removeSelectedFiles)
+    } label: {
+      Label("Delete", systemImage: trash)
+    }
+  }
+}
+
+// MARK: File Menu
+
+extension FileMenu {
+
   var fileMenu: some View {
     VStack {
-
       if store.files.isEmpty == false {
-
-        // Select
-        Button {
-          store.editMode = .active
-        } label: {
-          Label("Select", systemImage: checkmarkCircle)
-        }
-
+        selectFile
         Divider()
-
-        // Recieve Files
-        Button {
-          store.showUploadView = true
-        } label: {
-          Label("Recieve Files", systemImage: downArrow)
-        }
-
+        recieveFile
         Divider()
       }
-
-      // Add Files
-      Button {
-        store.showFilesPicker = true
-      } label: {
-        Label("Add Files", systemImage: docFill)
-      }
-
-      // Add Photos
-      Button {
-        store.showPhotosPicker = true
-      } label: {
-        Label("Add Photos", systemImage: photo)
-      }
-
-      // Add Folder
-      Button {
-        store.send(.showCreateFolderAlert)
-      } label: {
-        Label("Add Folder", systemImage: folderFill)
-      }
-
-      // Sort Menu
+      addFiles
+      addPhotos
+      addFolder
       if store.files.isEmpty == false {
         Divider()
         sortMenu
       }
+    }
+  }
+
+  var selectFile: some View {
+    Button {
+      store.editMode = .active
+    } label: {
+      Label("Select", systemImage: checkmarkCircle)
+    }
+  }
+
+  var recieveFile: some View {
+    Button {
+      store.showUploadView = true
+    } label: {
+      Label("Recieve Files", systemImage: downArrow)
+    }
+  }
+
+  var addFiles: some View {
+    Button {
+      store.showFilesPicker = true
+    } label: {
+      Label("Add Files", systemImage: docFill)
+    }
+  }
+
+  var addPhotos: some View {
+    Button {
+      store.showPhotosPicker = true
+    } label: {
+      Label("Add Photos", systemImage: photo)
+    }
+  }
+
+  var addFolder: some View {
+    Button {
+      store.send(.showCreateFolderAlert)
+    } label: {
+      Label("Add Folder", systemImage: folderFill)
     }
   }
 
