@@ -52,9 +52,8 @@ public struct SettingsMenu: View {
       .font(.headline)
       .foregroundStyle(Color(.leadLemon))
       .animateReplace()
-      .onDisappear {
+      .onAppear {
         isSelected = false
-        store.send(.deSelectAllFiles)
       }
     }
   }

@@ -19,12 +19,8 @@ public struct FileMenu: View {
     store.editMode.isEditing
   }
 
-  private var isMoving: Bool {
-    store.isMovingFile
-  }
-
-  private var isCopying: Bool {
-    store.isCopyingFile
+  private var isMovingFile: Bool {
+    store.isMovingFile || store.isCopyingFile
   }
 
   private var isNotSelected: Bool {
@@ -33,7 +29,7 @@ public struct FileMenu: View {
 
   public var body: some View {
     WithPerceptionTracking {
-      if isCopying || isMoving {
+      if isMovingFile {
         pasteView
       } else {
         menuView
@@ -71,7 +67,7 @@ public struct FileMenu: View {
       Image(systemName: docOnClipboard)
         .foregroundStyle(Color(.leadLemon))
         .font(.headline)
-        .animateBounce(isCopying || isMoving)
+        .animateBounce(isMovingFile)
     }
   }
 }
@@ -112,7 +108,7 @@ extension FileMenu {
   var copy: some View {
     Button {
       store.editMode = .inactive
-      store.send(.copyAll)
+      store.send(.copyMoveAll(false))
     } label: {
       Label("Copy", systemImage: docOnDoc)
     }
@@ -121,7 +117,7 @@ extension FileMenu {
   var move: some View {
     Button {
       store.editMode = .inactive
-      store.send(.moveAll)
+      store.send(.copyMoveAll(true))
     } label: {
       Label("Move", systemImage: folder)
     }

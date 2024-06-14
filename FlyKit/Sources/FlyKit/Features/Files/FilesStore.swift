@@ -21,7 +21,11 @@ public struct FilesStore {
     var selectedFile: File?
     var selectedFiles = Set<UUID>()
     var selectedFolders = [URL]()
+    var selectedFilesUrls = Set<URL>()
     var editMode = EditMode.inactive
+    var isMovingFile = false
+    var isCopyingFile = false
+    var pasteAllFiles = false
     var showUploadView = false
     var showFilesPicker = false
     var showPhotosPicker = false
@@ -50,12 +54,17 @@ public struct FilesStore {
     case loadPrevious
     case addFile(URL)
     case addFolder(String)
+    case copyMove(File, Bool)
+    case copyMoveAll(Bool)
+    case paste
+    case pasteAll
     case removeFile(URL)
     case removeSelectedFiles
     case renameFile(URL, String)
     case sortFiles
     case selectAllFiles
     case deSelectAllFiles
+    case selectedFilesUrls
     case importPhotos([URL])
     case importFiles(Result<[URL], any Error>)
     case showCreateFolderAlert
@@ -106,6 +115,56 @@ public struct FilesStore {
           )
         }
 
+      case let .copyMove(file, isMovingFile):
+        state.selectedFile = file
+        state.pasteAllFiles = false
+        state.isMovingFile = isMovingFile
+        state.isCopyingFile = isMovingFile == false
+
+      case let .copyMoveAll(isMovingFile):
+        state.pasteAllFiles = true
+        state.isMovingFile = isMovingFile
+        state.isCopyingFile = isMovingFile == false
+        return .send(.selectedFilesUrls)
+
+      case .paste:
+        if let selectedFile = state.selectedFile {
+          try? dependencies.filesManager.copyFile(
+            from: selectedFile.url,
+            shouldMove: state.isMovingFile
+          )
+          state.selectedFile = nil
+          state.isMovingFile = false
+          state.isCopyingFile = false
+          state.pasteAllFiles = false
+          return .send(.loadFiles)
+        }
+
+      case .pasteAll:
+        return .concatenate(
+          .merge(
+            state.selectedFilesUrls
+              .map { try? dependencies.filesManager.copyFile(
+                from: $0, shouldMove: state.isMovingFile
+              )
+              return Effect.none
+              }
+          ),
+          .send(.deSelectAllFiles),
+          .send(.set(\.isMovingFile, false)),
+          .send(.set(\.isCopyingFile, false)),
+          .send(.set(\.pasteAllFiles, false)),
+          .send(.loadFiles)
+        )
+
+      case .selectedFilesUrls:
+        state.selectedFilesUrls = Set(
+          state.files.enumerated()
+            .filter { state.selectedFiles.contains($0.element.id) }
+            .map(\.offset)
+            .map { state.files[$0].url }
+        )
+
       case let .removeFile(url):
         if let index = state.files.firstIndex(where: { $0.url == url }) {
           state.files.remove(at: index)
@@ -146,6 +205,7 @@ public struct FilesStore {
 
       case .deSelectAllFiles:
         state.selectedFiles.removeAll()
+        state.selectedFilesUrls.removeAll()
 
       case let .importPhotos(urls):
         return .merge(urls.map {

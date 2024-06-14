@@ -152,7 +152,7 @@ struct FileView: View {
 
   var copyButton: some View {
     Button {
-      store.send(.copy(file))
+      store.send(.copyMove(file, false))
     } label: {
       Label("Copy", systemImage: docOnDoc)
     }
@@ -160,7 +160,7 @@ struct FileView: View {
 
   var moveButton: some View {
     Button {
-      store.send(.move(file))
+      store.send(.copyMove(file, true))
     } label: {
       Label("Move", systemImage: folder)
     }
