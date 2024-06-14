@@ -99,8 +99,7 @@ public struct FilesStore {
         }
 
       case let .addFolder(name):
-        if name.isEmpty == false,
-           let folderPath = try? dependencies.filesManager.create(folder: name) {
+        if let folderPath = try? dependencies.filesManager.create(folder: name) {
           return .concatenate(
             .send(.addFile(folderPath)),
             .send(.sortFiles)
@@ -198,7 +197,12 @@ public struct FilesStore {
       case let .alertView(.presented(.done(type))):
         switch type {
         case .createFolder:
-          return .send(.addFolder(state.alertView?.textInputValue ?? ""))
+          if let folderName = state.alertView?.textInputValue
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+            folderName.isEmpty == false {
+            state.alertView?.textInputValue = ""
+            return .send(.addFolder(folderName))
+          }
 
         case .renameFile:
           if let file = state.selectedFile,
