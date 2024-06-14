@@ -113,6 +113,8 @@ struct FileView: View {
       Divider()
       AnyView(shareButton)
       previewButton
+      copyButton
+      moveButton
       renameButton
       deleteButton
     }
@@ -145,6 +147,22 @@ struct FileView: View {
       openFile()
     } label: {
       Label("Preview", systemImage: eye)
+    }
+  }
+
+  var copyButton: some View {
+    Button {
+      store.send(.copy(file))
+    } label: {
+      Label("Copy", systemImage: docOnDoc)
+    }
+  }
+
+  var moveButton: some View {
+    Button {
+      store.send(.move(file))
+    } label: {
+      Label("Move", systemImage: folder)
     }
   }
 
