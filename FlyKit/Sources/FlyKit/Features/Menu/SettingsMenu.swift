@@ -27,6 +27,9 @@ public struct SettingsMenu: View {
     WithPerceptionTracking {
       if isEditing {
         checkMark
+      } else if store.selectedFolders
+        .isEmpty == false {
+        backButton
       } else {
         lightBulb
       }
@@ -66,6 +69,16 @@ public struct SettingsMenu: View {
       .font(.headline)
       .foregroundStyle(Color(.leadLemon))
       .animateReplace()
+    }
+  }
+
+  var backButton: some View {
+    Button {
+      store.send(.loadPrevious)
+    } label: {
+      Image(systemName: chevronLeft)
+        .font(.headline)
+        .foregroundStyle(Color(.leadLemon))
     }
   }
 }

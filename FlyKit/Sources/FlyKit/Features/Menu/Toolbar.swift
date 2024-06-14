@@ -38,6 +38,7 @@ public struct Toolbar: ToolbarContent {
 
       Text(title)
         .foregroundStyle(Color(.leadLemon))
+        .animation(.easeInOut, value: title)
         .font(.system(.callout, design: .rounded).weight(.heavy))
     }
     .id(refresh)
@@ -51,6 +52,9 @@ public struct Toolbar: ToolbarContent {
       store.selectedFiles.isEmpty ?
         "Select files" :
         "\(store.selectedFiles.count) Files"
+    } else if let folder = store.selectedFolders
+      .last?.lastPathComponent {
+      folder
     } else {
       "Fly Server"
     }
