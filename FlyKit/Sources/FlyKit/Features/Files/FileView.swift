@@ -26,10 +26,10 @@ struct FileView: View {
           Group {
             fileIconView
             fileNameView
-          }.onTapGesture {
-            quickLookFile()
           }
-          Spacer()
+          .contentShape(Rectangle())
+          .onTapGesture { openFile() }
+
           if isEditing == false {
             fileMenuView
           }
@@ -85,11 +85,13 @@ struct FileView: View {
       Text(file.name)
         .font(.callout)
         .lineLimit(1)
+        .frame(maxWidth: .infinity, alignment: .leading)
       HStack(spacing: 2) {
         Text(file.createdAt)
         Text("-")
         Text(file.isDirectory ? file.itemCount : file.size)
-      }.font(.caption2.weight(.light))
+      }
+      .font(.caption2.weight(.light))
     }
   }
 
@@ -97,10 +99,11 @@ struct FileView: View {
     Menu {
       menuItems
     } label: {
-      Image(systemName: ellipsis)
-        .padding(.trailing, 4)
-        .frame(width: 20, height: 20)
-        .foregroundStyle(Color(.leadBanana))
+      Image(systemName: ellipsisCircleFill)
+        .padding(4)
+        .imageScale(.large)
+        .symbolRenderingMode(.hierarchical)
+        .foregroundStyle(Color(.leadLemon))
     }
   }
 
@@ -139,7 +142,7 @@ struct FileView: View {
 
   var previewButton: some View {
     Button {
-      quickLookFile()
+      openFile()
     } label: {
       Label("Preview", systemImage: eye)
     }
@@ -167,9 +170,14 @@ struct FileView: View {
     }
   }
 
-  func quickLookFile() {
-    guard file.isDirectory == false, isEditing == false else { return }
-    store.previewFile = file.url
+  func openFile() {
+    guard isEditing == false else { return }
+    if file.isDirectory {
+      store.selectedFolders.append(file.url)
+      store.send(.loadFolder)
+    } else {
+      store.previewFile = file.url
+    }
   }
 }
 
