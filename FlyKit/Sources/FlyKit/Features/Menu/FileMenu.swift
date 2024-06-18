@@ -12,6 +12,7 @@ public struct FileMenu: View {
   @Perception.Bindable
   var store: StoreOf<FilesStore>
 
+  @State var animate = false
   @State var sortAscending = false
   @State var sortType: SortType = .date
 
@@ -64,10 +65,11 @@ public struct FileMenu: View {
         store.pasteAllFiles ? .pasteAll : .paste
       )
     } label: {
-      Image(systemName: docOnClipboard)
+      Image(systemName: listBulletClipboard)
         .foregroundStyle(Color(.leadLemon))
         .font(.headline)
-        .animateBounce(isMovingFile)
+        .animateBounce(animate)
+        .onAppear { animate.toggle() }
     }
   }
 }

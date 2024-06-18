@@ -35,6 +35,7 @@ public struct Toolbar: ToolbarContent {
       Image("Monkey", bundle: .module)
         .resizable()
         .frame(width: 40, height: 40)
+        .animation(.easeIn, value: title)
 
       Text(title)
         .foregroundStyle(Color(.leadLemon))
