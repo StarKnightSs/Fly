@@ -35,12 +35,12 @@ public struct Toolbar: ToolbarContent {
       Image("Monkey", bundle: .module)
         .resizable()
         .frame(width: 40, height: 40)
-        .animation(.easeIn, value: title)
+        .animation(.bouncy, value: title)
 
       Text(title)
         .foregroundStyle(Color(.leadLemon))
-        .animation(.easeInOut, value: title)
         .font(.system(.callout, design: .rounded).weight(.heavy))
+        .animation(.smooth, value: title)
     }
     .id(refresh)
     .onAppear {
