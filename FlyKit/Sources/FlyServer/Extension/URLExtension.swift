@@ -11,6 +11,10 @@ public extension URL {
     (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
   }
 
+  var fileSize: Int? {
+    (try? resourceValues(forKeys: [.fileSizeKey]))?.fileSize
+  }
+
   func excludeFromBackup() {
     var url = self
     var values = URLResourceValues()

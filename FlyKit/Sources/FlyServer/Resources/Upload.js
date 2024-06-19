@@ -1,9 +1,7 @@
 //
-//  Upload.js
-//  PocketCloud (iOS)
-//
-//  Created by Arpit Williams on 13/05/24.
-//
+// Upload.js
+// Created by Arpit Williams on 13/05/24.
+// Copyright (c) 2024 StarKnights Technologies
 
 const form = document.querySelector('form');
 form.addEventListener('submit', handleSubmit);
@@ -11,12 +9,10 @@ form.addEventListener('submit', handleSubmit);
 const progressBar = document.querySelector('progress');
 const statusMessage = document.getElementById('statusMessage');
 
-
 const lastTime = localStorage.getItem("lastTime");
 if (lastTime != undefined) {
   updateStatusMessage("Last Upload completed in " + lastTime);
 }
-
 
 async function handleSubmit(event) {
   event.preventDefault();

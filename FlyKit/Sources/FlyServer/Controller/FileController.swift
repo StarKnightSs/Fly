@@ -21,7 +21,7 @@ struct FileController: RouteCollection {
 
   func boot(routes: RoutesBuilder) throws {
     routes.get(use: filesViewHandler)
-    routes.get(":filename", use: download)
+    routes.get("download", ":filename", use: download)
     routes.get("delete", ":filename", use: delete)
     routes.on(.POST, ":filename", ":filesize", body: .stream, use: upload)
   }
@@ -34,11 +34,60 @@ struct FileController: RouteCollection {
   }
 
   func download(_ req: Request) throws -> Response {
-    guard let filename = req.parameters.get("filename") else {
-      throw Abort(.badRequest)
+    
+    // Get path & size for requested filename
+    guard let filename = req.parameters.get("filename"),
+          let fileUrl = try? filesManager.filePath(for: filename),
+          let fileSize = fileUrl.fileSize
+    else { throw Abort(.badRequest) }
+
+    // Create header to send file size
+    var headers: HTTPHeaders = [:]
+    headers.replaceOrAdd(name: .contentLength, value: fileSize.description)
+
+    // Initiate progress tracking
+    Task(priority: .high) { @MainActor in
+      AudioManager.shared.play()
+      await ProgressManager.shared.initiate(with: Int64(fileSize))
     }
-    let fileUrl = try filesManager.filePath(for: filename)
-    return req.fileio.streamFile(at: fileUrl.path)
+
+    // Generate streaming response
+    let response = Response(status: .ok, headers: headers)
+    response.body = .init(
+      stream: { stream in
+        req.fileio.readFile(at: fileUrl.path) { buffer in
+
+          // Update progress
+          Task(priority: .high) { @MainActor in
+            await ProgressManager.shared.updateProgress(
+              bytes: Int64(buffer.readableBytes)
+            )
+          }
+
+          // Write buffer to stream
+          return stream.write(.buffer(buffer))
+        }
+        .whenComplete { result in
+
+          // End progress
+          Task(priority: .high) { @MainActor in
+            AudioManager.shared.stop()
+            await ProgressManager.shared.endProgress()
+          }
+
+          // End Stream
+          switch result {
+          case let .failure(error):
+            stream.write(.error(error), promise: nil)
+          case .success:
+            stream.write(.end, promise: nil)
+          }
+        }
+      },
+      count: fileSize,
+      byteBufferAllocator: req.byteBufferAllocator
+    )
+    return response
   }
 
   func delete(_ req: Request) throws -> Response {

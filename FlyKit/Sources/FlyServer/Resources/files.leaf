@@ -33,7 +33,7 @@
             #for(filename in filenames):
                 <tr>
                     <td class="d-flex">
-                        <a class="col btn btn-link d-flex justify-content-start" href="#(filename)">#(filename)</a>
+                        <a class="col btn btn-link d-flex justify-content-start" href="download/#(filename)">#(filename)</a>
                         <a class="btn btn-danger d-flex justify-content-end" href="delete/#(filename)">Delete</a>
                     </td>
                 </tr>
