@@ -44,13 +44,15 @@ public struct FlyStore {
           Task { @MainActor in
             var server = dependencies.server
             server.updateHandler = { url, type in
-              switch type {
-              case .POST:
-                send(.filesView(.presented(.addFile(url))))
-              case .DELETE:
-                send(.filesView(.presented(.removeFile(url))))
-              default:
-                break
+              Task { @MainActor in
+                switch type {
+                case .POST:
+                  send(.filesView(.presented(.addFile(url))))
+                case .DELETE:
+                  send(.filesView(.presented(.removeFile(url))))
+                default:
+                  break
+                }
               }
             }
             server.start()

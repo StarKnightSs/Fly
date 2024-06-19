@@ -16,7 +16,6 @@ public struct FlyView: View {
 
   public init(store: StoreOf<FlyStore>) {
     self.store = store
-    store.filesView = .init()
   }
 
   public var body: some View {
@@ -29,6 +28,7 @@ public struct FlyView: View {
         }
       }
       .onAppear {
+        store.filesView = .init()
         store.send(.loadServer)
       }
       .onChange(of: scenePhase) {
