@@ -47,7 +47,8 @@ extension Target {
     .target(
       name: Module.FlyServer.rawValue,
       dependencies: [.vapor, .leaf, .resolver],
-      resources: [.process("Resources")]
+      resources: [.process("Resources")],
+      swiftSettings: [.unsafeFlags(["-suppress-warnings"])]
     )
   }
 }
