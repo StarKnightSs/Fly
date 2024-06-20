@@ -122,7 +122,7 @@ struct FileView: View {
 
   var sendButton: some View {
     Button {
-      print("Send")
+      store.send(.zipFile(file.url))
     } label: {
       Label("Send", systemImage: upArrow)
     }

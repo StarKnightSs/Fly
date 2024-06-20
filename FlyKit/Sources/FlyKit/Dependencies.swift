@@ -11,12 +11,14 @@ import Resolver
 public protocol DependenciesProtocol {
   var server: FileServerProtocol { get }
   var filesManager: FilesManagerProtocol { get }
+  var zipManager: ZipManagerProtocol { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
 }
 
 struct Dependencies: DependenciesProtocol {
   var server: any FileServerProtocol
   var filesManager: any FilesManagerProtocol
+  var zipManager: any ZipManagerProtocol
   var mainQueue: AnySchedulerOf<DispatchQueue> = .main
 }
 
@@ -39,7 +41,8 @@ extension Dependencies {
   static func mock() -> Self {
     .init(
       server: FileServer.Mock(),
-      filesManager: FilesManager.Mock()
+      filesManager: FilesManager.Mock(),
+      zipManager: ZipManager.Mock()
     )
   }
 }

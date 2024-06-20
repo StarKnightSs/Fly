@@ -101,7 +101,8 @@ extension FileMenu {
 
   var send: some View {
     Button {
-      print("Send")
+      store.editMode = .inactive
+      store.send(.zipSelectedFiles)
     } label: {
       Label("Send Files", systemImage: upArrow)
     }.disabled(isNotSelected)
