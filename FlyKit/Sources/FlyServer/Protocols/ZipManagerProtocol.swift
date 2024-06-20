@@ -6,6 +6,5 @@
 import Foundation
 
 public protocol ZipManagerProtocol {
-  init(filesManager: FilesManager)
-  func zip(files: [URL], progress: ((Double) -> Void)?) throws -> URL
+  func zip(files: [URL]) throws -> URL
 }

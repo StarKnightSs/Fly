@@ -8,7 +8,7 @@ import Foundation
 public extension ZipManager {
   struct Mock: ZipManagerProtocol {
     let url = URL.mock
-    public init(filesManager: FilesManager) {}
-    public func zip(files: [URL], progress: ((Double) -> Void)?) throws -> URL { url }
+    public init() {}
+    public func zip(files: [URL]) throws -> URL { url }
   }
 }

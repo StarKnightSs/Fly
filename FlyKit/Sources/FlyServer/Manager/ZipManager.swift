@@ -8,22 +8,18 @@ import Zip
 
 public final class ZipManager: ZipManagerProtocol {
 
-  private let filesManager: FilesManager
-
-  public init(filesManager: FilesManager) {
-    self.filesManager = filesManager
-  }
-
   /// Archives the given files in temp directory
-  public func zip(files: [URL], progress: ((Double) -> Void)?) throws -> URL {
+  public func zip(files: [URL]) throws -> URL {
     do {
-      let archiveUrl = try filesManager.temporaryDirectory().appendingPathComponent("archive.zip")
+      let archiveUrl = FileManager.default.temporaryDirectory
+        .appendingPathComponent("Archive.zip")
       try Zip.zipFiles(
-        paths: files, zipFilePath: archiveUrl,
-        password: nil, compression: .BestSpeed
-      ) {
-        progress?($0)
-      }
+        paths: files,
+        zipFilePath: archiveUrl,
+        password: nil,
+        compression: .NoCompression,
+        progress: { _ in }
+      )
       return archiveUrl
     } catch {
       throw error
