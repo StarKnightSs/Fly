@@ -40,12 +40,15 @@ public struct ScanQRView: View {
   var close: some View {
     HStack {
       Spacer()
-      Image(systemName: xmarkCircleFill)
-        .font(.title3)
-        .imageScale(.large)
-        .padding(.top, 16)
-        .padding(.trailing, 20)
-        .onTapGesture { store.send(.dismiss) }
+      Button {
+        store.send(.dismiss)
+      } label: {
+        Image(systemName: xmarkCircleFill)
+          .font(.title3)
+          .imageScale(.large)
+          .padding(.top, 16)
+          .padding(.trailing, 20)
+      }
     }
   }
 
