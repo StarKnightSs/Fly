@@ -1,21 +1,24 @@
 //
-// UploadView.swift
-// Created by Arpit Williams on 07/06/24.
+// ScanQRView.swift
+// Created by Arpit Williams on 20/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import ComposableArchitecture
 import SwiftUI
 
-struct UploadView: View {
+public struct ScanQRView: View {
 
-  @Environment(\.dismiss) var dismiss
+  @Perception.Bindable
+  var store: StoreOf<ScanQRStore>
+
   @State private var shareLink = false
 
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 0) {
       close
       title
       qrCodeImage
-      shareQrCodeInfo
+      message
       AnyView(shareLinkView)
       shareLinkInfo
       Spacer(minLength: 20)
@@ -29,6 +32,9 @@ struct UploadView: View {
         share([serverURL])
       }
     }
+    .modify { view in
+      WithPerceptionTracking { view }
+    }
   }
 
   var close: some View {
@@ -39,12 +45,12 @@ struct UploadView: View {
         .imageScale(.large)
         .padding(.top, 16)
         .padding(.trailing, 20)
-        .onTapGesture { dismiss() }
+        .onTapGesture { store.send(.dismiss) }
     }
   }
 
   var title: some View {
-    Text("SCAN CODE")
+    Text(store.title ?? "")
       .offset(y: -28)
       .font(.system(.title3, design: .rounded)
         .weight(.bold)
@@ -53,7 +59,7 @@ struct UploadView: View {
 
   var qrCodeImage: some View {
     Image
-      .generateQRCode(from: serverURL.absoluteString)
+      .generateQRCode(from: store.qrCode ?? "")
       .interpolation(.none)
       .resizable()
       .aspectRatio(1, contentMode: .fit)
@@ -61,8 +67,8 @@ struct UploadView: View {
       .offset(y: -16)
   }
 
-  var shareQrCodeInfo: some View {
-    Text("Scan QR Code to upload files")
+  var message: some View {
+    Text(store.message ?? "")
       .offset(y: -4)
       .font(.system(.body, design: .rounded)
         .weight(.medium)
@@ -71,13 +77,13 @@ struct UploadView: View {
 
   var shareLinkView: any View {
     if #available(iOS 16.0, *) {
-      ShareLink(item: serverURL) {
+      ShareLink(item: store.qrCode ?? "") {
         shareLinkLabel
       }
     } else {
       Button {
         shareLink = true
-        dismiss()
+        store.send(.dismiss)
       } label: {
         shareLinkLabel
       }
@@ -85,7 +91,7 @@ struct UploadView: View {
   }
 
   var shareLinkLabel: some View {
-    Label("Share Link", systemImage: link)
+    Label(store.shareLink ?? "", systemImage: link)
       .padding(.vertical, 10)
       .padding(.horizontal, 14)
       .background(Color(.leadLemon))
@@ -96,7 +102,7 @@ struct UploadView: View {
   }
 
   var shareLinkInfo: some View {
-    Text("Or share a direct link for the fly server🐒")
+    Text(store.shareLinkInfo ?? "")
       .padding(.top, 12)
       .padding(.horizontal, 20)
       .multilineTextAlignment(.center)
@@ -106,17 +112,16 @@ struct UploadView: View {
   }
 
   var note: some View {
-    Text(
-      "NOTE: Please keep the app active & make sure that both devices " +
-        "are connected on the same wifi or hotspot network during file transfer."
-    )
-    .padding(.bottom, 8)
-    .padding(.horizontal, 20)
-    .foregroundStyle(Color.red)
-    .font(.system(.footnote, design: .default).weight(.medium))
+    Text(store.note ?? "")
+      .padding(.bottom, 8)
+      .padding(.horizontal, 20)
+      .foregroundStyle(Color.red)
+      .font(.system(.footnote, design: .default).weight(.medium))
   }
 }
 
 #Preview {
-  UploadView()
+  ScanQRView(
+    store: ScanQRStore.mockStore()
+  )
 }

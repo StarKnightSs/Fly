@@ -45,9 +45,6 @@ struct FilesView: View {
         store.send(.loadFiles)
       }
     }
-    .sheet(isPresented: $store.showUploadView) {
-      UploadView()
-    }
     .quickLookPreview(
       $store.previewFile,
       in: store.allFilesURLs
@@ -64,6 +61,9 @@ struct FilesView: View {
         onCompletion: { store.send(.importPhotos($0)) }
       )
       .ignoresSafeArea(edges: .bottom)
+    }
+    .sheet(item: $store.scope(state: \.scanQRCodeView, action: \.scanQRCodeView)) {
+      ScanQRView(store: $0)
     }
   }
 
@@ -94,6 +94,6 @@ struct FilesView: View {
 
 #Preview {
   FilesView(
-    store: FilesStore.loadStore()
+    store: FilesStore.mockStore()
   )
 }

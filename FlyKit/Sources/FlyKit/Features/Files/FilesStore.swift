@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 @Reducer
+// swiftlint:disable:next type_body_length
 public struct FilesStore {
 
   @Dependency(\.dependencies)
@@ -28,7 +29,9 @@ public struct FilesStore {
     var showUploadView = false
     var showFilesPicker = false
     var showPhotosPicker = false
+
     @Presents var alertView: AlertStore.State?
+    @Presents var scanQRCodeView: ScanQRStore.State?
 
     @Shared(.appStorage("sortName"))
     var sortName = SortType.date.name
@@ -79,6 +82,7 @@ public struct FilesStore {
     case showFileRenameAlert(File)
     case binding(BindingAction<State>)
     case alertView(PresentationAction<AlertStore.Action>)
+    case scanQRCodeView(PresentationAction<ScanQRStore.Action>)
   }
 
   public var body: some Reducer<State, Action> {
@@ -283,13 +287,19 @@ public struct FilesStore {
           break
         }
 
-      case .binding, .alertView:
+      case .binding(\.showUploadView):
+        state.scanQRCodeView = ScanQRStore.uploadFile()
+
+      case .binding, .alertView, .scanQRCodeView:
         break
       }
       return .none
     }
     .ifLet(\.$alertView, action: \.alertView) {
       AlertStore()
+    }
+    .ifLet(\.$scanQRCodeView, action: \.scanQRCodeView) {
+      ScanQRStore()
     }
   }
 }
