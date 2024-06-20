@@ -29,7 +29,7 @@ public struct ScanQRView: View {
     .updatePresentationDetent()
     .onDisappear {
       if shareLink {
-        share([serverURL])
+        share([store.shareUrl])
       }
     }
     .modify { view in
@@ -80,9 +80,13 @@ public struct ScanQRView: View {
 
   var shareLinkView: any View {
     if #available(iOS 16.0, *) {
-      ShareLink(item: store.qrCode ?? "") {
-        shareLinkLabel
-      }
+      ShareLink(
+        item: store.shareUrl,
+        preview: SharePreview(
+          store.sharePreview ?? "",
+          image: Image("Monkey", bundle: .module)
+        )
+      ) { shareLinkLabel }
     } else {
       Button {
         shareLink = true

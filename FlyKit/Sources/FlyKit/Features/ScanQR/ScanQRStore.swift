@@ -17,8 +17,13 @@ public struct ScanQRStore {
     var qrCode: String?
     var message: String?
     var shareLink: String?
+    var sharePreview: String?
     var shareLinkInfo: String?
     var note: String?
+
+    var shareUrl: URL {
+      URL(string: qrCode ?? "") ?? serverURL
+    }
   }
 
   public enum Action: BindableAction {
@@ -46,24 +51,26 @@ public struct ScanQRStore {
 // MARK: Static States
 
 extension ScanQRStore {
-  static func uploadFile() -> State {
+  static var upload: State {
     .init(
       title: "SCAN CODE",
       qrCode: serverURL.absoluteString,
       message: "Scan QR Code to upload files",
       shareLink: "Share Link",
+      sharePreview: "Fly Server - Upload",
       shareLinkInfo: "Or share a direct link for the fly server🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
     )
   }
 
-  static func downloadFile(_ url: String) -> State {
+  static var download: State {
     .init(
       title: "SCAN CODE",
-      qrCode: url,
+      qrCode: serverURL.appendingPathComponent("/download").absoluteString,
       message: "Scan QR Code to download file",
       shareLink: "Download Link",
+      sharePreview: "Fly Server - Download",
       shareLinkInfo: "Or share a direct download link for the file 🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."

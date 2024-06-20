@@ -21,7 +21,8 @@ struct FileController: RouteCollection {
 
   func boot(routes: RoutesBuilder) throws {
     routes.get(use: filesViewHandler)
-    routes.get("download", ":filename", use: download)
+    routes.get("download", use: download)
+    routes.get("archive", use: downloadArchive)
     routes.get("delete", ":filename", use: delete)
     routes.on(.POST, ":filename", ":filesize", body: .stream, use: upload)
   }
@@ -33,12 +34,18 @@ struct FileController: RouteCollection {
     return try await req.view.render("files", context)
   }
 
-  func download(_ req: Request) throws -> Response {
-    
-    // Get path & size for requested filename
-    guard let filename = req.parameters.get("filename"),
-          let fileUrl = try? filesManager.filePath(for: filename),
-          let fileSize = fileUrl.fileSize
+  func download(_ req: Request) async throws -> Response {
+    // Delay the task by 2 second to allow opening of app
+    try await Task.sleep(nanoseconds: 2_000_000_000)
+    return req.redirect(to: "/archive")
+  }
+
+  func downloadArchive(_ req: Request) throws -> Response {
+
+    // Get file path & size for archive
+    guard let fileUrl = try? filesManager.temporaryDirectory()
+      .appendingPathComponent("Archive.zip"),
+      let fileSize = fileUrl.fileSize
     else { throw Abort(.badRequest) }
 
     // Create header to send file size

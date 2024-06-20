@@ -72,7 +72,7 @@ public struct FilesStore {
     case renameFile(URL, String)
     case zipFile(URL)
     case zipSelectedFiles
-    case downloadArchive(URL)
+    case downloadArchive
     case sortFiles
     case selectAllFiles
     case deSelectAllFiles
@@ -190,19 +190,23 @@ public struct FilesStore {
 
       case let .zipFile(url):
         return .run { send in
-          let url = try dependencies.zipManager.zip(files: [url])
-          await send(.downloadArchive(url))
+          if let url = try? dependencies.zipManager.zip(files: [url]),
+             url.isDirectory == false {
+            await send(.downloadArchive)
+          }
         }
 
       case .zipSelectedFiles:
         return .run { [state] send in
-          let url = try dependencies.zipManager.zip(files: state.selectedFilesUrls)
-          await send(.downloadArchive(url))
-          await send(.deSelectAllFiles)
+          if let url = try? dependencies.zipManager.zip(files: state.selectedFilesUrls),
+             url.isDirectory == false {
+            await send(.downloadArchive)
+            await send(.deSelectAllFiles)
+          }
         }
 
-      case let .downloadArchive(url):
-        print(url)
+      case .downloadArchive:
+        state.scanQRCodeView = ScanQRStore.download
 
       case .sortFiles:
         state.files = sortFiles(
@@ -288,7 +292,7 @@ public struct FilesStore {
         }
 
       case .binding(\.showUploadView):
-        state.scanQRCodeView = ScanQRStore.uploadFile()
+        state.scanQRCodeView = state.showUploadView ? ScanQRStore.upload : nil
 
       case .binding, .alertView, .scanQRCodeView:
         break
