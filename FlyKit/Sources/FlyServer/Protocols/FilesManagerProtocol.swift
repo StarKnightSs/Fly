@@ -10,6 +10,7 @@ public protocol FilesManagerProtocol {
   init(fileManager: FileManager)
   var supportedTypes: [UTType] { get set }
   func documentsDirectory() throws -> URL
+  func temporaryDirectory() throws -> URL
   func remove(at url: URL) throws
   func create(folder: String) throws -> URL
   func copy(from source: URL, to target: URL) throws

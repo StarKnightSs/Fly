@@ -21,4 +21,9 @@ public extension URL {
     values.isExcludedFromBackup = true
     try? url.setResourceValues(values)
   }
+
+  static var mock: Self {
+    // swiftlint:disable:next force_unwrapping
+    URL(string: "www.test.com")!
+  }
 }

@@ -11,6 +11,8 @@ public extension Resolver {
     register { FileManager.default }
     register { FilesManager(fileManager: resolve()) }
       .implements(FilesManagerProtocol.self)
+    register { ZipManager(filesManager: resolve()) }
+      .implements(ZipManagerProtocol.self)
     register { FileServer(filesManager: resolve()) }
       .implements(FileServerProtocol.self)
   }

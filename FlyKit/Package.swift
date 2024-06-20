@@ -9,7 +9,8 @@ let package = Package(
     .vapor,
     .leaf,
     .composableArchitecture,
-    .resolver
+    .resolver,
+    .zip
   ],
   targets: [
     .flyKit,
@@ -46,7 +47,7 @@ extension Target {
   static var flyServer: Target {
     .target(
       name: Module.FlyServer.rawValue,
-      dependencies: [.vapor, .leaf, .resolver],
+      dependencies: [.vapor, .leaf, .resolver, .zip],
       resources: [.process("Resources")],
       swiftSettings: [.unsafeFlags(["-suppress-warnings"])]
     )
@@ -95,6 +96,10 @@ extension Target.Dependency {
   static var resolver: Target.Dependency {
     product(name: "Resolver", package: "Resolver")
   }
+
+  static var zip: Target.Dependency {
+    product(name: "Zip", package: "Zip")
+  }
 }
 
 // MARK: - Package Dependency
@@ -115,6 +120,10 @@ extension Package.Dependency {
 
   static var resolver: Package.Dependency {
     package(url: "https://github.com/hmlongco/Resolver", .upToNextMajor(from: "1.5.1"))
+  }
+
+  static var zip: Package.Dependency {
+    package(url: "https://github.com/marmelroy/Zip.git", .upToNextMajor(from: "2.1.2"))
   }
 }
 

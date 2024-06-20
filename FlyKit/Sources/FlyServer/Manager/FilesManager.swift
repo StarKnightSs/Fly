@@ -39,6 +39,10 @@ public final class FilesManager: FilesManagerProtocol {
     )
   }
 
+  public func temporaryDirectory() throws -> URL {
+    try fileManager.temporaryDirectory
+  }
+
   public func create(folder: String) throws -> URL {
     guard let currentDirectory else { throw FileError.currentDirectoryNil }
     let folderPath = currentDirectory.appendingPathComponent(folder, isDirectory: true)
