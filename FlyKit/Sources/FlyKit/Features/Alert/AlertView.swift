@@ -51,6 +51,7 @@ public struct AlertView: View {
         Text(title)
           .font(.headline)
           .multilineTextAlignment(.center)
+          .foregroundStyle(store.titleColor)
       }
       if let image = store.image {
         image
@@ -67,6 +68,7 @@ public struct AlertView: View {
         Text(message)
           .font(.body)
           .multilineTextAlignment(.center)
+          .foregroundStyle(store.messageColor)
       }
       if store.showTextInput {
         TextField(store.textInputTitle ?? "", text: $textInput)
