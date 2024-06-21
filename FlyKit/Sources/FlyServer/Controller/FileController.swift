@@ -1,6 +1,6 @@
 //
 // FileController.swift
-// Created by Arpit Williams on 18/05/24.
+// Created by Arpit Williams on 20/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import NIOCore
@@ -21,8 +21,8 @@ struct FileController: RouteCollection {
 
   func boot(routes: RoutesBuilder) throws {
     routes.get(use: filesViewHandler)
-    routes.get("download", use: download)
-    routes.get("archive", use: downloadArchive)
+    routes.get(":filename", use: downloadFile)
+    routes.get("archive.zip", use: downloadArchive)
     routes.get("delete", ":filename", use: delete)
     routes.on(.POST, ":filename", ":filesize", body: .stream, use: upload)
   }
@@ -34,19 +34,45 @@ struct FileController: RouteCollection {
     return try await req.view.render("files", context)
   }
 
-  func download(_ req: Request) async throws -> Response {
-    // Delay the task by 2 second to allow opening of app
-    try await Task.sleep(nanoseconds: 2_000_000_000)
-    return req.redirect(to: "/archive")
+  func delete(_ req: Request) throws -> Response {
+    guard let filename = req.parameters.get("filename") else {
+      throw Abort(.badRequest)
+    }
+    let url = try filesManager.filePath(for: filename)
+    try filesManager.remove(at: url)
+    updateHandler?(url, .DELETE)
+    return req.redirect(to: "/")
+  }
+}
+
+// MARK: - Download
+
+extension FileController {
+
+  func downloadFile(_ req: Request) throws -> Response {
+
+    // Get file url for requested filename
+    guard let filename = req.parameters.get("filename"),
+          let fileUrl = try? filesManager.filePath(for: filename)
+    else { throw Abort(.badRequest) }
+
+    return try streamFile(at: fileUrl, req: req)
   }
 
   func downloadArchive(_ req: Request) throws -> Response {
 
-    // Get file path & size for archive
+    // Get file url for archive in temporary directory
     guard let fileUrl = try? filesManager.temporaryDirectory()
-      .appendingPathComponent("Archive.zip"),
-      let fileSize = fileUrl.fileSize
+      .appendingPathComponent("Archive.zip")
     else { throw Abort(.badRequest) }
+
+    return try streamFile(at: fileUrl, req: req)
+  }
+
+  func streamFile(at fileUrl: URL, req: Request) throws -> Response {
+
+    // Get file size
+    guard let fileSize = fileUrl.fileSize else { throw Abort(.badRequest) }
 
     // Create header to send file size
     var headers: HTTPHeaders = [:]
@@ -76,6 +102,9 @@ struct FileController: RouteCollection {
         }
         .whenComplete { result in
 
+          // Remove archive
+          try? filesManager.remove(at: fileUrl)
+
           // End progress
           Task(priority: .high) { @MainActor in
             AudioManager.shared.stop()
@@ -96,16 +125,11 @@ struct FileController: RouteCollection {
     )
     return response
   }
+}
 
-  func delete(_ req: Request) throws -> Response {
-    guard let filename = req.parameters.get("filename") else {
-      throw Abort(.badRequest)
-    }
-    let url = try filesManager.filePath(for: filename)
-    try filesManager.remove(at: url)
-    updateHandler?(url, .DELETE)
-    return req.redirect(to: "/")
-  }
+// MARK: - Upload
+
+extension FileController {
 
   func upload(_ req: Request) async throws -> Response {
     do {

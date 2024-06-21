@@ -9,7 +9,7 @@ import Zip
 public final class ZipManager: ZipManagerProtocol {
 
   /// Archives the given files in temp directory
-  public func zip(files: [URL]) throws -> URL {
+  public func zip(files: [URL]) throws {
     do {
       let archiveUrl = FileManager.default.temporaryDirectory
         .appendingPathComponent("Archive.zip")
@@ -20,7 +20,6 @@ public final class ZipManager: ZipManagerProtocol {
         compression: .NoCompression,
         progress: { _ in }
       )
-      return archiveUrl
     } catch {
       throw error
     }
