@@ -84,9 +84,10 @@ public struct ScanQRView: View {
         item: store.shareUrl,
         preview: SharePreview(
           store.sharePreview ?? "",
-          image: Image("Monkey", bundle: .module)
-        )
-      ) { shareLinkLabel }
+          icon: Image("MonkeyIcon", bundle: .module)
+        ),
+        label: { shareLinkLabel }
+      )
     } else {
       Button {
         shareLink = true

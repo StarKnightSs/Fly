@@ -57,20 +57,28 @@ extension ScanQRStore {
       qrCode: serverURL.absoluteString,
       message: "Scan QR Code to upload files",
       shareLink: "Share Link",
-      sharePreview: "Fly Server - Upload",
+      sharePreview: "Fly Server\nUpload Link ▲",
       shareLinkInfo: "Or share a direct link for the fly server🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
     )
   }
 
-  static var download: State {
-    .init(
+  static func download(_ filename: String? = nil) -> State {
+    var downloadLink = serverURL
+    if let filename {
+      // File download link
+      downloadLink = downloadLink.appendingPathComponent("/\(filename)")
+    } else {
+      // Archive download link
+      downloadLink = downloadLink.appendingPathComponent("/archive.zip")
+    }
+    return .init(
       title: "SCAN CODE",
-      qrCode: serverURL.appendingPathComponent("/download").absoluteString,
+      qrCode: downloadLink.absoluteString,
       message: "Scan QR Code to download file",
       shareLink: "Download Link",
-      sharePreview: "Fly Server - Download",
+      sharePreview: "Fly Server\nDownload Link ▼",
       shareLinkInfo: "Or share a direct download link for the file 🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
