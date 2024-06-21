@@ -8,5 +8,5 @@ public enum AlertType: Equatable {
   case renameFile
   case fileTransferTime
   case archiveFile
-  case unexpectedError
+  case handleError
 }

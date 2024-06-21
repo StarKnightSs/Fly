@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 @Reducer
+// swiftlint:disable:next type_body_length
 public struct FilesStore {
 
   @Dependency(\.dependencies)
@@ -21,6 +22,7 @@ public struct FilesStore {
     var selectedFile: File?
     var selectedFiles = Set<UUID>()
     var selectedFolders = [URL]()
+    var selectedFilesUrlSet = Set<URL>()
     var editMode = EditMode.inactive
 
     var isMovingFile = false
@@ -82,6 +84,8 @@ public struct FilesStore {
     case importFiles(Result<[URL], any Error>)
     case showCreateFolderAlert
     case showFileRenameAlert(File)
+    case showErrorAlert(Error)
+    case resetState
     case binding(BindingAction<State>)
     case alertView(PresentationAction<AlertStore.Action>)
     case scanQRCodeView(PresentationAction<ScanQRStore.Action>)
@@ -95,9 +99,12 @@ public struct FilesStore {
       switch action {
 
       case .loadFiles:
-        if let files = try? dependencies.filesManager.filesAtCurrentDirectory() {
+        do {
+          let files = try dependencies.filesManager.filesAtCurrentDirectory()
           state.files = files
           return .send(.sortFiles)
+        } catch {
+          return .send(.showErrorAlert(error))
         }
 
       case .loadFolder:
@@ -107,7 +114,9 @@ public struct FilesStore {
         }
 
       case .loadPrevious:
-        state.selectedFolders.removeLast()
+        if state.selectedFolders.isEmpty == false {
+          state.selectedFolders.removeLast()
+        }
         if let selectedFolder = state.selectedFolders.last {
           dependencies.filesManager.setCurrentDirectory(to: selectedFolder)
         } else if let documentsDirectory = try? dependencies.filesManager.documentsDirectory() {
@@ -122,11 +131,11 @@ public struct FilesStore {
         }
 
       case let .addFolder(name):
-        if let folderPath = try? dependencies.filesManager.create(folder: name) {
-          return .concatenate(
-            .send(.addFile(folderPath)),
-            .send(.sortFiles)
-          )
+        do {
+          let folderPath = try dependencies.filesManager.create(folder: name)
+          return .concatenate(.send(.addFile(folderPath)), .send(.sortFiles))
+        } catch {
+          return .send(.showErrorAlert(error))
         }
 
       case let .copyMove(file, isMovingFile):
@@ -139,33 +148,26 @@ public struct FilesStore {
         state.pasteAllFiles = true
         state.isMovingFile = isMovingFile
         state.isCopyingFile = isMovingFile == false
+        state.selectedFilesUrlSet = Set(state.selectedFilesUrls)
 
       case .paste:
-        if let selectedFile = state.selectedFile {
-          try? dependencies.filesManager.copyFile(
-            from: selectedFile.url,
-            shouldMove: state.isMovingFile
+        guard let selectedFile = state.selectedFile else { return .none }
+        do {
+          try dependencies.filesManager.copyFile(
+            from: selectedFile.url, shouldMove: state.isMovingFile
           )
-          state.selectedFile = nil
-          state.isMovingFile = false
-          state.isCopyingFile = false
-          state.pasteAllFiles = false
-          return .send(.loadFiles)
+          return .concatenate(.send(.resetState), .send(.loadFiles))
+        } catch {
+          return .send(.showErrorAlert(error))
         }
 
       case .pasteAll:
         return .concatenate(
-          .merge(state.selectedFilesUrls.map {
-            try? dependencies.filesManager.copyFile(
-              from: $0, shouldMove: state.isMovingFile
-            )
+          .merge(state.selectedFilesUrlSet.map {
+            try? dependencies.filesManager.copyFile(from: $0, shouldMove: state.isMovingFile)
             return Effect.none
           }),
-          .send(.deSelectAllFiles),
-          .send(.set(\.isMovingFile, false)),
-          .send(.set(\.isCopyingFile, false)),
-          .send(.set(\.pasteAllFiles, false)),
-          .send(.loadFiles)
+          .send(.deSelectAllFiles), .send(.resetState), .send(.loadFiles)
         )
 
       case let .removeFile(url):
@@ -183,11 +185,14 @@ public struct FilesStore {
         )
 
       case let .renameFile(url, filename):
-        if let index = state.files.firstIndex(where: { $0.url == url }),
-           let url = try? dependencies.filesManager.rename(at: state.files[index].url, to: filename),
-           let file = dependencies.filesManager.file(for: url) {
+        do {
+          guard let index = state.files.firstIndex(where: { $0.url == url }) else { return .none }
+          let url = try dependencies.filesManager.rename(at: state.files[index].url, to: filename)
+          guard let file = dependencies.filesManager.file(for: url) else { return .none }
           state.files[index] = file
           return .send(.sortFiles)
+        } catch {
+          return .send(.showErrorAlert(error))
         }
 
       case .archiveFiles:
@@ -199,9 +204,7 @@ public struct FilesStore {
             await send(.set(\.alertView, nil))
             await send(.set(\.showDownloadView, true))
           } catch {
-            await send(.deSelectAllFiles)
-            await send(.set(\.alertView, nil))
-            await send(.set(\.alertView, AlertStore.unexpectedErrorAlert(message: error.localizedDescription)))
+            await send(.showErrorAlert(error))
           }
         }
 
@@ -220,6 +223,7 @@ public struct FilesStore {
 
       case .deSelectAllFiles:
         state.selectedFiles.removeAll()
+        state.selectedFilesUrlSet.removeAll()
 
       case let .importPhotos(urls):
         return .merge(urls.map {
@@ -275,6 +279,30 @@ public struct FilesStore {
         default:
           break
         }
+
+      case let .showErrorAlert(error):
+        state.alertView = nil
+        enum CancelID { case error }
+        let message = (error as? FileError)?.description ?? error.localizedDescription
+        let errorAlert = Effect<Action>
+          .send(.set(\.alertView, AlertStore.handleErrorAlert(message: message)))
+          .debounce(id: CancelID.error, for: 0.5, scheduler: dependencies.mainQueue)
+        return .concatenate(
+          .send(.deSelectAllFiles),
+          .send(.resetState),
+          errorAlert
+        )
+
+      case .resetState:
+        state.previewFile = nil
+        state.selectedFile = nil
+        state.isMovingFile = false
+        state.isCopyingFile = false
+        state.pasteAllFiles = false
+        state.showUploadView = false
+        state.showDownloadView = false
+        state.showFilesPicker = false
+        state.showPhotosPicker = false
 
       case .binding(\.showUploadView):
         state.scanQRCodeView = state.showUploadView ? ScanQRStore.uploadState() : nil

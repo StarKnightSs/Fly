@@ -103,15 +103,14 @@ extension AlertStore {
     )
   }
 
-  static func unexpectedErrorAlert(message: String? = nil) -> State {
+  static func handleErrorAlert(message: String? = nil) -> State {
     .init(
-      type: .unexpectedError,
-      title: "Error ⚠️",
-      message: message,
+      type: .handleError,
+      title: message,
       image: Image("Monkey", bundle: .module),
       autoDismiss: true,
       dismissDuration: 4,
-      spacing: 8
+      spacing: 0
     )
   }
 }
