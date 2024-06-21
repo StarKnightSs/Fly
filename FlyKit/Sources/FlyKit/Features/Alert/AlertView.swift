@@ -32,7 +32,9 @@ public struct AlertView: View {
       .opacity(0.4)
       .ignoresSafeArea()
       .onTapGesture {
-        store.send(.dismiss(store.type))
+        if store.dismissOnTap {
+          store.send(.dismiss(store.type))
+        }
       }
       .onAppear {
         if store.autoDismiss {
@@ -50,16 +52,21 @@ public struct AlertView: View {
           .font(.headline)
           .multilineTextAlignment(.center)
       }
-      if let message = store.message {
-        Text(message)
-          .font(.body)
-          .multilineTextAlignment(.center)
-      }
       if let image = store.image {
         image
           .resizable()
           .scaledToFit()
           .frame(maxWidth: 140)
+      }
+      if store.showProgress {
+        ProgressView()
+          .tint(Color(.leadLemon))
+          .padding(.bottom, 4)
+      }
+      if let message = store.message {
+        Text(message)
+          .font(.body)
+          .multilineTextAlignment(.center)
       }
       if store.showTextInput {
         TextField(store.textInputTitle ?? "", text: $textInput)

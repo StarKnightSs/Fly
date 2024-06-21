@@ -245,28 +245,13 @@ public struct FilesStore {
         }
 
       case .showCreateFolderAlert:
-        state.alertView = .init(
-          type: .createFolder,
-          title: "Add Folder",
-          mainButtonTitle: "Add",
-          cancelButtonTitle: "Cancel",
-          showTextInput: true,
-          textInputTitle: "Folder Name"
-        )
+        state.alertView = AlertStore.createFolderAlert()
 
       case let .showFileRenameAlert(file):
         state.selectedFile = file
         let filename = file.isDirectory ? file.name :
           file.url.deletingPathExtension().lastPathComponent
-        state.alertView = .init(
-          type: .renameFile,
-          title: "Rename File",
-          mainButtonTitle: "Rename",
-          cancelButtonTitle: "Cancel",
-          showTextInput: true,
-          textInputTitle: "File Name",
-          textInputValue: filename
-        )
+        state.alertView = AlertStore.fileRenameAlert(filename)
 
       case let .alertView(.presented(.done(type))):
         switch type {

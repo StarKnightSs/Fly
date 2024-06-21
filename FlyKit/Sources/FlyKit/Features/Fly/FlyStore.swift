@@ -74,13 +74,7 @@ public struct FlyStore {
         }
 
       case .showFileTransferAlert:
-        state.alertView = .init(
-          type: .fileTransferTime,
-          title: "Transferred in \(format(state.lastTransferTime))⌛️",
-          image: Image("Monkey", bundle: .module),
-          autoDismiss: true,
-          spacing: 0
-        )
+        state.alertView = AlertStore.fileTransferAlert(state.lastTransferTime)
 
       case .alertView(.presented(.dismiss)):
         state.lastTransferTime = 0

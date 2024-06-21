@@ -24,7 +24,9 @@ public struct AlertStore {
     var textInputValue = ""
     var titleColor: Color = Color(.leadBanana)
     var messageColor: Color = Color(.licoriceLemon)
+    var showProgress = false
     var autoDismiss: Bool = false
+    var dismissOnTap: Bool = true
     var dismissDuration = 2
     var spacing = 20.0
   }
@@ -49,6 +51,56 @@ public struct AlertStore {
         }
       }
     }
+  }
+}
+
+// MARK: Static States
+
+extension AlertStore {
+
+  static func createFolderAlert() -> State {
+    .init(
+      type: .createFolder,
+      title: "Add Folder",
+      mainButtonTitle: "Add",
+      cancelButtonTitle: "Cancel",
+      showTextInput: true,
+      textInputTitle: "Folder Name"
+    )
+  }
+
+  static func fileRenameAlert(_ filename: String) -> State {
+    .init(
+      type: .renameFile,
+      title: "Rename File",
+      mainButtonTitle: "Rename",
+      cancelButtonTitle: "Cancel",
+      showTextInput: true,
+      textInputTitle: "File Name",
+      textInputValue: filename
+    )
+  }
+
+  static func fileTransferAlert(_ totalTime: Double) -> State {
+    .init(
+      type: .fileTransferTime,
+      title: "Transferred in \(format(totalTime))⌛️",
+      image: Image("Monkey", bundle: .module),
+      autoDismiss: true,
+      spacing: 0
+    )
+  }
+
+  static func archiveFileAlert() -> State {
+    .init(
+      type: .archiveFile,
+      title: "Archiving Files",
+      message: "Please wait,\nPreparing download...",
+      image: Image("Monkey", bundle: .module),
+      showProgress: true,
+      dismissOnTap: false,
+      spacing: 8
+    )
   }
 }
 
