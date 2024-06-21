@@ -51,7 +51,7 @@ public struct ScanQRStore {
 // MARK: Static States
 
 extension ScanQRStore {
-  static var upload: State {
+  static func uploadState() -> State {
     .init(
       title: "SCAN CODE",
       qrCode: serverURL.absoluteString,
@@ -64,7 +64,7 @@ extension ScanQRStore {
     )
   }
 
-  static func download(_ filename: String? = nil) -> State {
+  static func downloadState(_ filename: String? = nil) -> State {
     var downloadLink = serverURL
     if let filename {
       // File download link

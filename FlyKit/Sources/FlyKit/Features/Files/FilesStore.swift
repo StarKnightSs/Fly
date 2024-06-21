@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 @Reducer
-// swiftlint:disable:next type_body_length
 public struct FilesStore {
 
   @Dependency(\.dependencies)
@@ -23,10 +22,14 @@ public struct FilesStore {
     var selectedFiles = Set<UUID>()
     var selectedFolders = [URL]()
     var editMode = EditMode.inactive
+
     var isMovingFile = false
     var isCopyingFile = false
     var pasteAllFiles = false
+
     var showUploadView = false
+    var showDownloadView = false
+
     var showFilesPicker = false
     var showPhotosPicker = false
 
@@ -70,9 +73,8 @@ public struct FilesStore {
     case removeFile(URL)
     case removeSelectedFiles
     case renameFile(URL, String)
-    case zipFile(URL)
-    case zipSelectedFiles
-    case downloadArchive
+    case archiveFiles
+    case downloadFile(String)
     case sortFiles
     case selectAllFiles
     case deSelectAllFiles
@@ -188,25 +190,23 @@ public struct FilesStore {
           return .send(.sortFiles)
         }
 
-      case let .zipFile(url):
-        return .run { send in
-          if let url = try? dependencies.zipManager.zip(files: [url]),
-             url.isDirectory == false {
-            await send(.downloadArchive)
-          }
-        }
-
-      case .zipSelectedFiles:
+      case .archiveFiles:
         return .run { [state] send in
-          if let url = try? dependencies.zipManager.zip(files: state.selectedFilesUrls),
-             url.isDirectory == false {
-            await send(.downloadArchive)
+          do {
+            await send(.set(\.alertView, AlertStore.archiveFileAlert()))
+            try dependencies.zipManager.zip(files: state.selectedFilesUrls)
             await send(.deSelectAllFiles)
+            await send(.set(\.alertView, nil))
+            await send(.set(\.showDownloadView, true))
+          } catch {
+            await send(.deSelectAllFiles)
+            await send(.set(\.alertView, nil))
+            await send(.set(\.alertView, AlertStore.unexpectedErrorAlert(message: error.localizedDescription)))
           }
         }
 
-      case .downloadArchive:
-        state.scanQRCodeView = ScanQRStore.download
+      case let .downloadFile(filename):
+        state.scanQRCodeView = ScanQRStore.downloadState(filename)
 
       case .sortFiles:
         state.files = sortFiles(
@@ -277,7 +277,10 @@ public struct FilesStore {
         }
 
       case .binding(\.showUploadView):
-        state.scanQRCodeView = state.showUploadView ? ScanQRStore.upload : nil
+        state.scanQRCodeView = state.showUploadView ? ScanQRStore.uploadState() : nil
+
+      case .binding(\.showDownloadView):
+        state.scanQRCodeView = state.showDownloadView ? ScanQRStore.downloadState() : nil
 
       case .binding, .alertView, .scanQRCodeView:
         break

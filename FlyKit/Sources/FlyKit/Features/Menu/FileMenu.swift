@@ -102,7 +102,15 @@ extension FileMenu {
   var send: some View {
     Button {
       store.editMode = .inactive
-      store.send(.zipSelectedFiles)
+      // Archive files for download if more than 1 files are selected
+      if store.selectedFiles.count > 1 {
+        store.send(.archiveFiles)
+      }
+      // Download file without archiving if only 1 file is selected
+      else if let filename = store.selectedFilesUrls.first?
+        .deletingPathExtension().lastPathComponent {
+        store.send(.downloadFile(filename))
+      }
     } label: {
       Label("Send Files", systemImage: upArrow)
     }.disabled(isNotSelected)

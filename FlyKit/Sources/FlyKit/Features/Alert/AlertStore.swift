@@ -102,6 +102,17 @@ extension AlertStore {
       spacing: 8
     )
   }
+
+  static func unexpectedErrorAlert(message: String? = nil) -> State {
+    .init(
+      type: .unexpectedError,
+      title: "Unexpected Error",
+      message: message,
+      image: Image("Monkey", bundle: .module),
+      autoDismiss: true,
+      spacing: 8
+    )
+  }
 }
 
 // MARK: Mock Store
