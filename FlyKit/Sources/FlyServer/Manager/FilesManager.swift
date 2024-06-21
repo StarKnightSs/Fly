@@ -57,7 +57,7 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func copy(from source: URL, to target: URL) throws {
-    guard fileManager.fileExists(atPath: target.relativePath) == false else {
+    guard fileExists(at: target) == false else {
       throw FileError.fileAlreadyExists
     }
     try fileManager.copyItem(at: source, to: target)
@@ -72,7 +72,7 @@ public final class FilesManager: FilesManagerProtocol {
     guard let filePath = try? filePath(for: fileName) else {
       throw FileError.filePathInvalid
     }
-    guard fileManager.fileExists(atPath: filePath.relativePath) == false else {
+    guard fileExists(at: filePath) == false else {
       throw FileError.fileAlreadyExists
     }
     shouldMove ?
@@ -82,8 +82,8 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func rename(at source: URL, to filename: String) throws -> URL {
-    guard fileManager.fileExists(atPath: source.absoluteString) == false else {
-      throw FileError.fileDoesNotExists
+    guard fileExists(at: source) == false else {
+      throw FileError.fileAlreadyExists
     }
     let target = source.deletingLastPathComponent().appendingPathComponent(filename)
     try fileManager.moveItem(at: source, to: target)
