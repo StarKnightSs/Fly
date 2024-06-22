@@ -102,9 +102,6 @@ extension FileController {
         }
         .whenComplete { result in
 
-          // Remove archive
-          try? filesManager.remove(at: fileUrl)
-
           // End progress
           Task(priority: .high) { @MainActor in
             AudioManager.shared.stop()

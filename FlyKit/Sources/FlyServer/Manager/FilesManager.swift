@@ -65,7 +65,7 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func copyFile(from source: URL, shouldMove: Bool) throws {
-    guard source != currentDirectory else {
+    guard currentDirectory?.absoluteString.contains(source.absoluteString) == false else {
       throw FileError.currentDirectoryOverwrite
     }
     let fileName = source.lastPathComponent
@@ -82,10 +82,9 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func rename(at source: URL, to filename: String) throws -> URL {
-    guard fileExists(at: source) == false else {
-      throw FileError.fileAlreadyExists
-    }
+    guard fileExists(at: source) else { throw FileError.fileDoesNotExists }
     let target = source.deletingLastPathComponent().appendingPathComponent(filename)
+    guard fileExists(at: target) == false else { throw FileError.fileAlreadyExists }
     try fileManager.moveItem(at: source, to: target)
     target.excludeFromBackup()
     return target
