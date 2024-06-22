@@ -20,18 +20,25 @@ struct FileController: RouteCollection {
   }
 
   func boot(routes: RoutesBuilder) throws {
-    routes.get(use: filesViewHandler)
+    routes.get(use: indexView)
+    routes.get("upload", use: uploadView)
+    routes.get("download", ":filename", use: downloadView)
     routes.get(":filename", use: downloadFile)
     routes.get("archive.zip", use: downloadArchive)
     routes.get("delete", ":filename", use: delete)
     routes.on(.POST, ":filename", ":filesize", body: .stream, use: upload)
   }
 
-  func filesViewHandler(_ req: Request) async throws -> View {
-    let files = try filesManager.filesAtCurrentDirectory()
-    let filenames = files.map(\.url.lastPathComponent)
-    let context = FileContext(filenames: filenames)
-    return try await req.view.render("files", context)
+  func indexView(_ req: Request) async throws -> View {
+    return try await req.view.render("index")
+  }
+
+  func downloadView(_ req: Request) async throws -> View {
+    return try await req.view.render("download")
+  }
+
+  func uploadView(_ req: Request) async throws -> View {
+    return try await req.view.render("upload")
   }
 
   func delete(_ req: Request) throws -> Response {
@@ -216,10 +223,6 @@ extension FileController {
       throw (error)
     }
   }
-}
-
-struct FileContext: Encodable {
-  var filenames: [String]
 }
 
 final class Sequential {
