@@ -17,7 +17,6 @@ public struct ScanQRStore {
     var qrCode: String?
     var message: String?
     var shareLink: String?
-    var sharePreview: String?
     var shareLinkInfo: String?
     var note: String?
 
@@ -54,11 +53,10 @@ extension ScanQRStore {
   static func uploadState() -> State {
     .init(
       title: "SCAN CODE",
-      qrCode: serverURL.absoluteString,
-      message: "Scan QR Code to upload files",
-      shareLink: "Share Link",
-      sharePreview: "Fly Server\nUpload Link ▲",
-      shareLinkInfo: "Or share a direct link for the fly server🐒",
+      qrCode: serverURL.appendingPathComponent("/upload").absoluteString,
+      message: "Scan QR Code to upload file",
+      shareLink: "Upload Link",
+      shareLinkInfo: "Or share this upload link for the fly server 🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
     )
@@ -78,8 +76,7 @@ extension ScanQRStore {
       qrCode: downloadLink.absoluteString,
       message: "Scan QR Code to download file",
       shareLink: "Download Link",
-      sharePreview: "Fly Server\nDownload Link ▼",
-      shareLinkInfo: "Or share a direct download link for the file 🐒",
+      shareLinkInfo: "Or share direct download link for the file 🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
     )

@@ -82,10 +82,6 @@ public struct ScanQRView: View {
     if #available(iOS 16.0, *) {
       ShareLink(
         item: store.shareUrl,
-        preview: SharePreview(
-          store.sharePreview ?? "",
-          icon: Image("MonkeyIcon", bundle: .module)
-        ),
         label: { shareLinkLabel }
       )
     } else {
