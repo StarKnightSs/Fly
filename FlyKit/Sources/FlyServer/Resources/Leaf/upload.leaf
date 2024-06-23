@@ -1,0 +1,25 @@
+#extend("index"):
+#export("view"):
+<script src="/Upload.js"></script>
+<div class="container">
+  <input
+  type="file"
+  name="file"
+  id="input"
+  hidden
+  onchange="uploadFile()"
+  />
+  <button
+    id="upload"
+    type="button"
+    onclick="openFileInput()"
+    class="btn btn-lg px-4 px-sm-5 bg-success bg-gradient rounded-3 border"
+    >
+    <div class="fs-4 fw-medium text-white">UPLOAD</div>
+  </button>
+  <div id="statusMessage" class="text-info mt-2" hidden></div>
+</div>
+#extend("progress"): #endextend
+#extend("info"): #endextend
+#endexport
+#endextend

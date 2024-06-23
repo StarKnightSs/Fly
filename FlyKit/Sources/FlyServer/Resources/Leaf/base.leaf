@@ -20,8 +20,8 @@
     </script>
   </head>
 
-  <body>
-    <div class="vstack bg-black vh-100 gap-5 justify-content-center align-items-center text-center">
+  <body style="background-color: #1A1A1A;">
+    <div class="vstack vh-100 gap-5 justify-content-center align-items-center text-center">
       #import("content")
     </div>
   </body>

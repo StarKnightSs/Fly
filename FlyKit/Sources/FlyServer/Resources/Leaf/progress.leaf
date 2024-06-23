@@ -1,0 +1,26 @@
+<div
+  id="progress"
+  class="container.fluid col-10 col-md-6 col-lg-4"
+  hidden
+  >
+  <div
+    class="progress"
+    role="progressbar"
+    aria-valuenow="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    style="height: 40px"
+    >
+    <div
+      id="progress-bar"
+      class="progress-bar bg-warning text-black fs-4 fw-medium"
+      style="width: 0%"
+      >
+    </div>
+  </div>
+  
+  <div class="hstack text-white">
+    <div id="speed" class="mt-2">Speed: 0 Mbps</div>
+    <div id="time" class="mt-2 ms-auto">Time: 0 Sec</div>
+  </div>
+</div>

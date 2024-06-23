@@ -1,6 +1,6 @@
 #extend("base"):
 #export("content"):
-<div class="container bg-warning bg-gradient rounded col-6 col-sm-4 col-md-2">
+<div class="container bg-warning bg-gradient rounded col-5 col-md-3 col-lg-2">
   <img src="/Monkey.svg" class="w-100" />
   <p class="fs-2 fs-md-1 lh-1 fw-bold">Fly Server</p>
 </div>
