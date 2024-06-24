@@ -8,6 +8,10 @@ async function downloadFile(filename) {
     console.log("Invalid Filename");
     return;
   }
+  if (isMobile() == true) {
+    downloadLink(filename);
+    return;
+  }
   lastMegaBytes = 0;
   start = new Date();
   lastNow = new Date().getTime();
@@ -21,10 +25,16 @@ async function downloadFile(filename) {
       handleLoadError(e);
     }
   });
-  
+
   const path = "/" + filename;
   request.open("get", path);
   request.send();
+}
+
+function downloadLink(filename) {
+  let origin = window.location.origin;
+  let link = origin.concat("/", filename);
+  window.open(link, '_blank')
 }
 
 function downloadBlob(blob, filename) {
@@ -37,4 +47,10 @@ function downloadBlob(blob, filename) {
   let event = new MouseEvent("click", { bubbles: true, cancelable: true, view: window });
   link.dispatchEvent(event);
   document.body.removeChild(link);
+}
+
+
+function isMobile() {
+  const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  return regex.test(navigator.userAgent);
 }
