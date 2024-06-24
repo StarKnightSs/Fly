@@ -66,10 +66,10 @@ extension ScanQRStore {
     var downloadLink = serverURL
     if let filename {
       // File download link
-      downloadLink = downloadLink.appendingPathComponent("/\(filename)")
+      downloadLink = downloadLink.appendingPathComponent("/download/\(filename)")
     } else {
       // Archive download link
-      downloadLink = downloadLink.appendingPathComponent("/archive.zip")
+      downloadLink = downloadLink.appendingPathComponent("/download/archive.zip")
     }
     return .init(
       title: "SCAN CODE",
