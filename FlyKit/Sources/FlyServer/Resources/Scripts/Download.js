@@ -28,6 +28,7 @@ async function downloadFile(filename) {
 }
 
 function downloadBlob(blob, filename) {
+  blob = new Blob([blob], { type: "application/octet-stream" });
   const blobUrl = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = blobUrl;
