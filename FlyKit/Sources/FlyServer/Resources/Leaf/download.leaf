@@ -1,12 +1,31 @@
 #extend("index"):
 #export("view"):
-<button type="button" class="btn btn-lg px-4 px-sm-5 bg-success text-white bg-gradient rounded-3 border">
-  <div class="fs-4 fw-medium">DOWNLOAD</div>
-</button>
-<div class="text-warning h5 mx-5">
-  Tap the button above to download file from the Fly Server 👆
-  <div class="text-danger h6 mt-2">
-    Note: Please make sure not to kill the Fly App during file transfer.
+<script src="/Download.js"></script>
+<div class="container">
+  <button
+    id="button"
+    type="button"
+    onclick="downloadFile('#(filename)')"
+    class="btn btn-lg px-4 px-sm-5 rounded-3 border"
+    style="background-color: #8efa00"
+    >
+    <div class="fs-4 fw-medium">DOWNLOAD</div>
+  </button>
+  <div id="statusMessage" class="mt-2 mx-2 text-info text-break"><strong>#(filename)</strong></div>
+</div>
+#extend("progress"): #endextend
+<div class="container">
+  <div id="info" class="mx-2 h6 w-100" style="color: #fffb00">
+    Tap the button above to download file from Fly Server 👆
+  </div>
+  <div id="note" style="color: #ff2d55;">
+    <div class="strong mt-3">Note:</div>
+    <div class="small mt-2">
+      ✩ To avoid interruption, open this link in a proper browser.
+    </div>
+    <div class="small mt-1">
+      ✩ Please ignore HTTPS warnings, since it's not possible to create SSL for a private network.
+    </div>
   </div>
 </div>
 #endexport

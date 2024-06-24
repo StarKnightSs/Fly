@@ -1,8 +1,0 @@
-<div class="container">
-  <div id="info" class="mx-2 fs-5" style="color: #FFFB00;">
-    Tap the button above to send file to the Fly App 👆
-  </div>
-  <div id="note" class="fs-6 mt-2" style="color: #FF2600;">
-    Tip: To send multiple files, ZIP them up.
-  </div>
-</div>

@@ -34,7 +34,9 @@ struct FileController: RouteCollection {
   }
 
   func downloadView(_ req: Request) async throws -> View {
-    return try await req.view.render("download")
+    guard let filename = req.parameters.get("filename")
+    else { throw Abort(.badRequest) }
+    return try await req.view.render("download", ["filename": filename])
   }
 
   func uploadView(_ req: Request) async throws -> View {
