@@ -26,6 +26,10 @@
     <div class="small mt-1">
       ✩ Please ignore HTTPS warnings, since it's not possible to create SSL for a private network.
     </div>
+    <div class="small mt-1">
+      ✩ Facing issues with download ? Try this<br>
+      <a href="/#(filename)" class="link-success link-offset-2 link-underline-warning">Direct Link</a>
+    </div>
   </div>
 </div>
 #endexport
