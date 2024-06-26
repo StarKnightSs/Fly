@@ -15,20 +15,20 @@
 </div>
 #extend("progress"): #endextend
 <div class="container">
-  <div id="info" class="mx-2 h6 w-100" style="color: #fffb00">
-    Tap the button above to download file from Fly Server 👆
+  <div id="info" class="h6 lh-base" style="color: #fffb00">
+    Tap above to download file from Fly Server 👆
+    <div class="mt-2 lh-lg" style="color: #8efa00;">
+      For background download, use this 👇<br/>
+      <a href="/#(filename)" class="link-warning link-offset-2 link-underline-warning">DIRECT LINK</a>
+    </div>
   </div>
   <div id="note" style="color: #ff2d55;">
-    <div class="strong mt-3">Note:</div>
-    <div class="small mt-2">
-      ✩ To avoid interruption, open this link in a proper browser.
+    <div class="strong mt-4">NOTE:</div>
+    <div class="small mt-1">
+      - To avoid interruption, open this link in a proper browser.
     </div>
     <div class="small mt-1">
-      ✩ Please ignore HTTPS warnings, since it's not possible to create SSL for a private network.
-    </div>
-    <div class="small mt-1">
-      ✩ Facing issues with download ? Try this<br>
-      <a href="/#(filename)" class="link-success link-offset-2 link-underline-warning">Direct Link</a>
+      - Please ignore HTTPS warnings, since it's not possible to generate local SSL.
     </div>
   </div>
 </div>
