@@ -8,11 +8,11 @@ import Vapor
 
 struct FileController: RouteCollection {
 
-  private let filesManager: FilesManager
+  private let filesManager: FilesManagerProtocol
   private var updateHandler: ((URL, HTTPMethod) -> Void)?
 
   init(
-    filesManager: FilesManager,
+    filesManager: FilesManagerProtocol,
     updateHandler: ((URL, HTTPMethod) -> Void)?
   ) {
     self.filesManager = filesManager

@@ -10,10 +10,10 @@ import Vapor
 public final class FileServer: FileServerProtocol {
 
   private let app: Application
-  public let filesManager: FilesManager
+  private let filesManager: FilesManagerProtocol
   public var updateHandler: ((URL, HTTPMethod) -> Void)?
 
-  public init(filesManager: FilesManager) {
+  init(filesManager: FilesManagerProtocol) {
     // swiftlint:disable:next force_try
     app = try! Application(.detect())
     self.filesManager = filesManager
