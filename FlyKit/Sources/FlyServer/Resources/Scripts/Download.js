@@ -8,7 +8,10 @@ async function downloadFile(filename) {
     console.log("Invalid Filename");
     return;
   }
+
+  fileSizeInMb = 0;
   lastMegaBytes = 0;
+  
   start = new Date();
   lastNow = new Date().getTime();
 

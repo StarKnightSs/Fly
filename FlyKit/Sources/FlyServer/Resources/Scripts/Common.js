@@ -5,7 +5,10 @@
 
 var lastInfo = "";
 var lastNote = "";
+
+var fileSizeInMb = 0;
 var lastMegaBytes = 0;
+
 var start = new Date();
 var lastNow = new Date().getTime();
 
@@ -33,8 +36,11 @@ function handleLoadProgress(e) {
   let time = remainingMegaBytes / speed;
   lastMegaBytes = megaBytes;
   lastNow = now;
+  if (fileSizeInMb < totalMegaBytes) {
+    fileSizeInMb = totalMegaBytes;
+  }
   updateProgress(percent, speed, time);
-  let message = "Transferred ".concat(megaBytes.toFixed(2)," MB of ",totalMegaBytes.toFixed(2)," MB");
+  let message = "Transferred ".concat(megaBytes.toFixed(2)," MB of ", fileSizeInMb.toFixed(2)," MB");
   updateStatusMessage(message);
 }
 
@@ -57,11 +63,10 @@ function handleLoadError(e) {
 function handleLoadEnd(e) {
   var end = new Date();
   var seconds = (end.getTime() - start.getTime()) / 1000;
-  var totalMegaBytes = e.total / (1024 * 1024);
   showProgress(false);
   updateProgress(0, 0, 0);
   updateInfoMessage(false);
-  let message = "Transferred ".concat(totalMegaBytes.toFixed(2), " MB in ", format(seconds))
+  let message = "Transferred ".concat(fileSizeInMb.toFixed(2), " MB in ", format(seconds))
   updateStatusMessage(message);
 }
 
