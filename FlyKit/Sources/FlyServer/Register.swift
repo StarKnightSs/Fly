@@ -15,5 +15,7 @@ public extension Resolver {
       .implements(ZipManagerProtocol.self)
     register { FileServer(filesManager: resolve()) }
       .implements(FileServerProtocol.self)
+    register { AppConfigManager() }
+      .implements(AppConfigManagerProtocol.self)
   }
 }

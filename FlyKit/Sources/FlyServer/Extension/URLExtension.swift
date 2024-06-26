@@ -22,6 +22,10 @@ public extension URL {
     try? url.setResourceValues(values)
   }
 
+  static var baseUrl: Self? {
+    URL(string: "https://zircon.starknights.in")
+  }
+
   static var mock: Self {
     // swiftlint:disable:next force_unwrapping
     URL(string: "www.test.com")!
