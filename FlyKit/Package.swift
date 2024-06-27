@@ -10,9 +10,11 @@ let package = Package(
     .leaf,
     .composableArchitecture,
     .resolver,
-    .zip
+    .zip,
+    .googleMobileAds
   ],
   targets: [
+    .adMob,
     .flyKit,
     .flyKitTests,
     .flyServer
@@ -23,6 +25,7 @@ let package = Package(
 
 enum Module: String, CaseIterable {
   // swiftlint:disable identifier_name
+  case AdMob
   case FlyKit
   case FlyServer
   // swiftlint:enable identifier_name
@@ -35,6 +38,13 @@ enum Module: String, CaseIterable {
 // MARK: - Target
 
 extension Target {
+
+  static var adMob: Target {
+    .target(
+      name: Module.AdMob.rawValue,
+      dependencies: [.googleMobileAds]
+    )
+  }
 
   static var flyKit: Target {
     .target(
@@ -100,6 +110,10 @@ extension Target.Dependency {
   static var zip: Target.Dependency {
     product(name: "Zip", package: "Zip")
   }
+
+  static var googleMobileAds: Target.Dependency {
+    product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads", condition: .when(platforms: [.iOS]))
+  }
 }
 
 // MARK: - Package Dependency
@@ -124,6 +138,13 @@ extension Package.Dependency {
 
   static var zip: Package.Dependency {
     package(url: "https://github.com/marmelroy/Zip.git", .upToNextMajor(from: "2.1.2"))
+  }
+
+  static var googleMobileAds: Package.Dependency {
+    package(
+      url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+      .upToNextMajor(from: "11.6.0")
+    )
   }
 }
 
