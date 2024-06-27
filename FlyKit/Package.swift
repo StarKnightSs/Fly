@@ -49,7 +49,7 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.flyServer, .composableArchitecture, .resolver],
+      dependencies: [.adMob, .flyServer, .composableArchitecture, .resolver],
       resources: [.process("Resources")]
     )
   }
@@ -89,6 +89,10 @@ extension Target.Dependency {
 
   static var flyServer: Target.Dependency {
     .init(.FlyServer)
+  }
+
+  static var adMob: Target.Dependency {
+    .init(.AdMob)
   }
 
   static var vapor: Target.Dependency {
