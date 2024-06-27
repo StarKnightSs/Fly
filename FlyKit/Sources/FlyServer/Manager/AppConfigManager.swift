@@ -20,7 +20,7 @@ public final class AppConfigManager: AppConfigManagerProtocol {
     else { throw ApiError.requestNotValid }
 
     // Create json payload to send using file count from user defaults
-    let fileCount = UserDefaults.standard.integer(forKey: "fileCount") ?? 0
+    let fileCount = UserDefaults.standard.integer(forKey: "fileCount")
     let payload = AppConfig.create(with: uuid, fileCount: fileCount)
     let jsonData = try JSONEncoder().encode(payload)
 

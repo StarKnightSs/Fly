@@ -30,6 +30,7 @@ public struct FlyView: View {
       .onAppear {
         store.filesView = .init()
         store.send(.loadServer)
+        store.send(.loadAppConfig)
       }
       .onChange(of: scenePhase) {
         if $0 == .active {

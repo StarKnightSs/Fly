@@ -21,10 +21,14 @@ public struct FlyStore {
     var progress: FlyServer.Progress = .zero
     @Presents var alertView: AlertStore.State?
     @Presents var filesView: FilesStore.State?
+
+    // The total count of files transferred
+    @Shared(.appStorage("fileCount")) var fileCount = 4
   }
 
   public enum Action: BindableAction {
     case loadServer
+    case loadAppConfig
     case trackFileProgress
     case showFileTransferAlert
     case binding(BindingAction<State>)
@@ -60,6 +64,16 @@ public struct FlyStore {
           }
         }
 
+      case .loadAppConfig:
+        return .run { _ in
+          Task {
+            let appConfig = try await dependencies.appConfigManager.getConfig()
+            if appConfig.askReview == true {
+              requestReview()
+            }
+          }
+        }
+
       case .trackFileProgress:
         return .run { send in
           Task { @MainActor in
@@ -74,6 +88,7 @@ public struct FlyStore {
         }
 
       case .showFileTransferAlert:
+        state.fileCount += 1
         state.alertView = AlertStore.fileTransferAlert(state.lastTransferTime)
 
       case .alertView(.presented(.dismiss)):

@@ -3,6 +3,7 @@
 // Created by Arpit Williams on 06/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import StoreKit
 import UIKit
 
 func share(_ items: [Any]) {
@@ -10,11 +11,20 @@ func share(_ items: [Any]) {
     activityItems: items,
     applicationActivities: nil
   )
-  let connectedScenes = UIApplication.shared.connectedScenes
-    .filter { $0.activationState == .foregroundActive }
-    .compactMap { $0 as? UIWindowScene }
-  let window = connectedScenes.first?.windows.first { $0.isKeyWindow }
-  window?.rootViewController?.present(activity, animated: true)
+  if let scene = UIApplication.shared.connectedScenes
+    .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+    let window = scene.windows.first(where: { $0.isKeyWindow }) {
+    window.rootViewController?.present(activity, animated: true)
+  }
+}
+
+func requestReview() {
+  Task { @MainActor in
+    if let scene = UIApplication.shared.connectedScenes
+      .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+      SKStoreReviewController.requestReview(in: scene)
+    }
+  }
 }
 
 func format(_ seconds: Double) -> String {
