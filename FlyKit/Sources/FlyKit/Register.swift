@@ -12,7 +12,8 @@ public extension Resolver {
       Dependencies(
         server: resolve(),
         filesManager: resolve(),
-        zipManager: resolve()
+        zipManager: resolve(),
+        appConfigManager: resolve()
       )
     }.implements(DependenciesProtocol.self)
   }
