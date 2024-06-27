@@ -3,6 +3,7 @@
 // Created by Arpit Williams on 11/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import AdMob
 import ComposableArchitecture
 import QuickLook
 import SwiftUI
@@ -26,13 +27,16 @@ struct FilesView: View {
 
   var rootView: some View {
     NavigationView {
-      VStack {
+      VStack(spacing: 0) {
         if store.files.isEmpty == false {
           listView
         } else {
           BlankView(
             showUploadView: $store.showUploadView
           )
+        }
+        if store.showBannerView {
+          bannerView
         }
       }
       .padding(.top, 1)
@@ -89,6 +93,14 @@ struct FilesView: View {
       action: \.alertView.presented
     ) else { return nil }
     return AlertView(store: alertStore)
+  }
+
+  var bannerView: some View {
+    BannerView()
+      .padding(.top, 2)
+      .frame(height: 30)
+      .background(Color(.leadLemon))
+      .ignoresSafeArea(edges: .bottom)
   }
 }
 
