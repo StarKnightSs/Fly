@@ -10,10 +10,6 @@ public struct GoogleAdMob {
 
   private static var isLoaded = false
 
-  public enum AdMobError: Error {
-    case alreadyLoaded
-  }
-
   public static var hasConsent: Bool {
     UMPConsentInformation.sharedInstance.canRequestAds
   }
@@ -32,4 +28,8 @@ public struct GoogleAdMob {
     try await UMPConsentForm.loadAndPresentIfRequired(from: view.viewController)
     try await start()
   }
+}
+
+public enum AdMobError: Error {
+  case alreadyLoaded
 }

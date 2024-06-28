@@ -8,17 +8,14 @@ import SwiftUI
 
 public struct BannerView: UIViewControllerRepresentable {
 
-  private let adUnitID: String
   private let bannerView = GADBannerView()
   @State private var viewWidth: CGFloat = .zero
 
-  public init() {
-    self.adUnitID = bannerAdUnitID
-  }
+  public init() {}
 
   public func makeUIViewController(context: Context) -> some UIViewController {
     let bannerViewController = BannerViewController()
-    bannerView.adUnitID = adUnitID
+    bannerView.adUnitID = bannerAdUnitID
     bannerView.rootViewController = bannerViewController
     bannerViewController.view.addSubview(bannerView)
     bannerViewController.delegate = context.coordinator

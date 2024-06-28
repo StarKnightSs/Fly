@@ -18,7 +18,6 @@ public struct FlyStore {
   @ObservableState
   public struct State: Equatable {
     var lastTransferTime = 0.0
-    let admobView = AdMobView()
     var showProgressView = false
     var progress: FlyServer.Progress = .zero
     @Presents var alertView: AlertStore.State?
@@ -26,11 +25,17 @@ public struct FlyStore {
 
     // The total count of files transferred
     @Shared(.appStorage("fileCount")) var fileCount = 0
+
+    // Admob
+    var isAdMobEnabled = false
+    let admobView = AdMobView()
+    let adCoordinator = AdCoordinator()
   }
 
   public enum Action: BindableAction {
     case loadServer
     case loadAppConfig
+    case showGoogleAds
     case trackFileProgress
     case showFileTransferAlert
     case binding(BindingAction<State>)
@@ -79,16 +84,22 @@ public struct FlyStore {
               do {
                 if GoogleAdMob.hasConsent {
                   try await GoogleAdMob.start()
-                  await send(.filesView(.presented(.set(\.showBannerView, true))))
+                  await send(.showGoogleAds)
                 }
                 try await GoogleAdMob.requestConsent(from: admobView)
-                await send(.filesView(.presented(.set(\.showBannerView, true))))
+                await send(.showGoogleAds)
               } catch {
-                print(error)
+                if (error as? AdMobError) == AdMobError.alreadyLoaded {
+                  await send(.showGoogleAds)
+                }
               }
             }
           }
         }
+
+      case .showGoogleAds:
+        state.isAdMobEnabled = true
+        state.filesView?.showBannerView = true
 
       case .trackFileProgress:
         return .run { send in
@@ -109,6 +120,13 @@ public struct FlyStore {
 
       case .alertView(.presented(.dismiss)):
         state.lastTransferTime = 0
+        guard state.isAdMobEnabled else { return .none }
+        return .run { [admobView = state.admobView, adCoordinator = state.adCoordinator] _ in
+          Task { @MainActor in
+            let ad = try? await adCoordinator.loadInterstitialAd()
+            ad?.present(fromRootViewController: admobView.viewController)
+          }
+        }
 
       case .binding, .alertView, .filesView:
         break
