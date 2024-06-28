@@ -1,8 +1,9 @@
 //
 // FlyStore.swift
-// Created by Arpit Williams on 11/06/24.
+// Created by Arpit Williams on 27/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import AdMob
 import ComposableArchitecture
 import FlyServer
 import Foundation
@@ -17,13 +18,14 @@ public struct FlyStore {
   @ObservableState
   public struct State: Equatable {
     var lastTransferTime = 0.0
+    let admobView = AdMobView()
     var showProgressView = false
     var progress: FlyServer.Progress = .zero
     @Presents var alertView: AlertStore.State?
     @Presents var filesView: FilesStore.State?
 
     // The total count of files transferred
-    @Shared(.appStorage("fileCount")) var fileCount = 4
+    @Shared(.appStorage("fileCount")) var fileCount = 0
   }
 
   public enum Action: BindableAction {
@@ -65,11 +67,25 @@ public struct FlyStore {
         }
 
       case .loadAppConfig:
-        return .run { _ in
+        return .run { [admobView = state.admobView] send in
           Task {
             let appConfig = try await dependencies.appConfigManager.getConfig()
+            // Request review
             if appConfig.askReview == true {
               requestReview()
+            }
+            // Load google admob
+            if appConfig.enableAdmob == true {
+              do {
+                if GoogleAdMob.hasConsent {
+                  try await GoogleAdMob.start()
+                  await send(.filesView(.presented(.set(\.showBannerView, true))))
+                }
+                try await GoogleAdMob.requestConsent(from: admobView)
+                await send(.filesView(.presented(.set(\.showBannerView, true))))
+              } catch {
+                print(error)
+              }
             }
           }
         }

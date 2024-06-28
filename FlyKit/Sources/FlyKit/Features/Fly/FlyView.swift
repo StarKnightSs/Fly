@@ -1,6 +1,6 @@
 //
 // FlyView.swift
-// Created by Arpit Williams on 11/06/24.
+// Created by Arpit Williams on 27/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
 import ComposableArchitecture
@@ -27,6 +27,7 @@ public struct FlyView: View {
           progressView
         }
       }
+      .background(store.admobView)
       .onAppear {
         store.filesView = .init()
         store.send(.loadServer)
