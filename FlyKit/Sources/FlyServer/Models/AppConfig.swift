@@ -5,7 +5,7 @@
 
 import Foundation
 
-public struct AppConfig: Codable {
+public struct AppConfig: Codable, Equatable {
   public let id: UUID
   public let openCount: Int?
   public let fileCount: Int?

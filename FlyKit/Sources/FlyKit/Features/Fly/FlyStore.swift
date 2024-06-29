@@ -20,7 +20,9 @@ public struct FlyStore {
     var appConfig: AppConfig?
     var lastTransferTime = 0.0
     var showProgressView = false
+    var isReviewRequested = false
     var progress: FlyServer.Progress = .zero
+
     @Presents var alertView: AlertStore.State?
     @Presents var filesView: FilesStore.State?
 
@@ -28,15 +30,16 @@ public struct FlyStore {
     @Shared(.appStorage("fileCount")) var fileCount = 0
 
     // Admob
-    var isAdMobEnabled = false
+    var isAdmobActive = false
     let admobView = AdMobView()
     let adCoordinator = AdCoordinator()
   }
 
   public enum Action: BindableAction {
     case loadServer
-    case loadAppConfig
+    case loadAdmob
     case showGoogleAds
+    case requestReview
     case trackFileProgress
     case showFileTransferAlert
     case binding(BindingAction<State>)
@@ -72,35 +75,28 @@ public struct FlyStore {
           }
         }
 
-      case .loadAppConfig:
+      case .loadAdmob:
+        guard state.appConfig?.enableAdmob == true else { return .none }
+        guard state.isAdmobActive == false else { return .send(.showGoogleAds) }
         return .run { [admobView = state.admobView] send in
-          Task {
-            let appConfig = try await dependencies.appConfigManager.getConfig()
-            // Request review
-            if appConfig.askReview == true {
-              requestReview()
-            }
-            // Load google admob
-            if appConfig.enableAdmob == true {
-              do {
-                if GoogleAdMob.hasConsent {
-                  try await GoogleAdMob.start()
-                  await send(.showGoogleAds)
-                }
-                try await GoogleAdMob.requestConsent(from: admobView)
-                await send(.showGoogleAds)
-              } catch {
-                if (error as? AdMobError) == AdMobError.alreadyLoaded {
-                  await send(.showGoogleAds)
-                }
-              }
-            }
-          }
+          try await GoogleAdMob.requestConsent(from: admobView)
+          await send(.showGoogleAds)
         }
 
       case .showGoogleAds:
-        state.isAdMobEnabled = true
+        state.isAdmobActive = true
         state.filesView?.showBannerView = true
+
+      case .requestReview:
+        guard state.isReviewRequested == false,
+              state.appConfig?.askReview == true
+        else { return .none }
+        state.isReviewRequested = true
+        return .run { _ in
+          Task { @MainActor in
+            requestReview()
+          }
+        }
 
       case .trackFileProgress:
         return .run { send in
@@ -121,7 +117,9 @@ public struct FlyStore {
 
       case .alertView(.presented(.dismiss)):
         state.lastTransferTime = 0
-        guard state.isAdMobEnabled else { return .none }
+
+        // Show interstitial ad if admob is active
+        guard state.isAdmobActive else { return .none }
         return .run { [admobView = state.admobView, adCoordinator = state.adCoordinator] _ in
           Task { @MainActor in
             let ad = try? await adCoordinator.loadInterstitialAd()

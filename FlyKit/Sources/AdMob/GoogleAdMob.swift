@@ -10,26 +10,19 @@ public struct GoogleAdMob {
 
   private static var isLoaded = false
 
-  public static var hasConsent: Bool {
-    UMPConsentInformation.sharedInstance.canRequestAds
+  @MainActor
+  public static func requestConsent(from view: AdMobView) async throws {
+    if UMPConsentInformation.sharedInstance.canRequestAds {
+      await start()
+    }
+    try await UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: UMPRequestParameters())
+    try await UMPConsentForm.loadAndPresentIfRequired(from: view.viewController)
+    await start()
   }
 
-  public static func start() async throws {
-    guard isLoaded == false else {
-      throw AdMobError.alreadyLoaded
-    }
+  private static func start() async {
+    guard isLoaded == false else { return }
     isLoaded = true
     await GADMobileAds.sharedInstance().start()
   }
-
-  @MainActor
-  public static func requestConsent(from view: AdMobView) async throws {
-    try await UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: UMPRequestParameters())
-    try await UMPConsentForm.loadAndPresentIfRequired(from: view.viewController)
-    try await start()
-  }
-}
-
-public enum AdMobError: Error {
-  case alreadyLoaded
 }
