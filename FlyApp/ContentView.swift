@@ -10,18 +10,18 @@ import SwiftUI
 
 struct ContentView: View {
 
-  @State var isBooting = true
+  @State private var isBooting = true
+  @State private var appConfig: AppConfig?
+
   var body: some View {
     if isBooting {
-      LaunchView()
-        .onAppear {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            isBooting = false
-          }
-        }
+      LaunchView {
+        appConfig = $0
+        isBooting = false
+      }
     } else {
-      FlyView(
-        store: FlyStore.loadStore()
+      FlyView(store: FlyStore.loadStore(
+        appConfig: appConfig)
       )
     }
   }

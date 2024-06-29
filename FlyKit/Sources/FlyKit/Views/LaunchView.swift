@@ -3,11 +3,17 @@
 // Created by Arpit Williams on 19/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import FlyServer
+import Resolver
 import SwiftUI
 
 public struct LaunchView: View {
 
-  public init() {}
+  /// Clousure to get app config from launch view
+  private var config: ((AppConfig?) -> Void)?
+  public init(config: @escaping (AppConfig?) -> Void) {
+    self.config = config
+  }
 
   public var body: some View {
     VStack {
@@ -46,13 +52,22 @@ public struct LaunchView: View {
 
       Spacer()
     }
+    .onAppear { loadAppConfig() }
     .background(Color(.lemon))
     .foregroundStyle(Color(.black))
+  }
+
+  private func loadAppConfig() {
+    Task {
+      let appConfigManager: AppConfigManagerProtocol? = Resolver.optional()
+      let appConfig = try? await appConfigManager?.getConfig()
+      config?(appConfig)
+    }
   }
 }
 
 struct LaunchView_Previews: PreviewProvider {
   static var previews: some View {
-    LaunchView()
+    LaunchView { _ in }
   }
 }

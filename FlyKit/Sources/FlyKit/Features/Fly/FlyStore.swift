@@ -17,6 +17,7 @@ public struct FlyStore {
 
   @ObservableState
   public struct State: Equatable {
+    var appConfig: AppConfig?
     var lastTransferTime = 0.0
     var showProgressView = false
     var progress: FlyServer.Progress = .zero
@@ -146,8 +147,8 @@ public struct FlyStore {
 
 extension FlyStore {
 
-  public static func loadStore() -> StoreOf<Self> {
-    .init(initialState: State()) {
+  public static func loadStore(appConfig: AppConfig?) -> StoreOf<Self> {
+    .init(initialState: State(appConfig: appConfig)) {
       FlyStore()
     }
   }
