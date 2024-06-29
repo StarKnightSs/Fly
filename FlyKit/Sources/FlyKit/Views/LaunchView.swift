@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct LaunchView: View {
 
-  /// Clousure to get app config from launch view
+  /// Closure to get app config from launch view
   private var config: ((AppConfig?) -> Void)?
   public init(config: @escaping (AppConfig?) -> Void) {
     self.config = config
