@@ -109,9 +109,9 @@ function updateInfoMessage(inProgress) {
 function format(seconds) {
   var suffix = "";
   var seconds = seconds;
-  if (0 <= seconds < 60) {
+  if (seconds >= 0 && seconds < 60) {
     suffix = seconds > 1 ? "secs" : "sec";
-  } else if (60 <= seconds < 3600) {
+  } else if (seconds >= 60 && seconds < 3600) {
     seconds /= 60;
     suffix = seconds > 1 ? "mins" : "min";
   } else {
