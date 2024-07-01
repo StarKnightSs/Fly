@@ -49,6 +49,7 @@ struct FilesView: View {
         store.send(.loadFiles)
       }
     }
+    .navigationViewStyle(.stack)
     .quickLookPreview(
       $store.previewFile,
       in: store.allFilesURLs
