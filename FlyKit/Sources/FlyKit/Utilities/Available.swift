@@ -19,3 +19,7 @@ var iOS17: Bool {
   guard #available(iOS 17, *) else { return false }
   return true
 }
+
+var iPad: Bool {
+  UIDevice.current.userInterfaceIdiom == .pad
+}

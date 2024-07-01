@@ -15,7 +15,7 @@ public extension File {
   func generatePreviewIcon() async throws -> UIImage {
     let request = QLThumbnailGenerator.Request(
       fileAt: url,
-      size: CGSize(width: 44, height: 44),
+      size: CGSize(width: iPad ? 64 : 44, height: iPad ? 64 : 44),
       scale: UIScreen.main.scale,
       representationTypes: .thumbnail
     )

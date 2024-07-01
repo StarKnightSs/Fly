@@ -67,14 +67,14 @@ struct FileView: View {
         Image(uiImage: fileIcon)
           .resizable()
           .scaledToFit()
-          .frame(width: 44, height: 44)
+          .frame(width: iPad ? 64 : 44, height: iPad ? 64 : 44)
           .clipShape(RoundedRectangle(cornerRadius: 2))
 
       } else {
         Image(systemName: file.icon)
-          .font(.title)
+          .font(iPad ? .largeTitle : .title)
           .imageScale(.large)
-          .frame(width: 44, height: 44)
+          .frame(width: iPad ? 64 : 44, height: iPad ? 64 : 44)
           .foregroundStyle(Color(.leadBanana))
       }
     }
@@ -83,7 +83,7 @@ struct FileView: View {
   var fileNameView: some View {
     VStack(alignment: .leading, spacing: 2) {
       Text(file.name)
-        .font(.callout)
+        .font(iPad ? .body : .callout)
         .lineLimit(1)
         .frame(maxWidth: .infinity, alignment: .leading)
       HStack(spacing: 2) {
@@ -91,7 +91,7 @@ struct FileView: View {
         Text("-")
         Text(file.isDirectory ? file.itemCount : file.size)
       }
-      .font(.caption2.weight(.light))
+      .font(iPad ? .footnote.weight(.light) : .caption2.weight(.light))
     }
   }
 
