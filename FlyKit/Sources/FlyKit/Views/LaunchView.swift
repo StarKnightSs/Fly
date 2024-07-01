@@ -9,6 +9,8 @@ import SwiftUI
 
 public struct LaunchView: View {
 
+  @Environment(\.windowSize) var screenSize
+
   /// Closure to get app config from launch view
   private var config: ((AppConfig?) -> Void)?
   public init(config: @escaping (AppConfig?) -> Void) {
@@ -21,6 +23,7 @@ public struct LaunchView: View {
       Image("Monkey", bundle: .module)
         .resizable()
         .aspectRatio(contentMode: .fit)
+        .frame(maxWidth: screenSize.width * (iPad ? 0.6 : 1))
         .padding(20)
 
       Text("Fly Server")
@@ -28,30 +31,32 @@ public struct LaunchView: View {
         .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
 
       Text("Offline File Transfer")
-        .font(.system(.title, design: .rounded).weight(.semibold))
+        .font(.system(iPad ? .largeTitle : .title, design: .rounded).weight(.semibold))
 
       Text("Over Wifi & Hotspot Networks")
-        .foregroundStyle(Color(.maroon))
-        .font(.system(.headline, design: .rounded).weight(.medium))
+        .foregroundStyle(Color(.systemPink))
+        .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.medium))
 
       Spacer()
 
       ProgressView()
         .tint(.black)
-        .scaleEffect(2.0, anchor: .center)
+        .scaleEffect(iPad ? 2.8 : 2.0, anchor: .center)
         .progressViewStyle(CircularProgressViewStyle())
 
       Spacer()
 
       Text("Max Upload File Size: 100 GB")
-        .font(.system(.headline, design: .rounded).weight(.semibold))
+        .foregroundStyle(Color(.maroon))
+        .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.semibold))
 
       Text("Supersized File Transfer At The Speed Of Now")
         .multilineTextAlignment(.center)
-        .font(.system(.callout, design: .rounded))
+        .font(.system(iPad ? .body : .callout, design: .rounded).weight(.medium))
 
       Spacer()
     }
+    .frame(maxWidth: .infinity)
     .onAppear { loadAppConfig() }
     .background(Color(.lemon))
     .foregroundStyle(Color(.black))
@@ -59,6 +64,7 @@ public struct LaunchView: View {
 
   private func loadAppConfig() {
     Task {
+      try await Task.sleep(nanoseconds: 2_000_000_000)
       let appConfigManager: AppConfigManagerProtocol? = Resolver.optional()
       let appConfig = try? await appConfigManager?.getConfig()
       config?(appConfig)
