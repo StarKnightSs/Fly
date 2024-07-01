@@ -213,8 +213,8 @@ extension FileController {
       AudioManager.shared.stop()
       await ProgressManager.shared.endProgress()
 
-      // Print saved file path
-      print("Path \(fileUrl.absoluteString)")
+      // Exlcude file url from backup
+      fileUrl.excludeFromBackup()
 
       // Redirect to home
       return req.redirect(to: "/")
