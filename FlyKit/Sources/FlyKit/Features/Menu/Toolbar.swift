@@ -34,12 +34,12 @@ public struct Toolbar: ToolbarContent {
     HStack(spacing: 4) {
       Image("Monkey", bundle: .module)
         .resizable()
-        .frame(width: 40, height: 40)
+        .frame(width: iPad ? 54 : 40, height: iPad ? 54 : 40)
         .animation(.bouncy, value: title)
 
       Text(title)
         .foregroundStyle(Color(.leadLemon))
-        .font(.system(.callout, design: .rounded).weight(.heavy))
+        .font(.system(iPad ? .title2 : .callout, design: .rounded).weight(.heavy))
         .animation(.smooth, value: title)
     }
     .id(refresh)

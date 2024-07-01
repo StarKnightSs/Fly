@@ -50,7 +50,7 @@ public struct FileMenu: View {
         ellipsisCircleFill : folderFillBadgePlus
       )
       .foregroundStyle(Color(.leadLemon))
-      .font(.headline)
+      .font(iPad ? .title2 : .headline)
       .animateBounce(isEditing)
     }
     .onAppear {
@@ -67,7 +67,7 @@ public struct FileMenu: View {
     } label: {
       Image(systemName: listBulletClipboard)
         .foregroundStyle(Color(.leadLemon))
-        .font(.headline)
+        .font(iPad ? .title2 : .headline)
         .animateBounce(animate)
         .onAppear { animate.toggle() }
     }

@@ -49,7 +49,7 @@ public struct SettingsMenu: View {
         checkmarkCircleFill :
         checkmarkCircle
       )
-      .font(.headline)
+      .font(iPad ? .title2 : .headline)
       .foregroundStyle(Color(.leadLemon))
       .animateReplace()
       .onAppear {
@@ -65,7 +65,7 @@ public struct SettingsMenu: View {
       Image(systemName: colorMode == .dark ?
         lightBulbOff : lightBulbOn
       )
-      .font(.headline)
+      .font(iPad ? .title2 : .headline)
       .foregroundStyle(Color(.leadLemon))
       .animateReplace()
     }
@@ -76,7 +76,7 @@ public struct SettingsMenu: View {
       store.send(.loadPrevious)
     } label: {
       Image(systemName: chevronLeft)
-        .font(.headline)
+        .font(iPad ? .title2 : .headline)
         .foregroundStyle(Color(.leadLemon))
     }
   }
