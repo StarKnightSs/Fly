@@ -84,7 +84,7 @@ struct FilesView: View {
     .id(store.editMode)
     .background(Color(.snowLicorice))
     .environment(\.editMode, $store.editMode)
-    .animation(.easeInOut, value: store.selectedFolders.count)
+    .animation(iOS16 ? .easeInOut : .none, value: store.selectedFolders.count)
   }
 
   var alertView: AlertView? {
@@ -98,7 +98,7 @@ struct FilesView: View {
   var bannerView: some View {
     BannerView()
       .padding(.top, 2)
-      .frame(height: 30)
+      .frame(maxHeight: 40)
       .background(Color(.leadLemon))
       .ignoresSafeArea(edges: .bottom)
   }

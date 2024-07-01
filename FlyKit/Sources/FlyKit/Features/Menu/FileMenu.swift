@@ -102,8 +102,9 @@ extension FileMenu {
   var send: some View {
     Button {
       store.editMode = .inactive
-      // Archive files for download if more than 1 files are selected
-      if store.selectedFiles.count > 1 {
+      // Archive files for download if more than 1 files are selected or only single folder is selected
+      if store.selectedFiles.count > 1 || store.files
+        .first(where: { $0.id == store.selectedFiles.first })?.isDirectory == true {
         store.send(.archiveFiles)
       }
       // Download file without archiving if only 1 file is selected
