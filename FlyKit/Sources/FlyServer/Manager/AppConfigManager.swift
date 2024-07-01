@@ -26,6 +26,7 @@ public final class AppConfigManager: AppConfigManagerProtocol {
 
     // Create POST request
     var request = URLRequest(url: url)
+    request.timeoutInterval = 8
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpMethod = "POST"
 
