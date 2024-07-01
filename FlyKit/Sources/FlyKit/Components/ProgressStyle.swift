@@ -11,6 +11,8 @@ struct ProgressStyle: ProgressViewStyle {
 
   let store: StoreOf<FlyStore>
 
+  @Environment(\.windowSize) var screenSize
+
   var speed: String {
     String(
       format: "%@ Mbps",
@@ -35,7 +37,7 @@ struct ProgressStyle: ProgressViewStyle {
           footNote
         }
         .padding(.vertical, 20)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: screenSize.width * (iPad ? 0.6 : 1))
         .background(Color(.lemonLicorice))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: Color(.licoriceLemon), radius: 8)
@@ -57,7 +59,9 @@ struct ProgressStyle: ProgressViewStyle {
       .textCase(.uppercase)
       .padding(.vertical, 4)
       .foregroundStyle(Color(.leadLemon))
-      .font(.system(.headline, design: .rounded).weight(.bold))
+      .font(.system(iPad ? .title3 : .headline, design: .rounded)
+        .weight(.bold)
+      )
   }
 
   func progressView(_ progress: Double) -> some View {
@@ -71,7 +75,7 @@ struct ProgressStyle: ProgressViewStyle {
             .overlay(
               Text("\(progress.formatted(.percent))")
                 .lineLimit(1)
-                .font(.system(.headline, design: .rounded))
+                .font(.system(iPad ? .title3 : .headline, design: .rounded))
                 .foregroundStyle(Color(.lemonLead))
             )
         }
@@ -89,14 +93,14 @@ struct ProgressStyle: ProgressViewStyle {
     .padding(.top, 4)
     .padding(.horizontal, 20)
     .foregroundStyle(Color(.leadLime))
-    .font(.system(.caption, design: .rounded).weight(.medium))
+    .font(.system(iPad ? .callout : .caption, design: .rounded).weight(.medium))
   }
 
   var footNote: some View {
     Text("Please don't kill the app during file transfer✌️")
       .padding(.top, 20)
       .foregroundStyle(Color(.leadLemon))
-      .font(.system(.footnote, design: .rounded).weight(.light))
+      .font(.system(iPad ? .subheadline : .footnote, design: .rounded).weight(.light))
   }
 }
 
