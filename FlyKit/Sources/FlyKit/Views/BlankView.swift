@@ -8,6 +8,7 @@ import SwiftUI
 public struct BlankView: View {
 
   @Binding var showUploadView: Bool
+  @Environment(\.windowSize) var screenSize
 
   public var body: some View {
     VStack {
@@ -17,20 +18,20 @@ public struct BlankView: View {
       Image("Monkey", bundle: .module)
         .resizable()
         .aspectRatio(contentMode: .fit)
-        .frame(maxWidth: 240)
+        .frame(maxWidth: screenSize.width * (iPad ? 0.4 : 0.5))
 
       Text("Space is Empty 🧑‍🚀")
-        .font(.system(.title, design: .rounded))
+        .font(.system(iPad ? .largeTitle : .title, design: .rounded))
 
       Text("Tap the \(Image(systemName: folderFillBadgePlus)) icon on the top right,\nto add your files & photos")
         .padding(20)
         .multilineTextAlignment(.center)
-        .font(.system(.headline, design: .rounded).weight(.medium))
+        .font(.system(iPad ? .title2 : .headline, design: .rounded).weight(.medium))
 
       Text("Or tap below to drop files here,\nIt's quick and easy \(Image(systemName: downArrow))")
         .padding(16)
         .multilineTextAlignment(.center)
-        .font(.system(.body, design: .rounded).weight(.semibold))
+        .font(.system(iPad ? .title3 : .body, design: .rounded).weight(.semibold))
 
       Spacer()
 
@@ -40,7 +41,7 @@ public struct BlankView: View {
       .textCase(.uppercase)
       .padding(.vertical, 16)
       .padding(.horizontal, 20)
-      .font(.system(.headline, design: .rounded).weight(.semibold))
+      .font(.system(iPad ? .title2 : .headline, design: .rounded).weight(.semibold))
       .foregroundStyle(Color(.lemonLead))
       .background(
         RoundedRectangle(cornerRadius: 20)
