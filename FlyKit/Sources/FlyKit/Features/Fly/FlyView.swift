@@ -29,7 +29,7 @@ public struct FlyView: View {
       }
       .background(store.admobView)
       .onAppear {
-        store.filesView = .init()
+        store.filesView = store.filesView ?? .init()
         store.send(.loadServer)
         store.send(.loadAdmob)
         store.send(.requestReview)

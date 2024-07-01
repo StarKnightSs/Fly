@@ -23,16 +23,16 @@ public struct FlyStore {
     var isReviewRequested = false
     var progress: FlyServer.Progress = .zero
 
+    // Admob
+    var isAdmobActive = false
+    let admobView = AdMobView()
+    let adCoordinator = AdCoordinator()
+
     @Presents var alertView: AlertStore.State?
     @Presents var filesView: FilesStore.State?
 
     // The total count of files transferred
     @Shared(.appStorage("fileCount")) var fileCount = 0
-
-    // Admob
-    var isAdmobActive = false
-    let admobView = AdMobView()
-    let adCoordinator = AdCoordinator()
   }
 
   public enum Action: BindableAction {
