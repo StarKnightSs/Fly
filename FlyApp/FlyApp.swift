@@ -3,6 +3,7 @@
 // Created by Arpit Williams on 15/05/24.
 // Copyright (c) 2024 StarKnights Technologies
 
+import FlyKit
 import SwiftUI
 
 @main
@@ -29,9 +30,12 @@ struct FlyApp: App {
 
   var body: some Scene {
     WindowGroup {
-      ContentView()
-        .preferredColorScheme(colorScheme)
-        .environment(\.colorScheme, colorScheme)
+      GeometryReader { screen in
+        ContentView()
+          .preferredColorScheme(colorScheme)
+          .environment(\.colorScheme, colorScheme)
+          .environment(\.windowSize, screen.size)
+      }
     }
   }
 }
