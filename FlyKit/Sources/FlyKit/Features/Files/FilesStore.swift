@@ -75,7 +75,7 @@ public struct FilesStore {
     case removeFile(URL)
     case removeSelectedFiles
     case renameFile(URL, String)
-    case archiveFiles
+    case archiveFiles([URL])
     case downloadFile(String)
     case sortFiles
     case selectAllFiles
@@ -195,11 +195,11 @@ public struct FilesStore {
           return .send(.showErrorAlert(error))
         }
 
-      case .archiveFiles:
-        return .run { [state] send in
+      case let .archiveFiles(urls):
+        return .run { send in
           do {
             await send(.set(\.alertView, AlertStore.archiveFileAlert()))
-            try dependencies.zipManager.zip(files: state.selectedFilesUrls)
+            try dependencies.zipManager.zip(files: urls)
             await send(.deSelectAllFiles)
             await send(.set(\.alertView, nil))
             await send(.set(\.showDownloadView, true))

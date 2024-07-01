@@ -122,7 +122,10 @@ struct FileView: View {
 
   var sendButton: some View {
     Button {
-      store.send(.downloadFile(file.name))
+      store.send(file.isDirectory ?
+        .archiveFiles([file.url]) :
+        .downloadFile(file.name)
+      )
     } label: {
       Label("Send", systemImage: upArrow)
     }

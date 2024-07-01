@@ -102,15 +102,20 @@ extension FileMenu {
   var send: some View {
     Button {
       store.editMode = .inactive
-      // Archive files for download if more than 1 files are selected or only single folder is selected
-      if store.selectedFiles.count > 1 || store.files
-        .first(where: { $0.id == store.selectedFiles.first })?.isDirectory == true {
-        store.send(.archiveFiles)
-      }
+
       // Download file without archiving if only 1 file is selected
-      else if let filename = store.selectedFilesUrls.first?
-        .deletingPathExtension().lastPathComponent {
-        store.send(.downloadFile(filename))
+      if let fileUrl = store.selectedFilesUrls.first,
+         store.selectedFilesUrls.count == 1,
+         fileUrl.isDirectory == false {
+        let fileName = fileUrl.lastPathComponent
+        store.send(.downloadFile(fileName))
+      }
+
+      // Archive files for download if only single folder or more than 1 files are selected
+      else if (store.selectedFilesUrls.count == 1 &&
+        store.selectedFilesUrls.first?.isDirectory == true) ||
+        store.selectedFiles.count > 1 {
+        store.send(.archiveFiles(store.selectedFilesUrls))
       }
     } label: {
       Label("Send Files", systemImage: upArrow)
