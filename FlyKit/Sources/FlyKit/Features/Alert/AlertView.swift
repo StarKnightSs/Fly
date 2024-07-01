@@ -13,16 +13,13 @@ public struct AlertView: View {
 
   @State private var textInput = ""
   @FocusState private var textfieldActive: Bool
+  @Environment(\.windowSize) var screenSize
 
   public var body: some View {
     WithPerceptionTracking {
-      GeometryReader { screen in
-        ZStack {
-          transparentBackground
-          alertView
-            .frame(width: screen.size.width * 0.8, alignment: .center)
-            .position(x: screen.size.width / 2, y: screen.size.height / 2.4)
-        }
+      ZStack {
+        transparentBackground
+        alertView
       }
     }
   }
@@ -49,7 +46,7 @@ public struct AlertView: View {
     VStack(alignment: .center, spacing: store.spacing) {
       if let title = store.title {
         Text(title)
-          .font(.headline)
+          .font(iPad ? .title3.weight(.semibold) : .headline)
           .multilineTextAlignment(.center)
           .foregroundStyle(store.titleColor)
       }
@@ -57,7 +54,7 @@ public struct AlertView: View {
         image
           .resizable()
           .scaledToFit()
-          .frame(maxWidth: 140)
+          .frame(maxWidth: screenSize.width * (iPad ? 0.3 : 0.4))
       }
       if store.showProgress {
         ProgressView()
@@ -66,7 +63,7 @@ public struct AlertView: View {
       }
       if let message = store.message {
         Text(message)
-          .font(.body)
+          .font(iPad ? .title3 : .body)
           .multilineTextAlignment(.center)
           .foregroundStyle(store.messageColor)
       }
@@ -90,6 +87,8 @@ public struct AlertView: View {
     .shadow(radius: 2)
     .background(Color(.bananaLead))
     .clipShape(RoundedRectangle(cornerRadius: 8))
+    .frame(width: screenSize.width * (iPad ? 0.5 : 0.8), alignment: .center)
+    .position(x: screenSize.width / 2, y: screenSize.height / 2.4)
   }
 
   var buttonView: some View {
