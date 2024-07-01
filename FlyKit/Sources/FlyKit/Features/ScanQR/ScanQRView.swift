@@ -12,10 +12,14 @@ public struct ScanQRView: View {
   var store: StoreOf<ScanQRStore>
 
   @State private var shareLink = false
+  @Environment(\.windowSize) var screenSize
 
   public var body: some View {
     VStack(spacing: 0) {
       close
+      if iPad || (iOS16 == false) {
+        Spacer()
+      }
       title
       qrCodeImage
       message
@@ -44,7 +48,7 @@ public struct ScanQRView: View {
         store.send(.dismiss)
       } label: {
         Image(systemName: xmarkCircleFill)
-          .font(.title3)
+          .font(iPad ? .title2 : .title3)
           .imageScale(.large)
           .padding(.top, 16)
           .padding(.trailing, 20)
@@ -55,7 +59,7 @@ public struct ScanQRView: View {
   var title: some View {
     Text(store.title ?? "")
       .offset(y: -28)
-      .font(.system(.title3, design: .rounded)
+      .font(.system(iPad ? .title : .title3, design: .rounded)
         .weight(.bold)
       )
   }
@@ -66,14 +70,14 @@ public struct ScanQRView: View {
       .interpolation(.none)
       .resizable()
       .aspectRatio(1, contentMode: .fit)
-      .frame(maxWidth: 180)
+      .frame(maxWidth: screenSize.width * (iPad ? 0.3 : 0.4))
       .offset(y: -16)
   }
 
   var message: some View {
     Text(store.message ?? "")
       .offset(y: -4)
-      .font(.system(.body, design: .rounded)
+      .font(.system(iPad ? .title3 : .body, design: .rounded)
         .weight(.medium)
       )
   }
@@ -100,7 +104,7 @@ public struct ScanQRView: View {
       .padding(.horizontal, 14)
       .background(Color(.leadLemon))
       .foregroundStyle(Color(.lemonLead))
-      .font(.system(.callout, design: .rounded).weight(.semibold))
+      .font(.system(iPad ? .title2 : .callout, design: .rounded).weight(.semibold))
       .cornerRadius(8)
       .padding(.top, 20)
   }
@@ -110,7 +114,7 @@ public struct ScanQRView: View {
       .padding(.top, 12)
       .padding(.horizontal, 20)
       .multilineTextAlignment(.center)
-      .font(.system(.subheadline, design: .rounded)
+      .font(.system(iPad ? .title3 : .subheadline, design: .rounded)
         .weight(.medium)
       )
   }
@@ -120,7 +124,7 @@ public struct ScanQRView: View {
       .padding(.bottom, 8)
       .padding(.horizontal, 20)
       .foregroundStyle(Color.red)
-      .font(.system(.footnote, design: .default).weight(.medium))
+      .font(.system(iPad ? .callout : .footnote, design: .default).weight(.medium))
   }
 }
 
