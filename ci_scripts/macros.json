@@ -1,0 +1,27 @@
+[
+  {
+    "fingerprint" : "ecb5b29e65bfc58b4c90216d4ca6ef3a573a28a7",
+    "packageIdentity" : "swift-case-paths",
+    "targetName" : "CasePathsMacros"
+  },
+  {
+    "fingerprint" : "1eeca17b21b931fd6a5cc683a2cd659fb0441c66",
+    "packageIdentity" : "swift-composable-architecture",
+    "targetName" : "ComposableArchitectureMacros"
+  },
+  {
+    "fingerprint" : "350e1e119babe8525f9bd155b76640a5de270184",
+    "packageIdentity" : "swift-dependencies",
+    "targetName" : "DependenciesMacrosPlugin"
+  },
+  {
+    "fingerprint" : "64f7f6c28c6a4d3c4b9da2ba02383e29ab48a8cf",
+    "packageIdentity" : "swift-perception",
+    "targetName" : "PerceptionMacros"
+  },
+  {
+    "fingerprint" : "b515723b16eba33f15c4677ee65f3fef2ce8c255",
+    "packageIdentity" : "swiftlint",
+    "targetName" : "SwiftLintCoreMacros"
+  }
+]
