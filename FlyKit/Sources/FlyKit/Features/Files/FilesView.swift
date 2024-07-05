@@ -97,7 +97,7 @@ struct FilesView: View {
   }
 
   var bannerView: some View {
-    BannerView()
+    BannerView(showBanner: { store.showBannerView = $0 })
       .padding(.top, 2)
       .frame(maxHeight: 40)
       .background(Color(.leadLemon))

@@ -9,13 +9,18 @@ import SwiftUI
 public struct BannerView: UIViewControllerRepresentable {
 
   private let bannerView = GADBannerView()
+  private var showBanner: ((Bool) -> Void)?
+
   @State private var viewWidth: CGFloat = .zero
 
-  public init() {}
+  public init(showBanner: ((Bool) -> Void)? = nil) {
+    self.showBanner = showBanner
+  }
 
   public func makeUIViewController(context: Context) -> some UIViewController {
     let bannerViewController = BannerViewController()
     bannerView.adUnitID = bannerAdUnitID
+    bannerView.delegate = context.coordinator
     bannerView.rootViewController = bannerViewController
     bannerViewController.view.addSubview(bannerView)
     bannerViewController.delegate = context.coordinator
@@ -23,7 +28,7 @@ public struct BannerView: UIViewControllerRepresentable {
   }
 
   public func makeCoordinator() -> Coordinator {
-    Coordinator(self)
+    Coordinator(self, showBanner: showBanner)
   }
 
   public func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
@@ -32,15 +37,28 @@ public struct BannerView: UIViewControllerRepresentable {
     bannerView.load(GADRequest())
   }
 
-  public class Coordinator: NSObject, BannerViewControllerWidthDelegate {
+  public class Coordinator: NSObject, BannerViewControllerWidthDelegate, GADBannerViewDelegate {
 
     let parent: BannerView
-    init(_ parent: BannerView) {
+    var showBanner: ((Bool) -> Void)?
+
+    init(_ parent: BannerView, showBanner: ((Bool) -> Void)? = nil) {
       self.parent = parent
+      self.showBanner = showBanner
     }
 
     func bannerViewController(_ bannerViewController: BannerViewController, didUpdate width: CGFloat) {
       parent.viewWidth = width
+    }
+
+    // MARK: - GADBannerViewDelegate methods
+
+    public func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+      showBanner?(true)
+    }
+
+    public func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      showBanner?(false)
     }
   }
 }
