@@ -29,6 +29,7 @@ public struct FilesStore {
     var isCopyingFile = false
     var pasteAllFiles = false
 
+    var showBanner = false
     var showBannerView = false
     var showUploadView = false
     var showDownloadView = false

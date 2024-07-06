@@ -4,25 +4,9 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import GoogleMobileAds
-import UserMessagingPlatform
 
 public struct GoogleAdMob {
-
-  private static var isLoaded = false
-
-  @MainActor
-  public static func requestConsent(from view: AdMobView) async throws {
-    if UMPConsentInformation.sharedInstance.canRequestAds {
-      await start()
-    }
-    try await UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: UMPRequestParameters())
-    try await UMPConsentForm.loadAndPresentIfRequired(from: view.viewController)
-    await start()
-  }
-
-  private static func start() async {
-    guard isLoaded == false else { return }
-    isLoaded = true
+  public static func start() async {
     await GADMobileAds.sharedInstance().start()
   }
 }

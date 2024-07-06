@@ -38,7 +38,6 @@ public struct FlyStore {
   public enum Action: BindableAction {
     case loadServer
     case loadAdmob
-    case showGoogleAds
     case requestReview
     case trackFileProgress
     case showFileTransferAlert
@@ -76,16 +75,14 @@ public struct FlyStore {
         }
 
       case .loadAdmob:
-        guard state.appConfig?.enableAdmob == true else { return .none }
-        guard state.isAdmobActive == false else { return .send(.showGoogleAds) }
-        return .run { [admobView = state.admobView] send in
-          try await GoogleAdMob.requestConsent(from: admobView)
-          await send(.showGoogleAds)
+        guard state.isAdmobActive == false,
+              state.appConfig?.enableAdmob == true
+        else { return .none }
+        return .run { send in
+          await GoogleAdMob.start()
+          await send(.set(\.isAdmobActive, true))
+          await send(.filesView(.presented(.set(\.showBannerView, true))))
         }
-
-      case .showGoogleAds:
-        state.isAdmobActive = true
-        state.filesView?.showBannerView = true
 
       case .requestReview:
         guard state.isReviewRequested == false,

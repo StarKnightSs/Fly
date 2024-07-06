@@ -97,11 +97,17 @@ struct FilesView: View {
   }
 
   var bannerView: some View {
-    BannerView(showBanner: { store.showBannerView = $0 })
-      .padding(.top, 2)
-      .frame(maxHeight: 40)
-      .background(Color(.leadLemon))
-      .ignoresSafeArea(edges: .bottom)
+    BannerView(showBanner: { store.showBanner = $0 })
+      .padding(.top, store.showBanner ? 2 : 0)
+      .frame(height: store.showBanner ? 40 : 0.2)
+      .background(store.showBanner ? Color(.leadLemon) : .clear)
+      .modify {
+        if store.showBanner {
+          $0.ignoresSafeArea(edges: .bottom)
+        } else {
+          $0.clipped()
+        }
+      }
   }
 }
 
