@@ -85,7 +85,7 @@ public struct AlertView: View {
     .frame(maxWidth: .infinity)
     .padding(20)
     .shadow(radius: 2)
-    .background(Color(.bananaLead))
+    .background(getLinearGradient([Color(.bananaLead), Color(.lemonLead)]))
     .clipShape(RoundedRectangle(cornerRadius: 8))
     .frame(width: screenSize.width * (iPad ? 0.5 : 0.8), alignment: .center)
     .position(x: screenSize.width / 2, y: screenSize.height / 2.4)

@@ -4,6 +4,7 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import StoreKit
+import SwiftUI
 import UIKit
 
 func share(_ items: [Any]) {
@@ -42,4 +43,15 @@ func format(_ seconds: Double) -> String {
   }
   let time = seconds.formatted(.number.precision(.fractionLength(2)))
   return String(format: "%@ %@", time, suffix)
+}
+
+func getLinearGradient(
+  _ colors: [Color],
+  startPoint: UnitPoint = .top,
+  endPoint: UnitPoint = .bottom
+) -> some View {
+  LinearGradient(
+    gradient: Gradient(colors: colors),
+    startPoint: startPoint, endPoint: endPoint
+  )
 }

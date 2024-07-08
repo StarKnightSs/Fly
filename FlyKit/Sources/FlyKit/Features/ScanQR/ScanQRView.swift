@@ -28,7 +28,10 @@ public struct ScanQRView: View {
       Spacer(minLength: 20)
       note
     }
-    .background(Color(.bananaLead))
+    .background(
+      getLinearGradient([Color(.bananaLead), Color(.lemonLicorice)])
+        .ignoresSafeArea(edges: .bottom)
+    )
     .foregroundStyle(Color(.leadSnow))
     .updatePresentationDetent()
     .onDisappear {
@@ -131,5 +134,5 @@ public struct ScanQRView: View {
 #Preview {
   ScanQRView(
     store: ScanQRStore.mockStore()
-  )
+  ).setPreviewWindowSize()
 }

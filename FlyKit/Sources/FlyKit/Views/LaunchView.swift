@@ -34,20 +34,20 @@ public struct LaunchView: View {
         .font(.system(iPad ? .largeTitle : .title, design: .rounded).weight(.semibold))
 
       Text("Over Wifi & Hotspot Networks")
-        .foregroundStyle(Color(.systemPink))
+        .foregroundStyle(Color(.systemIndigo))
         .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.medium))
 
       Spacer()
 
       ProgressView()
-        .tint(.black)
+        .tint(Color(.lead))
         .scaleEffect(iPad ? 2.8 : 2.0, anchor: .center)
         .progressViewStyle(CircularProgressViewStyle())
 
       Spacer()
 
       Text("Max Upload File Size: 100 GB")
-        .foregroundStyle(Color(.maroon))
+        .foregroundStyle(Color(.systemPink))
         .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.semibold))
 
       Text("Supersized File Transfer At The Speed Of Now")
@@ -58,15 +58,19 @@ public struct LaunchView: View {
     }
     .frame(maxWidth: .infinity)
     .onAppear { loadAppConfig() }
-    .background(Color(.lemon))
-    .foregroundStyle(Color(.black))
+    .foregroundStyle(Color(.lead))
+    .background(
+      getLinearGradient([Color(.lime), Color(.banana), Color(.lemon)])
+        .ignoresSafeArea()
+    )
+    .ignoresSafeArea()
   }
 
   private func loadAppConfig() {
     Task {
-      try await Task.sleep(nanoseconds: 2_000_000_000)
       let appConfigManager: AppConfigManagerProtocol? = Resolver.optional()
       let appConfig = try? await appConfigManager?.getConfig()
+      try await Task.sleep(nanoseconds: 1_000_000_000)
       config?(appConfig)
     }
   }

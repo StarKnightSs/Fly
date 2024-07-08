@@ -69,5 +69,5 @@ public struct FlyView: View {
 #Preview {
   FlyView(
     store: FlyStore.mockStore()
-  )
+  ).setPreviewWindowSize()
 }

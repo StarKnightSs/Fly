@@ -38,7 +38,7 @@ struct ProgressStyle: ProgressViewStyle {
         }
         .padding(.vertical, 20)
         .frame(maxWidth: screenSize.width * (iPad ? 0.6 : 1))
-        .background(Color(.lemonLicorice))
+        .background(getLinearGradient([Color(.bananaLead), Color(.lemonLicorice)]))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: Color(.licoriceLemon), radius: 8)
         .padding(.horizontal, 20)
@@ -66,11 +66,17 @@ struct ProgressStyle: ProgressViewStyle {
 
   func progressView(_ progress: Double) -> some View {
     GeometryReader { geometry in
-      RoundedRectangle(cornerRadius: 16)
-        .stroke(Color(.pinkLime), lineWidth: 16)
+      RoundedRectangle(cornerRadius: 8)
+        .stroke(Color(.pinkLime), lineWidth: 8)
         .background(alignment: .leading) {
           RoundedRectangle(cornerRadius: 0)
-            .fill(Color(.leadLemon))
+            .modify {
+              if #available(iOS 16, *) {
+                $0.fill(Color(.leadLemon).gradient)
+              } else {
+                $0.fill(Color(.leadLemon))
+              }
+            }
             .frame(width: geometry.size.width * progress)
             .overlay(
               Text("\(progress.formatted(.percent))")
@@ -110,6 +116,5 @@ struct ProgressStyle: ProgressViewStyle {
       ProgressStyle(
         store: FlyStore.mockStore()
       )
-    )
-    .setPreviewWindowSize()
+    ).setPreviewWindowSize()
 })

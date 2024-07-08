@@ -52,7 +52,6 @@ public struct BlankView: View {
         .frame(height: 20)
     }
     .frame(maxWidth: .infinity)
-    .background(Color(.lemonLicorice))
   }
 }
 
