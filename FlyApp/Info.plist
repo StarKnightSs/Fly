@@ -2,18 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>BGTaskSchedulerPermittedIdentifiers</key>
-    <array>
-      <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-    </array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 		<string>fetch</string>
 		<string>processing</string>
 	</array>
-    <key>NSUserTrackingUsageDescription</key>
-    <string>Allow app to serve personalized ads.</string> 
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3954157944286926~9903309476</string>
 	<key>SKAdNetworkItems</key>
