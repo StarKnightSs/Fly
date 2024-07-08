@@ -56,7 +56,7 @@ extension ScanQRStore {
       qrCode: serverURL.appendingPathComponent("/upload").absoluteString,
       message: "Scan QR Code to upload file",
       shareLink: "Upload Link",
-      shareLinkInfo: "Or share this upload link for the fly server 🐒",
+      shareLinkInfo: "Or share this upload link for the Fly app 🐒",
       note: "NOTE: Please keep the app active & make sure that both devices " +
         "are connected on the same wifi or hotspot network during file transfer."
     )

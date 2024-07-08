@@ -56,7 +56,7 @@ function handleLoadError(e) {
   updateInfoMessage(false);
   updateStatusMessage("🔺 File Transfer Error 🔺");
   document.getElementById("button").disabled = true;
-  document.getElementById("info").innerHTML = "Please resend link from Fly App";
+  document.getElementById("info").innerHTML = "Please resend link from Fly app";
   document.getElementById("note").innerHTML = "Error: Unable to process this request.";
 }
 

@@ -44,7 +44,7 @@
 		A166D0232C3484F300EB2F84 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		A166D0242C34857D00EB2F84 /* macros.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = macros.json; sourceTree = "<group>"; };
 		A176E9C62BFB38BC006DA27F /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
-		A183A0792ABEBA4E00515D98 /* Fly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A183A0792ABEBA4E00515D98 /* FileFlyer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileFlyer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A183A07C2ABEBA4E00515D98 /* FlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyApp.swift; sourceTree = "<group>"; };
 		A183A0802ABEBA4F00515D98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A183A0822ABEBA4F00515D98 /* Fly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fly.entitlements; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 		A183A07A2ABEBA4E00515D98 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A183A0792ABEBA4E00515D98 /* Fly.app */,
+				A183A0792ABEBA4E00515D98 /* FileFlyer.app */,
 				A183A08A2ABEBA4F00515D98 /* FlyTests.xctest */,
 				A183A0942ABEBA4F00515D98 /* FlyUITests.xctest */,
 			);
@@ -194,7 +194,7 @@
 				A183A0AB2ABEBB9700515D98 /* FlyKit */,
 			);
 			productName = Fly;
-			productReference = A183A0792ABEBA4E00515D98 /* Fly.app */;
+			productReference = A183A0792ABEBA4E00515D98 /* FileFlyer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A183A0892ABEBA4F00515D98 /* FlyTests */ = {
@@ -576,7 +576,7 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starknights.fly;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FileFlyer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -622,7 +622,7 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starknights.fly;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FileFlyer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

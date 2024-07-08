@@ -23,7 +23,7 @@
 #extend("progress"): #endextend
 <div class="container">
   <div id="info" class="mx-2 h6" style="color: #fffb00">
-    Tap the button above to send file to Fly Server 👆
+    Tap the button above to send file to Fly app 👆
   </div>
   <div id="note" class="fs-6 mt-2" style="color: #ff2d55">
     Tip: To send multiple files, ZIP them up.

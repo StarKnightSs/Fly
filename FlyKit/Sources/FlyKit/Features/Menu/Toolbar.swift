@@ -57,7 +57,7 @@ public struct Toolbar: ToolbarContent {
       .last?.lastPathComponent {
       folder
     } else {
-      "Fly Server"
+      "FileFlyer"
     }
   }
 }

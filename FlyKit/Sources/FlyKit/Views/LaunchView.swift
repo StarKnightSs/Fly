@@ -26,7 +26,7 @@ public struct LaunchView: View {
         .frame(maxWidth: screenSize.width * (iPad ? 0.6 : 1))
         .padding(20)
 
-      Text("Fly Server")
+      Text("FileFlyer")
         .font(.system(.largeTitle, design: .rounded).weight(.heavy))
         .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 1)
 
