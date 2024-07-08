@@ -116,4 +116,5 @@ public struct AlertView: View {
   AlertView(
     store: AlertStore.mockStore()
   )
+  .setPreviewWindowSize()
 }

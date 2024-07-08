@@ -37,6 +37,13 @@ public extension View {
       }
     }
   }
+
+  @ViewBuilder
+  func setPreviewWindowSize() -> some View {
+    GeometryReader { screen in
+      self.environment(\.windowSize, screen.size)
+    }
+  }
 }
 
 // MARK: Symbol Animations

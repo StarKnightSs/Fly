@@ -111,4 +111,5 @@ struct ProgressStyle: ProgressViewStyle {
         store: FlyStore.mockStore()
       )
     )
+    .setPreviewWindowSize()
 })

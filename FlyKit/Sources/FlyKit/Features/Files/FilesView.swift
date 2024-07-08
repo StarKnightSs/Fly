@@ -115,4 +115,5 @@ struct FilesView: View {
   FilesView(
     store: FilesStore.mockStore()
   )
+  .setPreviewWindowSize()
 }

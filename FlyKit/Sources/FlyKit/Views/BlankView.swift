@@ -60,4 +60,5 @@ public struct BlankView: View {
   BlankView(
     showUploadView: .constant(false)
   )
+  .setPreviewWindowSize()
 })
