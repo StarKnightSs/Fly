@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A183A0782ABEBA4E00515D98"
-               BuildableName = "FileFlyer.app"
+               BuildableName = "File Flyer.app"
                BlueprintName = "Fly"
                ReferencedContainer = "container:Fly.xcodeproj">
             </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A183A0782ABEBA4E00515D98"
-            BuildableName = "FileFlyer.app"
+            BuildableName = "File Flyer.app"
             BlueprintName = "Fly"
             ReferencedContainer = "container:Fly.xcodeproj">
          </BuildableReference>
@@ -97,7 +97,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A183A0782ABEBA4E00515D98"
-            BuildableName = "FileFlyer.app"
+            BuildableName = "File Flyer.app"
             BlueprintName = "Fly"
             ReferencedContainer = "container:Fly.xcodeproj">
          </BuildableReference>
