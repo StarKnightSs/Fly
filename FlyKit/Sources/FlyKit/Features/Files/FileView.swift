@@ -84,6 +84,7 @@ struct FileView: View {
     VStack(alignment: .leading, spacing: 2) {
       Text(file.name)
         .font(iPad ? .body : .callout)
+        .fontWeight(.medium)
         .lineLimit(1)
         .frame(maxWidth: .infinity, alignment: .leading)
       HStack(spacing: 2) {
