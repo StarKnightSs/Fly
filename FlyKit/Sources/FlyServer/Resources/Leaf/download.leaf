@@ -16,7 +16,7 @@
 #extend("progress"): #endextend
 <div class="container">
   <div id="info" class="h6 lh-base" style="color: #fffb00">
-    Tap above to download file from Fly app 👆
+    Tap above to download file from File Flyer app 👆
     <div class="mt-2 lh-lg" style="color: #8efa00;">
       For background download, use this 👇<br/>
       <a href="/#(filename)" class="link-warning link-offset-2 link-underline-warning">DIRECT LINK</a>
