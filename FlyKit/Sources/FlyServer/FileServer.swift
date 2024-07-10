@@ -43,7 +43,24 @@ public final class FileServer: FileServerProtocol {
         )
       )
       await app.server.shutdown()
+      do {
+        try await app.execute()
+      } catch {
+        /// Bump port & restart server on error
+        await bumpServerPort()
+      }
+    }
+  }
+
+  private func bumpServerPort() async {
+    do {
+      /// Limit server restart tries till port 100
+      guard port <= 100 else { return }
+      port += 1
+      app.http.server.configuration.port = port
       try await app.execute()
+    } catch {
+      await bumpServerPort()
     }
   }
 }
