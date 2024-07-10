@@ -148,14 +148,13 @@ extension FileController {
       AudioManager.shared.play()
 
       // Update filename & fileUrl if file already exists
-      var tempFileUrl = try filesManager.filePath(for: filename)
-      if filesManager.fileExists(at: tempFileUrl) {
-        filename = "(Copy-\(Int.random(in: 1 ..< 50))) ".appending(filename)
-        tempFileUrl = try filesManager.filePath(for: filename)
+      var fileUrl = try filesManager.filePath(for: filename)
+      while filesManager.fileExists(at: fileUrl) {
+        filename = "Copy ".appending(filename)
+        fileUrl = try filesManager.filePath(for: filename)
       }
 
       // Setup file handle for file url
-      let fileUrl = tempFileUrl
       let fileHandle = try await req.application.fileio.openFile(
         path: fileUrl.relativePath, mode: .write,
         flags: .allowFileCreation(), eventLoop: req.eventLoop
