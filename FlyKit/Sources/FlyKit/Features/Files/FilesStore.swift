@@ -210,7 +210,9 @@ public struct FilesStore {
         }
 
       case let .downloadFile(filename):
-        state.scanQRCodeView = ScanQRStore.downloadState(filename)
+        state.scanQRCodeView = ScanQRStore.downloadState(
+          port: dependencies.server.port, filename: filename
+        )
 
       case .sortFiles:
         state.files = sortFiles(
@@ -306,10 +308,12 @@ public struct FilesStore {
         state.showPhotosPicker = false
 
       case .binding(\.showUploadView):
-        state.scanQRCodeView = state.showUploadView ? ScanQRStore.uploadState() : nil
+        state.scanQRCodeView = state.showUploadView ?
+          ScanQRStore.uploadState(port: dependencies.server.port) : nil
 
       case .binding(\.showDownloadView):
-        state.scanQRCodeView = state.showDownloadView ? ScanQRStore.downloadState() : nil
+        state.scanQRCodeView = state.showDownloadView ?
+          ScanQRStore.downloadState(port: dependencies.server.port) : nil
 
       case .binding, .alertView, .scanQRCodeView:
         break

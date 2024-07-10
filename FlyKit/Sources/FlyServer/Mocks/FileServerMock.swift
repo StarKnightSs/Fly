@@ -9,6 +9,7 @@ public extension FileServer {
   struct Mock: FileServerProtocol {
     public init() {}
     public func start() {}
+    public var port = 80
     public var updateHandler: ((URL, HTTPMethod) -> Void)?
   }
 }

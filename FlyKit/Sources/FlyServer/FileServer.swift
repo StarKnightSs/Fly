@@ -11,6 +11,8 @@ public final class FileServer: FileServerProtocol {
 
   private let app: Application
   private let filesManager: FilesManagerProtocol
+
+  public var port = 80
   public var updateHandler: ((URL, HTTPMethod) -> Void)?
 
   init(filesManager: FilesManagerProtocol) {
@@ -21,7 +23,7 @@ public final class FileServer: FileServerProtocol {
   }
 
   private func configure(_ app: Application) {
-    app.http.server.configuration.port = 80
+    app.http.server.configuration.port = port
     app.http.server.configuration.hostname = "0.0.0.0"
     app.routes.defaultMaxBodySize = "100GB"
     app.views.use(.leaf)

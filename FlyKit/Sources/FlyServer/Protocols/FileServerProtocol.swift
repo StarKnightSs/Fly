@@ -7,5 +7,6 @@ import Foundation
 
 public protocol FileServerProtocol {
   func start()
+  var port: Int { get set }
   var updateHandler: ((URL, HTTPMethod) -> Void)? { get set }
 }

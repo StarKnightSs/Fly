@@ -7,6 +7,11 @@ import StoreKit
 import SwiftUI
 import UIKit
 
+func serverUrl(for port: Int) -> URL {
+  let portSuffix = port != 80 ? ":\(port)" : ""
+  return URL(string: "http://\(ProcessInfo().hostName)\(portSuffix)") ?? URL.mock
+}
+
 func share(_ items: [Any]) {
   let activity = UIActivityViewController(
     activityItems: items,

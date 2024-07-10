@@ -21,7 +21,7 @@ public struct ScanQRStore {
     var note: String?
 
     var shareUrl: URL {
-      URL(string: qrCode ?? "") ?? serverURL
+      URL(string: qrCode ?? "") ?? serverUrl(for: 80)
     }
   }
 
@@ -50,10 +50,10 @@ public struct ScanQRStore {
 // MARK: Static States
 
 extension ScanQRStore {
-  static func uploadState() -> State {
+  static func uploadState(port: Int) -> State {
     .init(
       title: "SCAN CODE",
-      qrCode: serverURL.appendingPathComponent("/upload").absoluteString,
+      qrCode: serverUrl(for: port).appendingPathComponent("/upload").absoluteString,
       message: "Scan QR Code to upload file",
       shareLink: "Upload Link",
       shareLinkInfo: "Or share this upload link for the File Flyer app 🐒",
@@ -62,8 +62,8 @@ extension ScanQRStore {
     )
   }
 
-  static func downloadState(_ filename: String? = nil) -> State {
-    var downloadLink = serverURL
+  static func downloadState(port: Int, filename: String? = nil) -> State {
+    var downloadLink = serverUrl(for: port)
     if let filename {
       // File download link
       downloadLink = downloadLink.appendingPathComponent("/download/\(filename)")

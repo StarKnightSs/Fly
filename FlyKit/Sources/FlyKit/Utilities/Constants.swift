@@ -4,7 +4,3 @@
 // Copyright (c) 2024 StarKnights Technologies
 
 import Foundation
-
-// swiftlint:disable force_unwrapping
-let serverURL = URL(string: "http://\(ProcessInfo().hostName)")!
-// swiftlint:enable force_unwrapping
