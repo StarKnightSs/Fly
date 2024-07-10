@@ -20,6 +20,7 @@ public protocol FilesManagerProtocol {
   func file(for url: URL) -> File?
   func fileCount(for url: URL) throws -> Int?
   func filePath(for fileName: String) throws -> URL
+  func overwriteFilePath(for fileName: String) throws -> URL
   func setCurrentDirectory(to url: URL)
   func filesAtCurrentDirectory() throws -> [File]
 }

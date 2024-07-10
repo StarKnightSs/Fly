@@ -78,7 +78,7 @@ extension PhotosPicker {
               throw error ?? FileError.fileLoadingError
             }
             let fileName = url.lastPathComponent
-            guard let filePath = try self?.filesManager.filePath(for: fileName) else {
+            guard let filePath = try self?.filesManager.overwriteFilePath(for: fileName) else {
               throw FileError.filePathInvalid
             }
             try self?.filesManager.copy(from: url, to: filePath)

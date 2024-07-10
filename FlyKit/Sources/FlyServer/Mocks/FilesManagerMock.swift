@@ -22,6 +22,7 @@ public extension FilesManager {
     public func file(for url: URL) -> File? { nil }
     public func fileCount(for url: URL) throws -> Int? { 0 }
     public func filePath(for fileName: String) throws -> URL { url }
+    public func overwriteFilePath(for fileName: String) throws -> URL { url }
     public func setCurrentDirectory(to url: URL) {}
     public func filesAtCurrentDirectory() throws -> [File] { [] }
   }

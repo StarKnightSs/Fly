@@ -239,7 +239,7 @@ public struct FilesStore {
             var effect = Effect<Action>.none
             if url.startAccessingSecurityScopedResource() {
               do {
-                let filePath = try dependencies.filesManager.filePath(for: url.lastPathComponent)
+                let filePath = try dependencies.filesManager.overwriteFilePath(for: url.lastPathComponent)
                 try dependencies.filesManager.copy(from: url, to: filePath)
                 effect = .send(.addFile(filePath))
               } catch {

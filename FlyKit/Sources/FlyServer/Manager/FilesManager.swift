@@ -56,6 +56,20 @@ public final class FilesManager: FilesManagerProtocol {
     return currentDirectory.appendingPathComponent(fileName)
   }
 
+  public func overwriteFilePath(for fileName: String) throws -> URL {
+    guard let currentDirectory else { throw FileError.currentDirectoryNil }
+    var filePath = currentDirectory.appendingPathComponent(fileName)
+    let fileName = filePath.deletingPathExtension().lastPathComponent
+    let fileExtension = filePath.pathExtension
+    var copyCount = 0
+    while fileExists(at: filePath) {
+      copyCount += 1
+      let fileNameCopy = "\(fileName) (\(copyCount)).\(fileExtension)"
+      filePath = currentDirectory.appendingPathComponent(fileNameCopy)
+    }
+    return filePath
+  }
+
   public func copy(from source: URL, to target: URL) throws {
     guard fileExists(at: target) == false else {
       throw FileError.fileAlreadyExists

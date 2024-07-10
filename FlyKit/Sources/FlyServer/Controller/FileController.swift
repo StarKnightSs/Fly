@@ -140,21 +140,15 @@ extension FileController {
   func upload(_ req: Request) async throws -> Response {
     do {
       // Get file name & size from request
-      guard var filename = req.parameters.get("filename"),
+      guard let filename = req.parameters.get("filename"),
             let filesize = req.parameters.get("filesize")
       else { throw Abort(.badRequest) }
 
       // Start audio playback for background processing
       AudioManager.shared.play()
 
-      // Update filename & fileUrl if file already exists
-      var fileUrl = try filesManager.filePath(for: filename)
-      while filesManager.fileExists(at: fileUrl) {
-        filename = "Copy ".appending(filename)
-        fileUrl = try filesManager.filePath(for: filename)
-      }
-
       // Setup file handle for file url
+      let fileUrl = try filesManager.overwriteFilePath(for: filename)
       let fileHandle = try await req.application.fileio.openFile(
         path: fileUrl.relativePath, mode: .write,
         flags: .allowFileCreation(), eventLoop: req.eventLoop
