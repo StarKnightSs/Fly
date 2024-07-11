@@ -14,11 +14,8 @@ struct ProgressStyle: ProgressViewStyle {
   @Environment(\.windowSize) var screenSize
 
   var speed: String {
-    String(
-      format: "%@ Mbps",
-      store.progress.speed
-        .formatted(.number.precision(.fractionLength(2)))
-    )
+    store.progress.speed
+      .formatted(.number.precision(.fractionLength(2)))
   }
 
   var time: String {
@@ -55,7 +52,7 @@ struct ProgressStyle: ProgressViewStyle {
   }
 
   var title: some View {
-    Text("Data In Transit")
+    Text(String.dataInTransit)
       .textCase(.uppercase)
       .padding(.vertical, 4)
       .foregroundStyle(Color(.leadLemon))
@@ -92,9 +89,9 @@ struct ProgressStyle: ProgressViewStyle {
 
   var subTitle: some View {
     HStack(spacing: 4) {
-      Text("Speed: \(speed)")
+      Text(String(format: String.speed, speed))
       Spacer()
-      Text("Time: \(time)")
+      Text(String(format: String.time, time))
     }
     .padding(.top, 4)
     .padding(.horizontal, 20)
@@ -103,7 +100,7 @@ struct ProgressStyle: ProgressViewStyle {
   }
 
   var footNote: some View {
-    Text("Please don't kill the app during file transfer✌️")
+    Text(String.pleaseDontKill)
       .padding(.top, 20)
       .foregroundStyle(Color(.leadLemon))
       .font(.system(iPad ? .subheadline : .footnote, design: .rounded).weight(.light))

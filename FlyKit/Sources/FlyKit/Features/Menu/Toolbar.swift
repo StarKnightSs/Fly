@@ -50,14 +50,12 @@ public struct Toolbar: ToolbarContent {
 
   var title: String {
     if store.editMode.isEditing {
-      store.selectedFiles.isEmpty ?
-        "Select files" :
-        "\(store.selectedFiles.count) Files"
-    } else if let folder = store.selectedFolders
-      .last?.lastPathComponent {
+      store.selectedFiles.isEmpty ? String.selectFiles :
+        String(format: String.fileCount, store.selectedFiles.count)
+    } else if let folder = store.selectedFolders.last?.lastPathComponent {
       folder
     } else {
-      "File Flyer"
+      String.fileFlyer
     }
   }
 }

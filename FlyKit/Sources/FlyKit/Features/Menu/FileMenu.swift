@@ -95,7 +95,7 @@ extension FileMenu {
       store.editMode = .inactive
       store.send(.deSelectAllFiles)
     } label: {
-      Text("Done")
+      Text(String.done)
     }
   }
 
@@ -118,7 +118,7 @@ extension FileMenu {
         store.send(.archiveFiles(store.selectedFilesUrls))
       }
     } label: {
-      Label("Send Files", systemImage: upArrow)
+      Label(String.sendFiles, systemImage: upArrow)
     }.disabled(isNotSelected)
   }
 
@@ -127,7 +127,7 @@ extension FileMenu {
       store.editMode = .inactive
       store.send(.copyMoveAll(false))
     } label: {
-      Label("Copy", systemImage: docOnDoc)
+      Label(String.copy, systemImage: docOnDoc)
     }
   }
 
@@ -136,7 +136,7 @@ extension FileMenu {
       store.editMode = .inactive
       store.send(.copyMoveAll(true))
     } label: {
-      Label("Move", systemImage: folder)
+      Label(String.move, systemImage: folder)
     }
   }
 
@@ -145,7 +145,7 @@ extension FileMenu {
       store.editMode = .inactive
       store.send(.removeSelectedFiles)
     } label: {
-      Label("Delete", systemImage: trash)
+      Label(String.delete, systemImage: trash)
     }
   }
 }
@@ -176,7 +176,7 @@ extension FileMenu {
     Button {
       store.editMode = .active
     } label: {
-      Label("Select", systemImage: checkmarkCircle)
+      Label(String.select, systemImage: checkmarkCircle)
     }
   }
 
@@ -184,7 +184,7 @@ extension FileMenu {
     Button {
       store.showUploadView = true
     } label: {
-      Label("Recieve Files", systemImage: downArrow)
+      Label(String.recieveFiles, systemImage: downArrow)
     }
   }
 
@@ -192,7 +192,7 @@ extension FileMenu {
     Button {
       store.showFilesPicker = true
     } label: {
-      Label("Add Files", systemImage: docFill)
+      Label(String.addFiles, systemImage: docFill)
     }
   }
 
@@ -200,7 +200,7 @@ extension FileMenu {
     Button {
       store.showPhotosPicker = true
     } label: {
-      Label("Add Photos", systemImage: photo)
+      Label(String.addPhotos, systemImage: photo)
     }
   }
 
@@ -208,7 +208,7 @@ extension FileMenu {
     Button {
       store.send(.showCreateFolderAlert)
     } label: {
-      Label("Add Folder", systemImage: folderFill)
+      Label(String.addFolder, systemImage: folderFill)
     }
   }
 
@@ -225,7 +225,7 @@ extension FileMenu {
         }
       }
     } label: {
-      Label("Sort By", systemImage: squareGrid3x3)
+      Label(String.sortBy, systemImage: squareGrid3x3)
     }
     .pickerStyle(.menu)
   }

@@ -9,23 +9,19 @@ enum SortType: CaseIterable {
 
   var name: String {
     switch self {
-    case .date:
-      "Date"
-    case .name:
-      "Name"
-    case .size:
-      "Size"
-    case .type:
-      "Type"
+    case .date: String.date
+    case .name: String.name
+    case .size: String.size
+    case .type: String.type
     }
   }
 
   static func type(for name: String) -> Self {
     switch name {
-    case "Date": return .date
-    case "Name": return .name
-    case "Size": return .size
-    case "Type": return .type
+    case String.date: return .date
+    case String.name: return .name
+    case String.size: return .size
+    case String.type: return .type
     default: return .date
     }
   }

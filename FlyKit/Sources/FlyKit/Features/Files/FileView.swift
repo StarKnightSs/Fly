@@ -128,20 +128,20 @@ struct FileView: View {
         .downloadFile(file.name)
       )
     } label: {
-      Label("Send", systemImage: upArrow)
+      Label(String.send, systemImage: upArrow)
     }
   }
 
   var shareButton: any View {
     if #available(iOS 16.0, *) {
       ShareLink(item: file.url) {
-        Label("Share", systemImage: squareAndArrowUp)
+        Label(String.share, systemImage: squareAndArrowUp)
       }
     } else {
       Button {
         share([file.url])
       } label: {
-        Label("Share", systemImage: squareAndArrowUp)
+        Label(String.share, systemImage: squareAndArrowUp)
       }
     }
   }
@@ -150,7 +150,7 @@ struct FileView: View {
     Button {
       openFile()
     } label: {
-      Label("Preview", systemImage: eye)
+      Label(String.preview, systemImage: eye)
     }
   }
 
@@ -158,7 +158,7 @@ struct FileView: View {
     Button {
       store.send(.copyMove(file, false))
     } label: {
-      Label("Copy", systemImage: docOnDoc)
+      Label(String.copy, systemImage: docOnDoc)
     }
   }
 
@@ -166,7 +166,7 @@ struct FileView: View {
     Button {
       store.send(.copyMove(file, true))
     } label: {
-      Label("Move", systemImage: folder)
+      Label(String.move, systemImage: folder)
     }
   }
 
@@ -174,7 +174,7 @@ struct FileView: View {
     Button {
       store.send(.showFileRenameAlert(file))
     } label: {
-      Label("Rename", systemImage: pencil)
+      Label(String.rename, systemImage: pencil)
     }
   }
 
@@ -182,7 +182,7 @@ struct FileView: View {
     Button(role: .destructive) {
       store.send(.removeFile(file.url))
     } label: {
-      Label("Delete", systemImage: trashCircle)
+      Label(String.delete, systemImage: trashCircle)
     }
   }
 

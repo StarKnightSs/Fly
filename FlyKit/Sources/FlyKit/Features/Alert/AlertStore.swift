@@ -61,22 +61,22 @@ extension AlertStore {
   static func createFolderAlert() -> State {
     .init(
       type: .createFolder,
-      title: "Add Folder",
-      mainButtonTitle: "Add",
-      cancelButtonTitle: "Cancel",
+      title: String.addFolder,
+      mainButtonTitle: String.add,
+      cancelButtonTitle: String.cancel,
       showTextInput: true,
-      textInputTitle: "Folder Name"
+      textInputTitle: String.folderName
     )
   }
 
   static func fileRenameAlert(_ filename: String) -> State {
     .init(
       type: .renameFile,
-      title: "Rename File",
-      mainButtonTitle: "Rename",
-      cancelButtonTitle: "Cancel",
+      title: String.renameFile,
+      mainButtonTitle: String.rename,
+      cancelButtonTitle: String.cancel,
       showTextInput: true,
-      textInputTitle: "File Name",
+      textInputTitle: String.fileName,
       textInputValue: filename
     )
   }
@@ -84,7 +84,7 @@ extension AlertStore {
   static func fileTransferAlert(_ totalTime: Double) -> State {
     .init(
       type: .fileTransferTime,
-      title: "Transferred in \(format(totalTime))⌛️",
+      title: String(format: String.transferredIn, format(totalTime)),
       image: Image("Monkey", bundle: .module),
       autoDismiss: true,
       spacing: 0
@@ -94,8 +94,8 @@ extension AlertStore {
   static func archiveFileAlert() -> State {
     .init(
       type: .archiveFile,
-      title: "Archiving Files",
-      message: "Please wait,\nPreparing download...",
+      title: String.archivingFiles,
+      message: String.pleaseWait,
       image: Image("Monkey", bundle: .module),
       showProgress: true,
       dismissOnTap: false,

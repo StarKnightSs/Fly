@@ -52,13 +52,12 @@ public struct ScanQRStore {
 extension ScanQRStore {
   static func uploadState(port: Int) -> State {
     .init(
-      title: "SCAN CODE",
+      title: String.scanCode.uppercased(),
       qrCode: serverUrl(for: port).appendingPathComponent("/upload").absoluteString,
-      message: "Scan QR Code to upload file",
-      shareLink: "Upload Link",
-      shareLinkInfo: "Or share this upload link for the File Flyer app 🐒",
-      note: "NOTE: Please keep the app active & make sure that both devices " +
-        "are connected on the same wifi or hotspot network during file transfer."
+      message: String.scanToUpload,
+      shareLink: String.uploadLink,
+      shareLinkInfo: String.uploadLinkInfo,
+      note: String.scanNote
     )
   }
 
@@ -72,13 +71,12 @@ extension ScanQRStore {
       downloadLink = downloadLink.appendingPathComponent("/download/archive.zip")
     }
     return .init(
-      title: "SCAN CODE",
+      title: String.scanCode.uppercased(),
       qrCode: downloadLink.absoluteString,
-      message: "Scan QR Code to download file",
-      shareLink: "Download Link",
-      shareLinkInfo: "Or share direct download link for the file 🐒",
-      note: "NOTE: Please keep the app active & make sure that both devices " +
-        "are connected on the same wifi or hotspot network during file transfer."
+      message: String.scanToDownload,
+      shareLink: String.downloadLink,
+      shareLinkInfo: String.downloadLinkInfo,
+      note: String.scanNote
     )
   }
 }

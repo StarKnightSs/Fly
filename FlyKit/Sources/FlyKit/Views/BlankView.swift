@@ -20,22 +20,22 @@ public struct BlankView: View {
         .aspectRatio(contentMode: .fit)
         .frame(maxWidth: screenSize.width * (iPad ? 0.4 : 0.5))
 
-      Text("Space is Empty 🧑‍🚀")
+      Text(String.spaceIsEmpty)
         .font(.system(iPad ? .largeTitle : .title, design: .rounded))
 
-      Text("Tap the \(Image(systemName: folderFillBadgePlus)) icon on the top right,\nto add your files & photos")
+      Text("\(String.tapTheIcon) \(Image(systemName: folderFillBadgePlus))")
         .padding(20)
         .multilineTextAlignment(.center)
         .font(.system(iPad ? .title2 : .headline, design: .rounded).weight(.medium))
 
-      Text("Or tap below to drop files here,\nIt's quick and easy \(Image(systemName: downArrow))")
+      Text("\(String.orTapBelow) \(Image(systemName: downArrow))")
         .padding(16)
         .multilineTextAlignment(.center)
         .font(.system(iPad ? .title3 : .body, design: .rounded).weight(.semibold))
 
       Spacer()
 
-      Button("Drop Files", systemImage: downArrow) {
+      Button(String.dropFiles, systemImage: downArrow) {
         showUploadView = true
       }
       .textCase(.uppercase)

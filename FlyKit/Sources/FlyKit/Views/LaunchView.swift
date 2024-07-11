@@ -26,14 +26,14 @@ public struct LaunchView: View {
         .frame(maxWidth: screenSize.width * (iPad ? 0.6 : 1))
         .padding(.horizontal, 20)
 
-      Text("File Flyer")
+      Text(String.fileFlyer)
         .font(.system(size: iPad ? 100 : 60, design: .rounded).weight(.heavy))
         .shadow(color: Color(.lemon).opacity(0.8), radius: 1, x: 2, y: 4)
 
-      Text("Easy Share & Transfer")
+      Text(String.easyShare)
         .font(.system(iPad ? .largeTitle : .title2, design: .rounded).weight(.semibold))
 
-      Text("Over Wifi & Hotspot Networks")
+      Text(String.overWifi)
         .foregroundStyle(Color(.systemIndigo))
         .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.medium))
 
@@ -46,11 +46,11 @@ public struct LaunchView: View {
 
       Spacer()
 
-      Text("Transfer At The Speed Of Now")
+      Text(String.speedOfNow)
         .multilineTextAlignment(.center)
         .font(.system(iPad ? .body : .callout, design: .rounded).weight(.medium))
 
-      Text("Max File Size: 100 GB")
+      Text(String.maxFileSize)
         .foregroundStyle(Color(.systemPink))
         .font(.system(iPad ? .title3 : .headline, design: .rounded).weight(.semibold))
 
