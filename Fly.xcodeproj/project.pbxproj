@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C4C71832C3FCE4000F4603F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C71822C3FCE4000F4603F /* GoogleService-Info.plist */; };
+		9C4C71862C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9C4C71852C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		9C4C71882C3FCF4400F4603F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9C4C71872C3FCF4400F4603F /* FirebaseCrashlytics */; };
 		A143FBAD2BF50F590072C5B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143FBAC2BF50F590072C5B1 /* ContentView.swift */; };
 		A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A176E9C62BFB38BC006DA27F /* Launch.storyboard */; platformFilter = ios; };
 		A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A07C2ABEBA4E00515D98 /* FlyApp.swift */; };
@@ -38,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C4C71822C3FCE4000F4603F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A13EF7D32BF505FE00E05985 /* SwiftFormat.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftFormat.sh; sourceTree = "<group>"; };
 		A13EF7D42BF5060800E05985 /* SwiftLint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftLint.sh; sourceTree = "<group>"; };
 		A143FBAC2BF50F590072C5B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,7 +71,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C4C71882C3FCF4400F4603F /* FirebaseCrashlytics in Frameworks */,
 				A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */,
+				9C4C71862C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				A183A0A92ABEBB8C00515D98 /* Info.plist */,
+				9C4C71822C3FCE4000F4603F /* GoogleService-Info.plist */,
 				A1D4411F2BFE0C0200974CDF /* PrivacyInfo.xcprivacy */,
 				A143FBAC2BF50F590072C5B1 /* ContentView.swift */,
 				A1D851AF2BEF39DF00A6A71E /* AppDelegate.swift */,
@@ -184,6 +191,7 @@
 				A183A0752ABEBA4E00515D98 /* Sources */,
 				A183A0762ABEBA4E00515D98 /* Frameworks */,
 				A183A0772ABEBA4E00515D98 /* Resources */,
+				9CA629D42C3FDEEA00E38391 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -192,6 +200,8 @@
 			name = Fly;
 			packageProductDependencies = (
 				A183A0AB2ABEBB9700515D98 /* FlyKit */,
+				9C4C71852C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport */,
+				9C4C71872C3FCF4400F4603F /* FirebaseCrashlytics */,
 			);
 			productName = Fly;
 			productReference = A183A0792ABEBA4E00515D98 /* File Flyer.app */;
@@ -267,6 +277,9 @@
 				Base,
 			);
 			mainGroup = A183A0702ABEBA4E00515D98;
+			packageReferences = (
+				9C4C71842C3FCF4400F4603F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = A183A07A2ABEBA4E00515D98 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -284,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */,
+				9C4C71832C3FCE4000F4603F /* GoogleService-Info.plist in Resources */,
 				A183A0852ABEBA4F00515D98 /* Preview Assets.xcassets in Resources */,
 				A183A0812ABEBA4F00515D98 /* Assets.xcassets in Resources */,
 			);
@@ -306,6 +320,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		9CA629D42C3FDEEA00E38391 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
 		A1106F262ABEC1B900A60932 /* Swift Lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -550,6 +587,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"FlyApp/Preview Content\"";
 				DEVELOPMENT_TEAM = G5RG3MW28X;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -767,7 +805,28 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		9C4C71842C3FCF4400F4603F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.29.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		9C4C71852C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C4C71842C3FCF4400F4603F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		9C4C71872C3FCF4400F4603F /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C4C71842C3FCF4400F4603F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
 		A183A0AB2ABEBB9700515D98 /* FlyKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlyKit;
