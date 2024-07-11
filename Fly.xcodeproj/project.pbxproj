@@ -322,7 +322,8 @@
 /* Begin PBXShellScriptBuildPhase section */
 		9CA629D42C3FDEEA00E38391 /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
