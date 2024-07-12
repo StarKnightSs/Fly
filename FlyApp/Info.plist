@@ -12,6 +12,8 @@
 		<string>fetch</string>
 		<string>processing</string>
 	</array>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3954157944286926~9903309476</string>
 	<key>SKAdNetworkItems</key>
