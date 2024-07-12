@@ -91,9 +91,8 @@ struct FileView: View {
         Text(file.createdAt)
         Text("-")
         Text(file.isDirectory ? file.itemCount : file.size)
-      }
-      .font(iPad ? .footnote.weight(.light) : .caption2.weight(.light))
-    }
+      }.font(iPad ? .footnote.weight(.light) : .caption2.weight(.light))
+    }.foregroundStyle(Color(.leadLemon))
   }
 
   var fileMenuView: some View {

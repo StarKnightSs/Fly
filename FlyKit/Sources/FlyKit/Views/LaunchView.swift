@@ -48,7 +48,7 @@ public struct LaunchView: View {
 
       Text(String.speedOfNow)
         .multilineTextAlignment(.center)
-        .font(.system(iPad ? .body : .callout, design: .rounded).weight(.medium))
+        .font(.system(iPad ? .title2 : .callout, design: .rounded).weight(.medium))
 
       Text(String.maxFileSize)
         .foregroundStyle(Color(.systemPink))
