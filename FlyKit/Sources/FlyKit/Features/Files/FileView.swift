@@ -92,7 +92,7 @@ struct FileView: View {
         Text("-")
         Text(file.isDirectory ? file.itemCount : file.size)
       }.font(iPad ? .footnote.weight(.light) : .caption2.weight(.light))
-    }.foregroundStyle(Color(.leadLemon))
+    }.foregroundStyle(Color(.licoriceLemon))
   }
 
   var fileMenuView: some View {
@@ -103,7 +103,7 @@ struct FileView: View {
         .padding(4)
         .imageScale(.large)
         .symbolRenderingMode(.hierarchical)
-        .foregroundStyle(Color(.leadLemon))
+        .foregroundStyle(Color(.licoriceLemon))
     }
   }
 
