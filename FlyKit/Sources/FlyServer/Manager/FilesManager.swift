@@ -116,21 +116,24 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func file(for url: URL) -> File? {
-    guard let resource = try? url.resourceValues(forKeys: Set(resourceKeys)) else {
+    do {
+      let resource = try url.resourceValues(forKeys: Set(resourceKeys))
+      return File(
+        id: UUID(),
+        url: url,
+        name: resource.name ?? "Unknown",
+        size: filesizeFormmater.string(fromByteCount: Int64(resource.fileSize ?? 0)),
+        type: url.pathExtension,
+        fileSize: resource.fileSize ?? 0,
+        isDirectory: resource.isDirectory ?? false,
+        itemCount: String(format: "%d items", (try? fileCount(for: url)) ?? 0),
+        createdAt: dateFormatter.string(from: resource.creationDate ?? Date()),
+        creationDate: resource.creationDate ?? .now
+      )
+    } catch {
+      print(error)
       return nil
     }
-    return File(
-      id: UUID(),
-      url: url,
-      name: resource.name ?? "Unknown",
-      size: filesizeFormmater.string(fromByteCount: Int64(resource.fileSize ?? 0)),
-      type: resource.contentType?.preferredFilenameExtension ?? "",
-      fileSize: resource.fileSize ?? 0,
-      isDirectory: resource.isDirectory ?? false,
-      itemCount: String(format: "%d items", (try? fileCount(for: url)) ?? 0),
-      createdAt: dateFormatter.string(from: resource.creationDate ?? Date()),
-      creationDate: resource.creationDate ?? .now
-    )
   }
 
   public func fileExists(at url: URL) -> Bool {
@@ -176,13 +179,8 @@ public final class FilesManager: FilesManagerProtocol {
 
   let resourceKeys: [URLResourceKey] = [
     .nameKey,
-    .contentTypeKey,
     .isDirectoryKey,
     .fileSizeKey,
-    .fileProtectionKey,
-    .fileAllocatedSizeKey,
-    .creationDateKey,
-    .contentAccessDateKey,
-    .contentModificationDateKey
+    .creationDateKey
   ]
 }
