@@ -10,6 +10,7 @@
 		9C4C71832C3FCE4000F4603F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C4C71822C3FCE4000F4603F /* GoogleService-Info.plist */; };
 		9C4C71862C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9C4C71852C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		9C4C71882C3FCF4400F4603F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9C4C71872C3FCF4400F4603F /* FirebaseCrashlytics */; };
+		9CEEBB542C5AAC5B00307624 /* GoogleAdmob.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEEBB532C5AAC5B00307624 /* GoogleAdmob.xcframework */; };
 		A143FBAD2BF50F590072C5B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143FBAC2BF50F590072C5B1 /* ContentView.swift */; };
 		A176E9C72BFB38BC006DA27F /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A176E9C62BFB38BC006DA27F /* Launch.storyboard */; platformFilter = ios; };
 		A183A07D2ABEBA4E00515D98 /* FlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A183A07C2ABEBA4E00515D98 /* FlyApp.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		9C4C71822C3FCE4000F4603F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9CEEBB532C5AAC5B00307624 /* GoogleAdmob.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleAdmob.xcframework; sourceTree = "<group>"; };
 		A13EF7D32BF505FE00E05985 /* SwiftFormat.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftFormat.sh; sourceTree = "<group>"; };
 		A13EF7D42BF5060800E05985 /* SwiftLint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SwiftLint.sh; sourceTree = "<group>"; };
 		A143FBAC2BF50F590072C5B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			files = (
 				9C4C71882C3FCF4400F4603F /* FirebaseCrashlytics in Frameworks */,
 				A183A0AC2ABEBB9700515D98 /* FlyKit in Frameworks */,
+				9CEEBB542C5AAC5B00307624 /* GoogleAdmob.xcframework in Frameworks */,
 				9C4C71862C3FCF4400F4603F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +97,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9CEEBB522C5AAC4600307624 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CEEBB532C5AAC5B00307624 /* GoogleAdmob.xcframework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 		A166D0222C34846C00EB2F84 /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +119,7 @@
 		A183A0702ABEBA4E00515D98 = {
 			isa = PBXGroup;
 			children = (
+				9CEEBB522C5AAC4600307624 /* Frameworks */,
 				A166D0222C34846C00EB2F84 /* ci_scripts */,
 				A183A0AE2ABEBD3A00515D98 /* BuildTools */,
 				A183A0A82ABEBB5200515D98 /* FlyKit */,
@@ -115,7 +127,6 @@
 				A183A08D2ABEBA4F00515D98 /* FlyTests */,
 				A183A0972ABEBA4F00515D98 /* FlyUITests */,
 				A183A07A2ABEBA4E00515D98 /* Products */,
-				A183A0AA2ABEBB9700515D98 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,13 +181,6 @@
 				A183A09A2ABEBA4F00515D98 /* FlyUITestsLaunchTests.swift */,
 			);
 			path = FlyUITests;
-			sourceTree = "<group>";
-		};
-		A183A0AA2ABEBB9700515D98 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

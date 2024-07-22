@@ -102,7 +102,7 @@ struct FilesView: View {
 
   var bannerView: some View {
     BannerView(showBanner: { store.showBanner = $0 })
-      .frame(height: store.showBanner ? 40 : 0.2)
+      .frame(height: store.showBanner ? 50 : 0.2)
       .modify {
         if store.showBanner {
           $0.ignoresSafeArea(edges: .bottom)

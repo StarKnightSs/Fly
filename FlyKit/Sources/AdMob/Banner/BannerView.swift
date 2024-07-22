@@ -3,7 +3,7 @@
 // Created by Arpit Williams on 19/03/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import GoogleMobileAds
+import GoogleAdmob
 import SwiftUI
 
 public struct BannerView: UIViewControllerRepresentable {
