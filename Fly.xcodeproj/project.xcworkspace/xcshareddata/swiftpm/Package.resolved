@@ -82,6 +82,15 @@
       }
     },
     {
+      "identity" : "googleadmobspm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/StarKnightSs/GoogleAdmobSPM.git",
+      "state" : {
+        "revision" : "4bffafe24c12012420834dfdc0e3dcc51971cf68",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "googleappmeasurement",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",

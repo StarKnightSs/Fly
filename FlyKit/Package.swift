@@ -9,6 +9,7 @@ let package = Package(
   dependencies: [
     .vapor,
     .leaf,
+    .googleAdmobSPM,
     .composableArchitecture,
     .resolver,
     .zip
@@ -40,7 +41,10 @@ enum Module: String, CaseIterable {
 extension Target {
 
   static var adMob: Target {
-    .target(name: Module.AdMob.rawValue)
+    .target(
+      name: Module.AdMob.rawValue,
+      dependencies: [.googleAdmobSPM]
+    )
   }
 
   static var flyKit: Target {
@@ -111,6 +115,10 @@ extension Target.Dependency {
   static var zip: Target.Dependency {
     product(name: "Zip", package: "Zip")
   }
+
+  static var googleAdmobSPM: Target.Dependency {
+    product(name: "GoogleAdmobSPM", package: "GoogleAdmobSPM")
+  }
 }
 
 // MARK: - Package Dependency
@@ -135,6 +143,10 @@ extension Package.Dependency {
 
   static var zip: Package.Dependency {
     package(url: "https://github.com/marmelroy/Zip.git", .upToNextMajor(from: "2.1.2"))
+  }
+
+  static var googleAdmobSPM: Package.Dependency {
+    package(url: "https://github.com/StarKnightSs/GoogleAdmobSPM.git", .upToNextMajor(from: "1.0.0"))
   }
 }
 

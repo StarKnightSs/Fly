@@ -3,7 +3,7 @@
 // Created by Arpit Williams on 27/06/24.
 // Copyright (c) 2024 StarKnights Technologies
 
-import GoogleAdmob
+import GoogleAdmobSPM
 
 public struct GoogleAdMob {
   public static func start() async {
@@ -11,6 +11,7 @@ public struct GoogleAdMob {
     requestConfiguration.maxAdContentRating = .general
     requestConfiguration.tagForUnderAgeOfConsent = true
     requestConfiguration.tagForChildDirectedTreatment = true
-    await GADMobileAds.sharedInstance().start()
+    let status = await GADMobileAds.sharedInstance().start()
+    print(status.adapterStatusesByClassName)
   }
 }
