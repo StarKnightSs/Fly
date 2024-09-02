@@ -13,12 +13,6 @@ public struct SettingsMenu: View {
 
   @State private var isSelected = false
 
-  @Environment(\.colorScheme)
-  var colorMode
-
-  @AppStorage("isDarkMode")
-  private var isDarkMode: Bool?
-
   private var isEditing: Bool {
     store.editMode.isEditing
   }
@@ -31,7 +25,7 @@ public struct SettingsMenu: View {
         .isEmpty == false {
         backButton
       } else {
-        lightBulb
+        slideMenu
       }
     }
   }
@@ -58,16 +52,13 @@ public struct SettingsMenu: View {
     }
   }
 
-  var lightBulb: some View {
+  var slideMenu: some View {
     Button {
-      isDarkMode = colorMode == .dark
+      store.send(.binding(.set(\.showMenu, true)))
     } label: {
-      Image(systemName: colorMode == .dark ?
-        lightBulbOff : lightBulbOn
-      )
-      .font(iPad ? .title2 : .headline)
-      .foregroundStyle(Color(.leadLemon))
-      .animateReplace()
+      Image(systemName: gearshapeFill)
+        .font(iPad ? .title2 : .headline)
+        .foregroundStyle(Color(.leadLemon))
     }
   }
 

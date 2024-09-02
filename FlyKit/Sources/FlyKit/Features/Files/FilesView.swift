@@ -18,6 +18,7 @@ struct FilesView: View {
       ZStack {
         rootView
         alertView
+        menuView
       }
     }
   }
@@ -107,6 +108,13 @@ struct FilesView: View {
           $0.clipped()
         }
       }
+  }
+
+  var menuView: some View {
+    SlideMenu(
+      isOpen: $store.showMenu,
+      dismiss: { store.send(.binding(.set(\.showMenu, false))) }
+    )
   }
 }
 

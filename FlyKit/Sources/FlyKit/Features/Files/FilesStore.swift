@@ -29,6 +29,7 @@ public struct FilesStore {
     var isCopyingFile = false
     var pasteAllFiles = false
 
+    var showMenu = false
     var showBanner = false
     var showBannerView = false
     var showUploadView = false
@@ -297,6 +298,7 @@ public struct FilesStore {
         )
 
       case .resetState:
+        state.showMenu = false
         state.previewFile = nil
         state.selectedFile = nil
         state.isMovingFile = false

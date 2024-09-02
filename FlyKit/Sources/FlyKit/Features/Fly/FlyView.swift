@@ -35,6 +35,15 @@ public struct FlyView: View {
           store.send(.loadServer)
         }
       }
+      .gesture(
+        DragGesture()
+          .onEnded {
+            /// Show menu if drag width is more than 50
+            store.send(.filesView(.presented(.binding(
+              .set(\.showMenu, $0.translation.width > 50)
+            ))))
+          }
+      )
     }
   }
 

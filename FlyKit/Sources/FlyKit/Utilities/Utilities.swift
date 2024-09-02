@@ -7,6 +7,10 @@ import StoreKit
 import SwiftUI
 import UIKit
 
+func appVersion() -> String {
+  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0.0"
+}
+
 func serverUrl(for port: Int) -> URL {
   let portSuffix = port != 80 ? ":\(port)" : ""
   return URL(string: "http://\(ProcessInfo().hostName)\(portSuffix)") ?? URL.mock
