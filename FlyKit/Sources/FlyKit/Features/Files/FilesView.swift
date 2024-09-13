@@ -71,6 +71,9 @@ struct FilesView: View {
     .sheet(item: $store.scope(state: \.scanQRCodeView, action: \.scanQRCodeView)) {
       ScanQRView(store: $0)
     }
+    .sheet(item: $store.scope(state: \.musicListView, action: \.musicListView)) {
+      MusicListView(store: $0)
+    }
   }
 
   var listView: some View {
@@ -113,6 +116,7 @@ struct FilesView: View {
   var menuView: some View {
     SlideMenu(
       isOpen: $store.showMenu,
+      music: { store.send(.binding(.set(\.musicListView, .init()))) },
       dismiss: { store.send(.binding(.set(\.showMenu, false))) }
     )
   }

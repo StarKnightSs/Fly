@@ -39,6 +39,7 @@ public struct FilesStore {
 
     @Presents var alertView: AlertStore.State?
     @Presents var scanQRCodeView: ScanQRStore.State?
+    @Presents var musicListView: MusicListStore.State?
 
     @Shared(.appStorage("sortName"))
     var sortName = SortType.date.name
@@ -91,6 +92,7 @@ public struct FilesStore {
     case binding(BindingAction<State>)
     case alertView(PresentationAction<AlertStore.Action>)
     case scanQRCodeView(PresentationAction<ScanQRStore.Action>)
+    case musicListView(PresentationAction<MusicListStore.Action>)
   }
 
   public var body: some Reducer<State, Action> {
@@ -317,7 +319,7 @@ public struct FilesStore {
         state.scanQRCodeView = state.showDownloadView ?
           ScanQRStore.downloadState(port: dependencies.server.port) : nil
 
-      case .binding, .alertView, .scanQRCodeView:
+      case .binding, .alertView, .scanQRCodeView, .musicListView:
         break
       }
       return .none
@@ -327,6 +329,9 @@ public struct FilesStore {
     }
     .ifLet(\.$scanQRCodeView, action: \.scanQRCodeView) {
       ScanQRStore()
+    }
+    .ifLet(\.$musicListView, action: \.musicListView) {
+      MusicListStore()
     }
   }
 }

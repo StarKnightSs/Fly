@@ -8,9 +8,13 @@ import SwiftUI
 struct SlideMenu: View {
 
   @Binding var isOpen: Bool
+
+  var music: (() -> Void)?
   var dismiss: (() -> Void)?
+
   @Environment(\.windowSize) var screenSize
   @Environment(\.colorScheme) var colorMode
+
   @AppStorage("isDarkMode") private var isDarkMode: Bool?
 
   var body: some View {
@@ -73,15 +77,18 @@ struct SlideMenu: View {
   var musicLibrary: some View {
     MenuButton(
       image: "music.quarternote.3",
-      title: "Music Player",
-      action: {}
+      title: "Music",
+      action: {
+        music?()
+        dismiss?()
+      }
     )
   }
 
   var audioReader: some View {
     MenuButton(
       image: "books.vertical.fill",
-      title: "Book Reader",
+      title: "Books",
       action: {}
     )
   }
