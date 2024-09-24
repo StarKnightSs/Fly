@@ -90,7 +90,7 @@ extension FileController {
     // Initiate progress tracking
     Task(priority: .high) { @MainActor in
       AudioManager.shared.play()
-      await ProgressManager.shared.initiate(with: Int64(fileSize))
+      ProgressManager.shared.initiate(with: Int64(fileSize))
     }
 
     // Generate streaming response
@@ -101,7 +101,7 @@ extension FileController {
 
           // Update progress
           Task(priority: .high) { @MainActor in
-            await ProgressManager.shared.updateProgress(
+            ProgressManager.shared.updateProgress(
               bytes: Int64(buffer.readableBytes)
             )
           }
@@ -114,7 +114,7 @@ extension FileController {
           // End progress
           Task(priority: .high) { @MainActor in
             AudioManager.shared.stop()
-            await ProgressManager.shared.endProgress()
+            ProgressManager.shared.endProgress()
           }
 
           // End Stream
