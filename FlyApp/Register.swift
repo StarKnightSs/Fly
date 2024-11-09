@@ -6,7 +6,7 @@
 import FlyServer
 import Resolver
 
-extension Resolver: ResolverRegistering {
+extension Resolver: @retroactive ResolverRegistering {
   public static func registerAllServices() {
     Resolver.defaultScope = .shared
     registerFlyServer()

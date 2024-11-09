@@ -10,11 +10,8 @@ import SwiftUI
 
 struct FilesView: View {
 
-  @Perception.Bindable
-  var store: StoreOf<FilesStore>
-
-  @Dependency(\.dependencies)
-  var dependencies
+  @Dependency(\.dependencies) var dependencies
+  @Perception.Bindable var store: StoreOf<FilesStore>
 
   var body: some View {
     WithPerceptionTracking {

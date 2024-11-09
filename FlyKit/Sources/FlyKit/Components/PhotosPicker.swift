@@ -72,16 +72,14 @@ extension PhotosPicker {
       try await withCheckedThrowingContinuation { continuation in
         itemProvider.loadFileRepresentation(
           forTypeIdentifier: type.identifier
-        ) { [weak self] url, error in
+        ) { [filesManager] url, error in
           do {
             guard let url, error == nil else {
               throw error ?? FileError.fileLoadingError
             }
             let fileName = url.lastPathComponent
-            guard let filePath = try self?.filesManager.overwriteFilePath(for: fileName) else {
-              throw FileError.filePathInvalid
-            }
-            try self?.filesManager.copy(from: url, to: filePath)
+            let filePath = try filesManager.overwriteFilePath(for: fileName)
+            try filesManager.copy(from: url, to: filePath)
             continuation.resume(returning: filePath)
           } catch {
             continuation.resume(throwing: error)

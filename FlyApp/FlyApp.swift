@@ -8,15 +8,9 @@ import SwiftUI
 
 @main
 struct FlyApp: App {
-
   @Environment(\.colorScheme) var colorMode
   @AppStorage("isDarkMode") private var isDarkMode: Bool?
-
-  #if os(iOS)
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  #elseif os(macOS)
-  @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  #endif
 
   var colorScheme: ColorScheme {
     if let isDarkMode {

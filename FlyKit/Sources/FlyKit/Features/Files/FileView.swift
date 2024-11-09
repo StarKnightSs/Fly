@@ -206,12 +206,12 @@ struct FileView: View {
   FileView(
     file: .mockFile,
     store: FilesStore.mockStore()
-  ).previewLayout(.sizeThatFits)
+  )
 }
 
 #Preview {
   FileView(
     file: .mockFolder,
     store: FilesStore.mockStore()
-  ).previewLayout(.sizeThatFits)
+  )
 }

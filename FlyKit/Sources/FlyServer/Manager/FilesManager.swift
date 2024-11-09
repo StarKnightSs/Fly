@@ -40,7 +40,7 @@ public final class FilesManager: FilesManagerProtocol {
   }
 
   public func temporaryDirectory() throws -> URL {
-    try fileManager.temporaryDirectory
+    fileManager.temporaryDirectory
   }
 
   public func create(folder: String) throws -> URL {
