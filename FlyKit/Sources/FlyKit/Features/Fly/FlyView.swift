@@ -8,11 +8,8 @@ import SwiftUI
 
 public struct FlyView: View {
 
-  @Perception.Bindable
-  var store: StoreOf<FlyStore>
-
-  @Environment(\.scenePhase)
-  private var scenePhase
+  @Perception.Bindable var store: StoreOf<FlyStore>
+  @Environment(\.scenePhase) private var scenePhase
 
   public init(store: StoreOf<FlyStore>) {
     self.store = store
@@ -29,9 +26,8 @@ public struct FlyView: View {
       }
       .background(store.admobView)
       .onAppear {
-        store.filesView = store.filesView ?? .init()
-        store.send(.loadServer)
         store.send(.loadAdmob)
+        store.send(.loadServer)
         store.send(.requestReview)
       }
       .onChange(of: scenePhase) {

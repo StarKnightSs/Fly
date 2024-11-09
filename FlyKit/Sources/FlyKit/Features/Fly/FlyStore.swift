@@ -29,7 +29,7 @@ public struct FlyStore {
     let adCoordinator = AdCoordinator()
 
     @Presents var alertView: AlertStore.State?
-    @Presents var filesView: FilesStore.State?
+    @Presents var filesView: FilesStore.State? = .init()
 
     // The total count of files transferred
     @Shared(.appStorage("fileCount")) var fileCount = 0
