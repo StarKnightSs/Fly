@@ -245,7 +245,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					A183A0782ABEBA4E00515D98 = {
 						CreatedOnToolsVersion = 14.3;
@@ -640,6 +640,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"FlyApp/Preview Content\"";
 				DEVELOPMENT_TEAM = G5RG3MW28X;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -819,7 +820,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.29.0;
+				minimumVersion = 11.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
