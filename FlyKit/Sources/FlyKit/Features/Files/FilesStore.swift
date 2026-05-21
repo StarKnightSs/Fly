@@ -1,7 +1,7 @@
 //
 // FilesStore.swift
 // Created by Arpit Williams on 11/06/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Copyright (c) 2026 StarKnights Technologies
 
 import ComposableArchitecture
 import FlyServer
@@ -14,6 +14,9 @@ public struct FilesStore {
 
   @Dependency(\.dependencies)
   var dependencies
+
+  @Dependency(\.continuousClock)
+  var continuousClock
 
   @ObservableState
   public struct State: Equatable {
@@ -99,7 +102,7 @@ public struct FilesStore {
     BindingReducer()
 
     // swiftlint:disable:next closure_body_length
-    Reduce { state, action in
+    Reduce { (state: inout State, action: Action) -> Effect<Action> in
       switch action {
 
       case .loadFiles:
@@ -290,14 +293,13 @@ public struct FilesStore {
         state.alertView = nil
         enum CancelID { case error }
         let message = (error as? FileError)?.description ?? error.localizedDescription
-        let errorAlert = Effect<Action>
-          .send(.set(\.alertView, AlertStore.handleErrorAlert(message: message)))
-          .debounce(id: CancelID.error, for: 0.5, scheduler: dependencies.mainQueue)
-        return .concatenate(
-          .send(.deSelectAllFiles),
-          .send(.resetState),
-          errorAlert
-        )
+        return .run { [continuousClock] send in
+          await send(.deSelectAllFiles)
+          await send(.resetState)
+          try await continuousClock.sleep(for: .seconds(0.5))
+          await send(.set(\.alertView, AlertStore.handleErrorAlert(message: message)))
+        }
+        .cancellable(id: CancelID.error, cancelInFlight: true)
 
       case .resetState:
         state.showMenu = false

@@ -1,14 +1,14 @@
 //
 // Dependencies.swift
 // Created by Arpit Williams on 10/06/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Copyright (c) 2026 StarKnights Technologies
 
 import Dependencies
 import FlyServer
 import Foundation
 import Resolver
 
-public protocol DependenciesProtocol {
+public protocol DependenciesProtocol: Sendable {
   var server: FileServerProtocol { get }
   var filesManager: FilesManagerProtocol { get }
   var zipManager: ZipManagerProtocol { get }

@@ -6,14 +6,8 @@
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-		<string>fetch</string>
-		<string>processing</string>
-	</array>
-    <key>CFBundleAllowMixedLocalizations</key>
-    <true/>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3954157944286926~9903309476</string>
 	<key>SKAdNetworkItems</key>
@@ -214,6 +208,12 @@
 			<key>SKAdNetworkIdentifier</key>
 			<string>3qcr597p9d.skadnetwork</string>
 		</dict>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+		<string>processing</string>
 	</array>
 </dict>
 </plist>

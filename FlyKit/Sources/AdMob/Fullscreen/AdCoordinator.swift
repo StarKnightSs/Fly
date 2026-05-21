@@ -1,12 +1,12 @@
 //
 // AdCoordinator.swift
-// Created by Arpit Williams on 19/03/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 28/06/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import GoogleAdmobSPM
 import SwiftUI
 
-public class AdCoordinator: NSObject, GADFullScreenContentDelegate {
+public final class AdCoordinator: NSObject, GADFullScreenContentDelegate, @unchecked Sendable {
 
   override public init() {}
 

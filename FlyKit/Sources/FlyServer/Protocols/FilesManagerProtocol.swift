@@ -1,12 +1,12 @@
 //
 // FilesManagerProtocol.swift
-// Created by Arpit Williams on 14/06/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 10/06/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import Foundation
 import UniformTypeIdentifiers
 
-public protocol FilesManagerProtocol {
+public protocol FilesManagerProtocol: Sendable {
   init(fileManager: FileManager)
   var supportedTypes: [UTType] { get set }
   func documentsDirectory() throws -> URL

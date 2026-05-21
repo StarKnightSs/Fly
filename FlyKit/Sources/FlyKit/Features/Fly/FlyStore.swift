@@ -1,7 +1,7 @@
 //
 // FlyStore.swift
-// Created by Arpit Williams on 27/06/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 11/06/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import AdMob
 import ComposableArchitecture
@@ -31,7 +31,7 @@ public struct FlyStore {
     @Presents var alertView: AlertStore.State?
     @Presents var filesView: FilesStore.State? = .init()
 
-    // The total count of files transferred
+    /// The total count of files transferred
     @Shared(.appStorage("fileCount")) var fileCount = 0
   }
 
@@ -109,7 +109,7 @@ public struct FlyStore {
         }
 
       case .showFileTransferAlert:
-        state.fileCount += 1
+        state.$fileCount.withLock { $0 += 1 }
         state.alertView = AlertStore.fileTransferAlert(state.lastTransferTime)
 
       case .alertView(.presented(.dismiss)):

@@ -4,11 +4,12 @@ import PackageDescription
 let package = Package(
   name: "Fly",
   defaultLocalization: "en",
-  platforms: [.macOS(.v13), .iOS(.v15)],
+  platforms: [.macOS(.v13), .iOS(.v16)],
   products: Module.allCases.map(Product.library),
   dependencies: [
     .vapor,
     .leaf,
+    .firebase,
     .googleAdmobSPM,
     .composableArchitecture,
     .resolver,
@@ -50,7 +51,7 @@ extension Target {
   static var flyKit: Target {
     .target(
       name: Module.FlyKit.rawValue,
-      dependencies: [.adMob, .flyServer, .composableArchitecture, .resolver],
+      dependencies: [.adMob, .flyServer, .composableArchitecture, .firebaseCore, .resolver],
       resources: [.process("Resources")]
     )
   }
@@ -108,6 +109,10 @@ extension Target.Dependency {
     product(name: "ComposableArchitecture", package: "swift-composable-architecture")
   }
 
+  static var firebaseCore: Target.Dependency {
+    product(name: "FirebaseCore", package: "firebase-ios-sdk")
+  }
+
   static var resolver: Target.Dependency {
     product(name: "Resolver", package: "Resolver")
   }
@@ -126,15 +131,19 @@ extension Target.Dependency {
 extension Package.Dependency {
 
   static var vapor: Package.Dependency {
-    package(url: "https://github.com/vapor/vapor.git", from: "4.92.5")
+    package(url: "https://github.com/vapor/vapor.git", from: "4.121.4")
   }
 
   static var leaf: Package.Dependency {
-    package(url: "https://github.com/vapor/leaf.git", from: "4.3.0")
+    package(url: "https://github.com/vapor/leaf.git", from: "4.5.1")
   }
 
   static var composableArchitecture: Package.Dependency {
-    package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.15.2")
+    package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.25.5")
+  }
+
+  static var firebase: Package.Dependency {
+    package(url: "https://github.com/firebase/firebase-ios-sdk", from: "11.4.0")
   }
 
   static var resolver: Package.Dependency {

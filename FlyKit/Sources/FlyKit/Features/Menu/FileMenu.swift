@@ -1,7 +1,7 @@
 //
 // FileMenu.swift
-// Created by Arpit Williams on 12/06/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 27/05/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import ComposableArchitecture
 import FlyServer
@@ -243,8 +243,8 @@ extension FileMenu {
     }
 
     // Update sort name & sort ascending in files store
-    store.sortName = newSort.name
-    store.sortAscending = sortAscending
+    store.$sortName.withLock { $0 = newSort.name }
+    store.$sortAscending.withLock { $0 = sortAscending }
 
     // Trigger sort
     store.send(.sortFiles)

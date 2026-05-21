@@ -1,19 +1,19 @@
 //
 // FileServer.swift
-// Created by Arpit Williams on 16/05/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 15/05/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import Foundation
 import Leaf
 import Vapor
 
-public final class FileServer: FileServerProtocol {
+public final class FileServer: FileServerProtocol, @unchecked Sendable {
 
   private let app: Application
   private let filesManager: FilesManagerProtocol
 
   public var port = 80
-  public var updateHandler: ((URL, HTTPMethod) -> Void)?
+  public var updateHandler: (@Sendable (URL, HTTPMethod) -> Void)?
 
   init(filesManager: FilesManagerProtocol) {
     // swiftlint:disable:next force_try
@@ -46,7 +46,7 @@ public final class FileServer: FileServerProtocol {
       do {
         try await app.execute()
       } catch {
-        /// Bump port & restart server on error
+        // Bump port & restart server on error
         await bumpServerPort()
       }
     }
@@ -54,7 +54,7 @@ public final class FileServer: FileServerProtocol {
 
   private func bumpServerPort() async {
     do {
-      /// Limit server restart tries till port 100
+      // Limit server restart tries till port 100
       guard port <= 100 else { return }
       port += 1
       app.http.server.configuration.port = port

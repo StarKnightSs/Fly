@@ -1,7 +1,7 @@
 //
 // AppDelegate.swift
-// Created by Arpit Williams on 21/05/24.
-// Copyright (c) 2024 StarKnights Technologies
+// Created by Arpit Williams on 11/05/24.
+// Copyright (c) 2026 StarKnights Technologies
 
 import FirebaseCore
 import UIKit
